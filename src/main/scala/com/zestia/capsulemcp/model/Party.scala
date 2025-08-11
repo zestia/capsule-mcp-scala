@@ -6,7 +6,7 @@ import zio.json.*
 
 final case class Address(
     id: Long,
-    `type`: String,
+    `type`: Option[String],
     street: Option[String],
     city: Option[String],
     state: Option[String],
