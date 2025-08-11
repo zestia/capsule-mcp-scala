@@ -14,11 +14,22 @@ You can get started with the server and use it with your favourite AI assistant.
 #### macOS Setup
 
 ```bash
-# Install jenv & java 17
-TODO
+# Clone this repo:
+git clone git@github.com:zestia/capsule-mcp-scala.git
+cd capsule-mcp-scala
 
-# Install scala-cli
-TODO
+# Install jEnv (skip if already installed):
+brew install jenv
+
+# Add jenv to your zsh (skip if already installed):
+echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(jenv init -)"' >> ~/.zshrc
+
+# Install scala-cli (skip if already installed):
+brew install Virtuslab/scala-cli/scala-cli
+
+# reload your terminal session:
+exec $SHELL -l
 ```
 
 #### Linux/Windows Setup
