@@ -27,6 +27,13 @@ brew install jenv
 echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
 echo 'eval "$(jenv init -)"' >> ~/.zshrc
 
+# reload your terminal session:
+exec $SHELL -l
+
+# Install Java 17 and add to jenv (skip if already installed):
+brew install openjdk@17
+jenv add $(/usr/libexec/java_home -v 17)
+
 # Install scala-cli (skip if already installed):
 brew install Virtuslab/scala-cli/scala-cli
 
