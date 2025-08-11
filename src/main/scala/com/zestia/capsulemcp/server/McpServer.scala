@@ -3,12 +3,7 @@ package com.zestia.capsulemcp.server
 import com.zestia.capsulemcp.server.ToolDescriptionHelper.*
 import com.zestia.capsulemcp.service.CapsuleHttpClient
 import com.zestia.capsulemcp.service.CapsuleHttpClient.*
-import com.zestia.capsulemcp.model.{
-  Party,
-  ContactResponse,
-  PartyType,
-  FieldDefinitionsResponse
-}
+import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.model.filter.*
 import com.zestia.capsulemcp.model.filter.SimpleCondition.*
@@ -53,6 +48,24 @@ object CapsuleMcpServer extends FileLogging:
   def describeSearchContacts(): String =
     searchToolDescription("contacts", contactFieldReference)
 
+  @Tool(
+    name = Some("describe_search_opportunities"),
+    description = Some(
+      "Returns a detailed description of how to use the `search_opportunities` tool."
+    )
+  )
+  def describeSearchOpportunities(): String =
+    searchToolDescription("opportunities", opportunityFieldReference)
+
+  @Tool(
+    name = Some("describe_search_projects"),
+    description = Some(
+      "Returns a detailed description of how to use the `search_projects` tool."
+    )
+  )
+  def describeSearchProjects(): String =
+    searchToolDescription("projects", projectFieldReference)
+
   /* Search Tools */
 
   @Tool(
@@ -68,8 +81,48 @@ object CapsuleMcpServer extends FileLogging:
       ) pagination: Pagination,
       @ToolParam("array of zero or more conditions") filter: Filter
   ): String = {
-    filterRequest[ContactResponse](
+    filterRequest[ContactsResponse](
       "parties/filters/results",
+      filter,
+      pagination
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("search_opportunities"),
+    description = Some(
+      "Perform a search of Opportunities. Refer to `describe_search_opportunities` for tool description and usage"
+    )
+  )
+  def searchOpportunities(
+      @ToolParam(
+        "pagination options",
+        required = false
+      ) pagination: Pagination,
+      @ToolParam("array of zero or more conditions") filter: Filter
+  ): String = {
+    filterRequest[OpportunitiesResponse](
+      "opportunities/filters/results",
+      filter,
+      pagination
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("search_projects"),
+    description = Some(
+      "Perform a search of Projects. Refer to `describe_search_projects` for tool description and usage"
+    )
+  )
+  def searchProjects(
+      @ToolParam(
+        "pagination options",
+        required = false
+      ) pagination: Pagination,
+      @ToolParam("array of zero or more conditions") filter: Filter
+  ): String = {
+    filterRequest[ProjectsResponse](
+      "kases/filters/results",
       filter,
       pagination
     ).toJson

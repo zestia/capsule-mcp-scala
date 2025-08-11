@@ -90,8 +90,8 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 | **Data Type** | **What You Can Do** |
 |---------------|-------------------|
 | **👥 Contacts** | List, Search by field |
-| **💼 Opportunities** | Coming soon |
-| **📋 Projects** | Coming soon |
+| **💼 Opportunities** | List, Search by field |
+| **📋 Projects** | List, Search by field |
 | **📋 Custom Fields** | List |
 | **✅ Tasks** | Coming soon |
 | **📝 Activity** | Coming soon |

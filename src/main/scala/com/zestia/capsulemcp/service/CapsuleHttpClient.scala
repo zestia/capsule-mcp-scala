@@ -28,7 +28,7 @@ object CapsuleHttpClient extends HttpClient:
       pagination: Pagination = Pagination(),
       queryParams: Map[String, Any] = Map.empty
   ): T =
-    val embed = Map("embed" -> "meta,fields,tags")
+    val embed = Map("embed" -> "meta,fields,tags,missingImportantFields")
     val uri = constructUri(baseUrl, path, pagination, queryParams ++ embed)
 
     logger.info(s"GET ${uri.toString}")
@@ -46,7 +46,7 @@ object CapsuleHttpClient extends HttpClient:
       pagination: Pagination = Pagination(),
       queryParams: Map[String, Any] = Map.empty
   ): T =
-    val embed = Map("embed" -> "meta,fields,tags")
+    val embed = Map("embed" -> "meta,fields,tags,missingImportantFields")
     val uri = constructUri(baseUrl, path, pagination, queryParams ++ embed)
     val body = FilterRequestWrapper(filter)
 

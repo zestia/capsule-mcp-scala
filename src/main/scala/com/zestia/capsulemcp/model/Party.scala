@@ -2,8 +2,46 @@ package com.zestia.capsulemcp.model
 
 import zio.json.*
 
+// --- Models specific to Party ------------------------------------------
+
+final case class Address(
+    id: Long,
+    `type`: String,
+    street: Option[String],
+    city: Option[String],
+    state: Option[String],
+    country: Option[String],
+    zip: Option[String]
+) derives JsonDecoder,
+      JsonEncoder
+
+final case class EmailAddress(
+    id: Long,
+    `type`: Option[String],
+    address: String
+) derives JsonDecoder,
+      JsonEncoder
+
+final case class PhoneNumber(
+    id: Long,
+    `type`: Option[String],
+    number: String
+) derives JsonDecoder,
+      JsonEncoder
+
+final case class Website(
+    id: Long,
+    service: String,
+    address: String,
+    `type`: Option[String],
+    url: String
+) derives JsonDecoder,
+      JsonEncoder
+
 enum PartyType:
   case person, organisation
+
+// --- Party -------------------------------------------------------------
 
 @jsonDiscriminator("type")
 sealed trait Party derives JsonDecoder, JsonEncoder:
@@ -25,7 +63,7 @@ sealed trait Party derives JsonDecoder, JsonEncoder:
   val missingImportantFields: Option[Boolean]
 
 @jsonHint(PartyType.person.toString)
-case class Person(
+final case class Person(
     id: Long,
     `type`: String = PartyType.person.toString,
     firstName: Option[String],
@@ -50,7 +88,7 @@ case class Person(
 ) extends Party derives JsonDecoder, JsonEncoder
 
 @jsonHint(PartyType.organisation.toString)
-case class Organisation(
+final case class Organisation(
     id: Long,
     `type`: String = PartyType.organisation.toString,
     name: Option[String],
