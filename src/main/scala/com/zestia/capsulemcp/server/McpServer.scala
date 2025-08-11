@@ -179,6 +179,38 @@ object CapsuleMcpServer extends FileLogging:
       pagination
     ).toJson
 
+  /* Various other simple list tools */
+
+  @Tool(
+    name = Some("list_users"),
+    description = Some("List Users in CRM account")
+  )
+  def listUsers(
+      @ToolParam(
+        "pagination options",
+        required = false
+      ) pagination: Pagination
+  ): String =
+    getRequest[UsersResponse](
+      "users",
+      pagination
+    ).toJson
+
+  @Tool(
+    name = Some("list_teams"),
+    description = Some("List Teams in CRM account")
+  )
+  def listTeams(
+      @ToolParam(
+        "pagination options",
+        required = false
+      ) pagination: Pagination
+  ): String =
+    getRequest[TeamsResponse](
+      "teams",
+      pagination
+    ).toJson
+
   /*
    * TODO: Work in progress around allowing client to specify field selection
    * */

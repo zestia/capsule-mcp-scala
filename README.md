@@ -92,9 +92,11 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 | **👥 Contacts** | List, Search by field |
 | **💼 Opportunities** | List, Search by field |
 | **📋 Projects** | List, Search by field |
-| **📋 Custom Fields** | List |
-| **✅ Tasks** | Coming soon |
-| **📝 Activity** | Coming soon |
+| **Custom Fields** | List |
+| **Users** | List |
+| **Teams** | List |
+| **Tasks** | Coming soon |
+| **Activity** | Coming soon |
 
 ## Development
 
