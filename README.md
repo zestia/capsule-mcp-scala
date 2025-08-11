@@ -1,4 +1,6 @@
 # Capsule CRM MCP Server
+[![Model Context Protocol](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io) [![Scala 3.6+](https://img.shields.io/badge/scala3--compiler-3.6.4-green.svg?)](https://python.org) [![Capsule CRM API v2](https://img.shields.io/badge/Capsule%20CRM-API%20v2-orange)](https://developer.capsulecrm.com)
+
 Scala3-based MCP server implementation PoC that connects to your Capsule CRM data.
 
 ## Quick Start
