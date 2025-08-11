@@ -3,7 +3,12 @@ package com.zestia.capsulemcp.server
 import com.zestia.capsulemcp.server.ToolDescriptionHelper.*
 import com.zestia.capsulemcp.service.CapsuleHttpClient
 import com.zestia.capsulemcp.service.CapsuleHttpClient.*
-import com.zestia.capsulemcp.model.{Party, ContactResponse, PartyType}
+import com.zestia.capsulemcp.model.{
+  Party,
+  ContactResponse,
+  PartyType,
+  FieldDefinitionsResponse
+}
 import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.model.filter.*
 import com.zestia.capsulemcp.model.filter.SimpleCondition.*
@@ -70,15 +75,11 @@ object CapsuleMcpServer extends FileLogging:
     ).toJson
   }
 
-
-
-  /* List Custom Fields Tools */
+  /* List Custom Field Definitions Tools */
 
   @Tool(
     name = Some("list_contact_custom_fields"),
-    description = Some(
-      "List custom fields in CRM account (useful for looking up a custom field's ID to use in a `search_contacts` request)"
-    )
+    description = Some("List Custom Fields defined for Contacts in CRM account")
   )
   def listContactCustomFields(
       @ToolParam(
@@ -86,7 +87,44 @@ object CapsuleMcpServer extends FileLogging:
         required = false
       ) pagination: Pagination
   ): String =
-    getRequest[ContactResponse]("parties/fields/definitions", pagination).toJson
+    getRequest[FieldDefinitionsResponse](
+      "parties/fields/definitions",
+      pagination
+    ).toJson
+
+  @Tool(
+    name = Some("list_opportunity_custom_fields"),
+    description = Some(
+      "List Custom Fields defined for Opportunities"
+    )
+  )
+  def listOpportunityCustomFields(
+      @ToolParam(
+        "pagination options",
+        required = false
+      ) pagination: Pagination
+  ): String =
+    getRequest[FieldDefinitionsResponse](
+      "opportunities/fields/definitions",
+      pagination
+    ).toJson
+
+  @Tool(
+    name = Some("list_project_custom_fields"),
+    description = Some(
+      "List Custom Fields defined for Projects"
+    )
+  )
+  def listProjectCustomFields(
+      @ToolParam(
+        "pagination options",
+        required = false
+      ) pagination: Pagination
+  ): String =
+    getRequest[FieldDefinitionsResponse](
+      "kases/fields/definitions",
+      pagination
+    ).toJson
 
   /*
    * TODO: Work in progress around allowing client to specify field selection

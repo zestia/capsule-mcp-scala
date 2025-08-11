@@ -6,9 +6,6 @@ import com.zestia.capsulemcp.model.filter.{
   FilterRequestWrapper,
   SimpleCondition
 }
-import com.zestia.capsulemcp.model.Pagination
-import com.zestia.capsulemcp.util.FileLogging
-import com.zestia.capsulemcp.util.FileLogging
 import sttp.client3.*
 import sttp.client3.ziojson.*
 import sttp.model.HeaderNames
@@ -31,7 +28,7 @@ object CapsuleHttpClient extends HttpClient:
       pagination: Pagination = Pagination(),
       queryParams: Map[String, Any] = Map.empty
   ): T =
-    val embed = Map("embed" -> "meta")
+    val embed = Map("embed" -> "meta,fields,tags")
     val uri = constructUri(baseUrl, path, pagination, queryParams ++ embed)
 
     logger.info(s"GET ${uri.toString}")
@@ -49,7 +46,7 @@ object CapsuleHttpClient extends HttpClient:
       pagination: Pagination = Pagination(),
       queryParams: Map[String, Any] = Map.empty
   ): T =
-    val embed = Map("embed" -> "meta")
+    val embed = Map("embed" -> "meta,fields,tags")
     val uri = constructUri(baseUrl, path, pagination, queryParams ++ embed)
     val body = FilterRequestWrapper(filter)
 
