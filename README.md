@@ -34,6 +34,12 @@ brew install Virtuslab/scala-cli/scala-cli
 exec $SHELL -l
 ```
 
+Confirm [jEnv](https://github.com/jenv/jenv?tab=readme-ov-file#1-getting-started) and [scala-cli](https://scala-cli.virtuslab.org/install/) installation with:
+```bash
+jenv --version
+scala-cli --version
+```
+
 #### Linux/Windows Setup
 Coming soon
 
