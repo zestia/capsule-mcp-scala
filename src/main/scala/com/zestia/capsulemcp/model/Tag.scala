@@ -6,5 +6,6 @@ case class Tag(
     id: Long,
     name: String,
     description: Option[String]
-) derives JsonDecoder,
-      JsonEncoder
+) extends CsvSerialisable derives JsonDecoder,
+      JsonEncoder:
+  override def renderCsv: String = name

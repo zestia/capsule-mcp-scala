@@ -5,5 +5,5 @@ import zio.json.*
 case class Team(
     id: Long,
     name: Option[String]
-) derives JsonDecoder,
-      JsonEncoder
+) extends CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String = name.getOrElse("")

@@ -12,22 +12,37 @@ final case class Address(
     state: Option[String],
     country: Option[String],
     zip: Option[String]
-) derives JsonDecoder,
-      JsonEncoder
+) extends CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String =
+    def nonEmpty(opt: Option[String]): Option[String] =
+      opt.map(_.trim).filter(_.nonEmpty)
+
+    val parts: List[(String, String)] =
+      List(
+        nonEmpty(`type`).map(t => "type" -> t),
+        nonEmpty(street).map(s => "street" -> s),
+        nonEmpty(city).map(c => "city" -> c),
+        nonEmpty(state).map(s => "state" -> s),
+        nonEmpty(country).map(c => "country" -> c),
+        nonEmpty(zip).map(z => "zip" -> z)
+      ).flatten
+
+    parts.map { case (k, v) => s"$k=$v" }.mkString(";")
 
 final case class EmailAddress(
     id: Long,
     `type`: Option[String],
     address: String
-) derives JsonDecoder,
-      JsonEncoder
+) extends CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String = s"${`type`}=${address}"
 
 final case class PhoneNumber(
     id: Long,
     `type`: Option[String],
     number: String
-) derives JsonDecoder,
-      JsonEncoder
+) extends CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String =
+    `type`.map(t => s"$t=$number").getOrElse(number)
 
 final case class Website(
     id: Long,
@@ -35,8 +50,8 @@ final case class Website(
     address: String,
     `type`: Option[String],
     url: String
-) derives JsonDecoder,
-      JsonEncoder
+) extends CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String = s"${service}=${address}"
 
 enum PartyType:
   case person, organisation
@@ -106,4 +121,7 @@ final case class Organisation(
     owner: Option[User],
     team: Option[Team],
     missingImportantFields: Option[Boolean]
-) extends Party derives JsonDecoder, JsonEncoder
+) extends Party
+    with PartiallyCsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String =
+    s"id=$id${name.map(n => s";name=$n").getOrElse("")}"

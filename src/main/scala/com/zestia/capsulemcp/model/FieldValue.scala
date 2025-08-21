@@ -85,16 +85,19 @@ final case class FieldValueString(
     id: Long,
     value: String,
     definition: FieldDefinition
-) extends FieldValue derives JsonDecoder, JsonEncoder
+) extends FieldValue with CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String = s"${definition.name}=${value}"
 
 final case class FieldValueNumber(
     id: Long,
     value: Long,
     definition: FieldDefinition
-) extends FieldValue derives JsonDecoder, JsonEncoder
+) extends FieldValue with CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String = s"${definition.name}=${value}"
 
 final case class FieldValueBoolean(
     id: Long,
     value: Boolean,
     definition: FieldDefinition
-) extends FieldValue derives JsonDecoder, JsonEncoder
+) extends FieldValue with CsvSerialisable derives JsonDecoder, JsonEncoder:
+  override def renderCsv: String = s"${definition.name}=${value}"
