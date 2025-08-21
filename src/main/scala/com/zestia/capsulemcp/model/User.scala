@@ -6,5 +6,6 @@ case class User(
     id: Long,
     username: String,
     name: String
-) derives JsonDecoder,
-      JsonEncoder
+) extends CsvSerialisable derives JsonDecoder,
+      JsonEncoder:
+  override def renderCsv: String = name

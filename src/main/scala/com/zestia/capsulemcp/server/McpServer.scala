@@ -8,7 +8,7 @@ import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.model.filter.*
 import com.zestia.capsulemcp.model.filter.SimpleCondition.*
 import com.zestia.capsulemcp.model.Pagination
-import com.zestia.capsulemcp.util.{FileLogger, FileLogging}
+import com.zestia.capsulemcp.util.{Csv, FileLogger, FileLogging, UnwrapList}
 import com.tjclp.fastmcp.core.{Tool, ToolParam}
 import com.tjclp.fastmcp.macros.RegistrationMacro.*
 import com.tjclp.fastmcp.server.FastMcpServer
@@ -86,6 +86,33 @@ object CapsuleMcpServer extends FileLogging:
       filter,
       pagination
     ).toJson
+  }
+
+  @Tool(
+    name = Some("search_contacts_csv"),
+    description = Some(
+      "Perform a search of contacts. Refer to `describe_search_contacts` for tool description and usage"
+    )
+  )
+  def searchContactsCsv(
+      @ToolParam(
+        "pagination options",
+        required = false
+      ) pagination: Pagination,
+      @ToolParam("array of zero or more conditions") filter: Filter
+  ): String = {
+    val response = filterRequest[ContactsResponse](
+      "parties/filters/results",
+      filter,
+      pagination
+    )
+
+    import UnwrapList.given
+    val parties: List[Party] =
+      summon[UnwrapList[ContactsResponse, Party]].apply(response)
+    val rows: List[Product] = parties.collect { case p: Product => p }
+    
+    Csv.render(rows)
   }
 
   @Tool(
