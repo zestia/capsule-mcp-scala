@@ -21,3 +21,5 @@ case class FieldDefinitionsResponse(definitions: List[FieldDefinition])
 case class UsersResponse(users: List[User]) derives JsonDecoder, JsonEncoder
 
 case class TeamsResponse(teams: List[Team]) derives JsonDecoder, JsonEncoder
+
+case class ResponseWrapper(result: String, meta: Meta) derives JsonEncoder

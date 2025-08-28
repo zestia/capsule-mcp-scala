@@ -81,26 +81,6 @@ object CapsuleMcpServer extends FileLogging:
       ) pagination: Pagination,
       @ToolParam("array of zero or more conditions") filter: Filter
   ): String = {
-    filterRequest[ContactsResponse](
-      "parties/filters/results",
-      filter,
-      pagination
-    ).toJson
-  }
-
-  @Tool(
-    name = Some("search_contacts_csv"),
-    description = Some(
-      "Perform a search of contacts. Refer to `describe_search_contacts` for tool description and usage"
-    )
-  )
-  def searchContactsCsv(
-      @ToolParam(
-        "pagination options",
-        required = false
-      ) pagination: Pagination,
-      @ToolParam("array of zero or more conditions") filter: Filter
-  ): String = {
     val response = filterRequest[ContactsResponse](
       "parties/filters/results",
       filter,
@@ -111,8 +91,9 @@ object CapsuleMcpServer extends FileLogging:
     val parties: List[Party] =
       summon[UnwrapList[ContactsResponse, Party]].apply(response)
     val rows: List[Product] = parties.collect { case p: Product => p }
-    
-    Csv.render(rows)
+    val csv = Csv.render(rows)
+
+    ResponseWrapper(csv, response.meta).toJson
   }
 
   @Tool(

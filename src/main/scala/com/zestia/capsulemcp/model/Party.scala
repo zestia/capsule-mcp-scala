@@ -34,7 +34,8 @@ final case class EmailAddress(
     `type`: Option[String],
     address: String
 ) extends CsvSerialisable derives JsonDecoder, JsonEncoder:
-  override def renderCsv: String = s"${`type`}=${address}"
+  override def renderCsv: String =
+    `type`.map(t => s"$t=$address").getOrElse(address)
 
 final case class PhoneNumber(
     id: Long,
