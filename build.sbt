@@ -2,7 +2,7 @@ organization := "com.zestia"
 name := "capsule-mcp-scala"
 
 ThisBuild / version := "0.0.1"
-ThisBuild / scalaVersion := "3.6.4"
+ThisBuild / scalaVersion := "3.7.2"
 ThisBuild / javacOptions ++= Seq("--release", "17")
 
 lazy val root = (project in file("."))
@@ -11,7 +11,7 @@ lazy val root = (project in file("."))
     scalacOptions ++= Seq("-experimental", "-Xmax-inlines:128"),
     libraryDependencies ++= Seq(
       // MCP Scala SDK
-      "com.tjclp" %% "fast-mcp-scala" % "0.1.1",
+      "com.tjclp" %% "fast-mcp-scala" % "0.2.1",
 
       // ZIO Core
       "dev.zio" %% "zio" % "2.1.20",

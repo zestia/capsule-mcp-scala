@@ -9,7 +9,7 @@ import com.zestia.capsulemcp.model.filter.*
 import com.zestia.capsulemcp.model.filter.SimpleCondition.*
 import com.zestia.capsulemcp.model.Pagination
 import com.zestia.capsulemcp.util.{FileLogger, FileLogging}
-import com.tjclp.fastmcp.core.{Tool, ToolParam}
+import com.tjclp.fastmcp.core.{Tool, Param}
 import com.tjclp.fastmcp.macros.RegistrationMacro.*
 import com.tjclp.fastmcp.server.FastMcpServer
 import zio.*
@@ -75,11 +75,11 @@ object CapsuleMcpServer extends FileLogging:
     )
   )
   def searchContacts(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination,
-      @ToolParam("array of zero or more conditions") filter: Filter
+      @Param("array of zero or more conditions") filter: Filter
   ): String = {
     filterRequest[ContactsResponse](
       "parties/filters/results",
@@ -95,11 +95,11 @@ object CapsuleMcpServer extends FileLogging:
     )
   )
   def searchOpportunities(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination,
-      @ToolParam("array of zero or more conditions") filter: Filter
+      @Param("array of zero or more conditions") filter: Filter
   ): String = {
     filterRequest[OpportunitiesResponse](
       "opportunities/filters/results",
@@ -115,11 +115,11 @@ object CapsuleMcpServer extends FileLogging:
     )
   )
   def searchProjects(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination,
-      @ToolParam("array of zero or more conditions") filter: Filter
+      @Param("array of zero or more conditions") filter: Filter
   ): String = {
     filterRequest[ProjectsResponse](
       "kases/filters/results",
@@ -135,7 +135,7 @@ object CapsuleMcpServer extends FileLogging:
     description = Some("List Custom Fields defined for Contacts in CRM account")
   )
   def listContactCustomFields(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination
@@ -152,7 +152,7 @@ object CapsuleMcpServer extends FileLogging:
     )
   )
   def listOpportunityCustomFields(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination
@@ -169,7 +169,7 @@ object CapsuleMcpServer extends FileLogging:
     )
   )
   def listProjectCustomFields(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination
@@ -186,7 +186,7 @@ object CapsuleMcpServer extends FileLogging:
     description = Some("List Users in CRM account")
   )
   def listUsers(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination
@@ -201,7 +201,7 @@ object CapsuleMcpServer extends FileLogging:
     description = Some("List Teams in CRM account")
   )
   def listTeams(
-      @ToolParam(
+      @Param(
         "pagination options",
         required = false
       ) pagination: Pagination

@@ -12,7 +12,7 @@ import scala.util.Try
 // TODO: rename 'SimpleConditions' etc
 // TODO: do I still need @jsonHints 
 
-// Jackson-style deserialisation needed for the under the hood @ToolParam binders in fast-mcp-scala
+// Jackson-style deserialisation needed for the under the hood @Param binders in fast-mcp-scala
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(
   Array(
