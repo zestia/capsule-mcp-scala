@@ -44,11 +44,11 @@ object FieldValue:
         id <- idJson
           .as[Long]
           .left
-          .map(_ => "id must be a string")
+          .map(_ => "id must be a number")
         definition <- definitionJson
           .as[FieldDefinition]
           .left
-          .map(_ => "definition must be a string")
+          .map(error => s"could not parse definition: $error")
 
         fieldValue <- valueJson match
           case Json.Str(s) =>
