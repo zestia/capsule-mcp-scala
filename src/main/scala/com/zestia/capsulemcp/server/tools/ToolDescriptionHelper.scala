@@ -1,4 +1,4 @@
-package com.zestia.capsulemcp.server
+package com.zestia.capsulemcp.server.tools
 
 object ToolDescriptionHelper {
   def searchToolDescription(
