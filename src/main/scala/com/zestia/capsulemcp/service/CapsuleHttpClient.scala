@@ -26,10 +26,13 @@ object CapsuleHttpClient extends HttpClient:
   def getRequest[T: {JsonDecoder, ClassTag}](
       path: String,
       pagination: Pagination = Pagination(),
-      queryParams: Map[String, Any] = Map.empty
+      queryParams: Map[String, Any] = Map.empty,
+      embed: List[String] = List.empty
   ): T =
-    val embed = Map("embed" -> "meta,fields,tags,missingImportantFields")
-    val uri = constructUri(baseUrl, path, pagination, queryParams ++ embed)
+    val defaultEmbeds = List("meta", "fields", "tags", "missingImportantFields")
+    val allEmbeds = defaultEmbeds ++ embed
+    val embedMap = Map("embed" -> allEmbeds.mkString(","))
+    val uri = constructUri(baseUrl, path, pagination, queryParams ++ embedMap)
 
     logger.info(s"GET ${uri.toString}")
 

@@ -5,6 +5,8 @@ import zio.json.*
 case class Tag(
     id: Long,
     name: String,
-    description: Option[String]
+    description: Option[String],
+    dataTag: Boolean,
+    definitions: Option[List[FieldDefinition]]
 ) derives JsonDecoder,
       JsonEncoder

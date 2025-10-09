@@ -132,7 +132,7 @@ object CapsuleMcpServer extends FileLogging:
 
   @Tool(
     name = Some("list_contact_custom_fields"),
-    description = Some("List Custom Fields defined for Contacts in CRM account")
+    description = Some("List Custom Fields defined for Contacts")
   )
   def listContactCustomFields(
       @Param(
@@ -179,34 +179,70 @@ object CapsuleMcpServer extends FileLogging:
       pagination
     ).toJson
 
-  /* Various other simple list tools */
+  /* List Tag Definitions Tools */
 
   @Tool(
-    name = Some("list_users"),
-    description = Some("List Users in CRM account")
+    name = Some("list_contact_tags"),
+    description = Some("List Tags defined for Contacts")
   )
-  def listUsers(
+  def listContactTags(
       @Param(
         "pagination options",
         required = false
       ) pagination: Pagination
   ): String =
-    getRequest[UsersResponse](
-      "users",
+    getRequest[TagDefinitionsResponse](
+      "parties/tags",
       pagination
     ).toJson
 
   @Tool(
-    name = Some("list_teams"),
-    description = Some("List Teams in CRM account")
+    name = Some("list_opportunity_tags"),
+    description = Some("List Tags defined for Opportunities")
   )
-  def listTeams(
+  def listOpportunityTags(
       @Param(
         "pagination options",
         required = false
       ) pagination: Pagination
   ): String =
+    getRequest[TagDefinitionsResponse](
+      "opportunities/tags",
+      pagination
+    ).toJson
+
+  @Tool(
+    name = Some("list_project_tags"),
+    description = Some("List Tags defined for Projects")
+  )
+  def listProjectTags(
+      @Param(
+        "pagination options",
+        required = false
+      ) pagination: Pagination
+  ): String =
+    getRequest[TagDefinitionsResponse](
+      "kases/tags",
+      pagination
+    ).toJson
+
+  /* Various other simple list tools */
+
+  @Tool(
+    name = Some("list_users"),
+    description = Some("List Users")
+  )
+  def listUsers(): String =
+    getRequest[UsersResponse](
+      "users"
+    ).toJson
+
+  @Tool(
+    name = Some("list_teams"),
+    description = Some("List Teams and team members")
+  )
+  def listTeams(): String =
     getRequest[TeamsResponse](
       "teams",
-      pagination
+      embed = List("memberships")
     ).toJson
