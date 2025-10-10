@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-package com.zestia.capsulemcp.model
+package com.zestia.capsulemcp.server.tools.common
 
-import zio.json.*
-
-case class FieldDefinition(
-    id: Long,
-    name: String,
-    `type`: Option[String],
-    description: Option[String],
-    important: Option[Boolean],
-    tag: Option[Tag],
-    options: Option[List[String]],
-    captureRule: Option[String]
-) derives JsonDecoder,
-      JsonEncoder
+object ToolParams:
+  val paginationDescription = "Pagination options"
+  val paginationRequired = false
