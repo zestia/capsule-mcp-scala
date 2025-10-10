@@ -113,16 +113,24 @@ This server is compatible with any MCP client. Refer to your client's documentat
 
 This MCP server provides **complete read-only access** to your Capsule CRM:
 
-| **Data Type** | **What You Can Do** |
-|---------------|-------------------|
-| **👥 Contacts** | List, Search by field |
-| **💼 Opportunities** | List, Search by field |
-| **📋 Projects** | List, Search by field |
-| **Custom Fields** | List |
-| **Users** | List |
-| **Teams** | List |
-| **Tasks** | Coming soon |
-| **Activity** | Coming soon |
+| **Data Type**     | **Tool Name**                    | **Description**                                                | **Paginated Response?** | 
+|-------------------|----------------------------------|----------------------------------------------------------------|-------------------------|
+| **Contacts**      | `describe_search_contacts`       | Describes how to use the `search_contacts` Tool in detail      | ✅                       |
+|                   | `search_contacts`                | Retrieve Contacts with comprehensive filtering ability         | ✅                       |
+| **Opportunities** | `describe_search_opportunities`  | Describes how to use the `search_opportunities` Tool in detail | ✅                       |
+|                   | `search_opportunities`           | Retrieve Opportunities with comprehensive filtering ability    | ✅                       |
+| **Projects**      | `describe_search_projects`       | Describes how to use the `search_projects` Tool in detail      | ✅                       |
+|                   | `search_projects`                | Retrieve Projects with comprehensive filtering ability         | ✅                       |
+| **Custom Fields** | `list_contact_custom_fields`     | Retrieves Custom Fields defined for Contacts                   | ✅                       |
+|                   | `list_opportunity_custom_fields` | Retrieves Custom Fields defined for Opportunities              | ✅                       |
+|                   | `list_project_custom_fields`     | Retrieves Custom Fields defined for Projects                   | ✅                       |
+| **Tags**          | `list_contact_tags`              | Retrieves Tags defined for Contacts                            | ✅                       |
+|                   | `list_opportunity_tags`          | Retrieves Tags defined for Opportunities                       | ✅                       |
+|                   | `list_project_tags`              | Retrieves Tags defined for Projects                            | ✅                       |
+| **Users**         | `list_users`                     | Retrieves all Users                                            | ❌                       |
+| **Teams**         | `list_teams`                     | Retrieves all Teams and Team members                           | ❌                       |
+| **Tasks**         | Coming soon                      |                                                                | ✅                       |
+| **Activity**      | Coming soon                      |                                                                | ✅                       |
 
 ## Development
 
