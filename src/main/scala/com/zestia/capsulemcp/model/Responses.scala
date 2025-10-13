@@ -48,6 +48,14 @@ case class MilestonesResponse(milestones: List[Milestone], meta: Meta)
     derives JsonDecoder,
       JsonEncoder
 
+case class BoardsResponse(boards: List[Board], meta: Meta)
+    derives JsonDecoder,
+      JsonEncoder
+
+case class StagesResponse(stages: List[Stage], meta: Meta)
+    derives JsonDecoder,
+      JsonEncoder
+
 case class UsersResponse(users: List[User]) derives JsonDecoder, JsonEncoder
 
 case class TeamsResponse(teams: List[Team]) derives JsonDecoder, JsonEncoder

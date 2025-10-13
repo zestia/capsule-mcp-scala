@@ -20,9 +20,18 @@ import zio.json.*
 
 // --- Models specific to Project ----------------------------------------
 
+final case class Board(
+    id: Long,
+    name: String,
+    description: Option[String]
+) derives JsonDecoder,
+      JsonEncoder
+
 final case class Stage(
     id: Long,
-    name: String
+    name: String,
+    description: Option[String],
+    board: Option[Board]
 ) derives JsonDecoder,
       JsonEncoder
 

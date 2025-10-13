@@ -127,6 +127,9 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 | **Sales Pipelines** | `list_pipelines`                 | Retrieves Sales Pipelines defined for Opportunities with optional searching by name | ✅                       |
 | **Milestones**      | `list_milestones`                | Retrieves Milestones defined across all Sales Pipelines                             | ✅                       |
 |                     | `list_milestones_by_pipeline_id` | Retrieves Milestones for a given Sales Pipeline                                     | ✅                       |
+| **Project Boards**  | `list_boards`                    | Retrieves Project Boards with optional searching by name                            | ✅                       |
+| **Stages**          | `list_stages`                    | Retrieves Stages defined across all Project Boards                                  | ✅                       |
+|                     | `list_stages_by_board_id`        | Retrieves Stages for a given Project Board                                          | ✅                       |
 | **Tags**            | `list_contact_tags`              | Retrieves Tags defined for Contacts                                                 | ✅                       |
 |                     | `list_opportunity_tags`          | Retrieves Tags defined for Opportunities                                            | ✅                       |
 |                     | `list_project_tags`              | Retrieves Tags defined for Projects                                                 | ✅                       |

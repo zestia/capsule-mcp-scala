@@ -18,10 +18,18 @@ package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{Pagination, ProjectsResponse}
+import com.zestia.capsulemcp.model.{
+  BoardsResponse,
+  Pagination,
+  ProjectsResponse,
+  StagesResponse
+}
 import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
+import com.zestia.capsulemcp.service.CapsuleHttpClient.{
+  filterRequest,
+  getRequest
+}
 import zio.json.*
 
 object ProjectTools:
@@ -51,6 +59,65 @@ object ProjectTools:
     filterRequest[ProjectsResponse](
       "kases/filters/results",
       filter,
+      pagination
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("list_boards"),
+    description = Some(
+      "List Boards for Projects, with optional searching by name"
+    )
+  )
+  def listBoards(
+      @Param(
+        ToolParams.paginationDescription,
+        required = ToolParams.paginationRequired
+      ) pagination: Pagination,
+      @Param("Search Boards by name", required = false) query: Option[
+        String
+      ] = None
+  ): String = {
+    getRequest[BoardsResponse](
+      "boards",
+      pagination,
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("list_stages"),
+    description = Some(
+      "List Stages across all Project Boards. To list Stages on a specific Board, use `list_stages_by_board_id`"
+    )
+  )
+  def listStages(
+      @Param(
+        ToolParams.paginationDescription,
+        required = ToolParams.paginationRequired
+      ) pagination: Pagination
+  ): String = {
+    getRequest[StagesResponse](
+      "stages",
+      pagination
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("list_stages_by_board_id"),
+    description = Some(
+      "List Stages associated with a Project Board"
+    )
+  )
+  def listStagesByBoardId(
+      @Param(
+        ToolParams.paginationDescription,
+        required = ToolParams.paginationRequired
+      ) pagination: Pagination,
+      @Param(" Board ID", required = true) boardId: Long
+  ): String = {
+    getRequest[StagesResponse](
+      s"boards/$boardId/stages",
       pagination
     ).toJson
   }
