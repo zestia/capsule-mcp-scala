@@ -26,7 +26,7 @@ object CustomFieldTools:
 
   @Tool(
     Some("list_contact_custom_fields"),
-    description = Some("List Custom Fields defined for Contacts")
+    Some("List Custom Fields defined for Contacts")
   )
   def listContactCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
@@ -35,7 +35,7 @@ object CustomFieldTools:
 
   @Tool(
     Some("list_opportunity_custom_fields"),
-    description = Some(
+    Some(
       "List Custom Fields defined for Opportunities"
     )
   )
@@ -46,7 +46,7 @@ object CustomFieldTools:
 
   @Tool(
     Some("list_project_custom_fields"),
-    description = Some(
+    Some(
       "List Custom Fields defined for Projects"
     )
   )

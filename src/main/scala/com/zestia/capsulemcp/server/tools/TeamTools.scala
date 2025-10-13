@@ -25,7 +25,7 @@ object TeamTools:
 
   @Tool(
     Some("list_teams"),
-    description = Some("List Teams and team members")
+    Some("List Teams and team members")
   )
   def listTeams(): String =
     getRequest[TeamsResponse]("teams", embed = List("memberships")).toJson

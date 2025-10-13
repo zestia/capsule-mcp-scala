@@ -25,7 +25,7 @@ object UserTools:
 
   @Tool(
     Some("list_users"),
-    description = Some("List Users")
+    Some("List Users")
   )
   def listUsers(): String =
     getRequest[UsersResponse]("users").toJson

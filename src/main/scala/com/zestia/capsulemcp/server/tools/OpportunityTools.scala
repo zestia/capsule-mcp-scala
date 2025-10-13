@@ -34,7 +34,7 @@ object OpportunityTools:
 
   @Tool(
     Some("describe_search_opportunities"),
-    description = Some(
+    Some(
       "Returns a detailed description of how to use the `search_opportunities` tool."
     )
   )
@@ -43,19 +43,19 @@ object OpportunityTools:
 
   @Tool(
     Some("search_opportunities"),
-    description = Some(
+    Some(
       "Perform a search of Opportunities. Refer to `describe_search_opportunities` for tool description and usage"
     )
   )
   def searchOpportunities(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param("array of zero or more conditions") filter: Filter
+      @Param(ToolParams.filterDescription) filter: Filter
   ): String =
     filterRequest[OpportunitiesResponse]("opportunities/filters/results", filter, pagination).toJson
 
   @Tool(
     Some("list_pipelines"),
-    description = Some(
+    Some(
       "List Sales Pipelines for Opportunities, with optional searching by name"
     )
   )
@@ -70,7 +70,7 @@ object OpportunityTools:
 
   @Tool(
     Some("list_milestones"),
-    description = Some(
+    Some(
       "List Milestones across all Sales Pipelines. To list Milestones on a specific Pipeline, use `list_milestones_by_pipeline_id`"
     )
   )
@@ -81,7 +81,7 @@ object OpportunityTools:
 
   @Tool(
     Some("list_milestones_by_pipeline_id"),
-    description = Some(
+    Some(
       "List Milestones associated with a Sales Pipeline"
     )
   )
@@ -93,7 +93,7 @@ object OpportunityTools:
 
   @Tool(
     Some("list_lost_reasons"),
-    description = Some(
+    Some(
       "List Lost Reasons, with optional searching by name. Lost Reasons allow users to record the reason an Opportunity is lost"
     )
   )

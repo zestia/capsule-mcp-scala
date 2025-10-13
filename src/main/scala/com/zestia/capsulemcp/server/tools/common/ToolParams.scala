@@ -19,3 +19,4 @@ package com.zestia.capsulemcp.server.tools.common
 object ToolParams:
   val paginationDescription = "Pagination options"
   val paginationRequired = false
+  val filterDescription = "Array of zero or more Conditions"

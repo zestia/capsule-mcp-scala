@@ -28,7 +28,7 @@ object ContactTools:
 
   @Tool(
     Some("describe_search_contacts"),
-    description = Some(
+    Some(
       "Returns a detailed description of how to use the `search_contacts` tool."
     )
   )
@@ -37,12 +37,12 @@ object ContactTools:
 
   @Tool(
     Some("search_contacts"),
-    description = Some(
+    Some(
       "Perform a search of contacts. Refer to `describe_search_contacts` for tool description and usage"
     )
   )
   def searchContacts(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param("array of zero or more conditions") filter: Filter
+      @Param(ToolParams.filterDescription) filter: Filter
   ): String =
     filterRequest[ContactsResponse]("parties/filters/results", filter, pagination).toJson

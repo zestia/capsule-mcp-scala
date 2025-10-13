@@ -28,7 +28,7 @@ object ProjectTools:
 
   @Tool(
     Some("describe_search_projects"),
-    description = Some(
+    Some(
       "Returns a detailed description of how to use the `search_projects` tool."
     )
   )
@@ -37,19 +37,19 @@ object ProjectTools:
 
   @Tool(
     Some("search_projects"),
-    description = Some(
+    Some(
       "Perform a search of Projects. Refer to `describe_search_projects` for tool description and usage"
     )
   )
   def searchProjects(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param("array of zero or more conditions") filter: Filter
+      @Param(ToolParams.filterDescription) filter: Filter
   ): String =
     filterRequest[ProjectsResponse]("kases/filters/results", filter, pagination).toJson
 
   @Tool(
     Some("list_boards"),
-    description = Some(
+    Some(
       "List Boards for Projects, with optional searching by name"
     )
   )
@@ -64,7 +64,7 @@ object ProjectTools:
 
   @Tool(
     Some("list_stages"),
-    description = Some(
+    Some(
       "List Stages across all Project Boards. To list Stages on a specific Board, use `list_stages_by_board_id`"
     )
   )
@@ -75,7 +75,7 @@ object ProjectTools:
 
   @Tool(
     Some("list_stages_by_board_id"),
-    description = Some(
+    Some(
       "List Stages associated with a Project Board"
     )
   )

@@ -26,7 +26,7 @@ object TagTools:
 
   @Tool(
     Some("list_contact_tags"),
-    description = Some("List Tags defined for Contacts")
+    Some("List Tags defined for Contacts")
   )
   def listContactTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
@@ -35,7 +35,7 @@ object TagTools:
 
   @Tool(
     Some("list_opportunity_tags"),
-    description = Some("List Tags defined for Opportunities")
+    Some("List Tags defined for Opportunities")
   )
   def listOpportunityTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
@@ -44,7 +44,7 @@ object TagTools:
 
   @Tool(
     Some("list_project_tags"),
-    description = Some("List Tags defined for Projects")
+    Some("List Tags defined for Projects")
   )
   def listProjectTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
