@@ -34,7 +34,8 @@ final case class OpportunityValue(
 
 final case class Pipeline(
     id: Long,
-    name: String
+    name: String,
+    openMilestoneCount: Option[Long]
 ) derives JsonDecoder,
       JsonEncoder
 

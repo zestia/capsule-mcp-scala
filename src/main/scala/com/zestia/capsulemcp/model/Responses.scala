@@ -30,11 +30,21 @@ case class ProjectsResponse(kases: List[Project], meta: Meta)
     derives JsonDecoder,
       JsonEncoder
 
-case class FieldDefinitionsResponse(definitions: List[FieldDefinition], meta: Meta)
-    derives JsonDecoder,
+case class FieldDefinitionsResponse(
+    definitions: List[FieldDefinition],
+    meta: Meta
+) derives JsonDecoder,
       JsonEncoder
 
 case class TagDefinitionsResponse(tags: List[Tag], meta: Meta)
+    derives JsonDecoder,
+      JsonEncoder
+
+case class PipelinesResponse(pipelines: List[Pipeline], meta: Meta)
+    derives JsonDecoder,
+      JsonEncoder
+
+case class MilestonesResponse(milestones: List[Milestone], meta: Meta)
     derives JsonDecoder,
       JsonEncoder
 

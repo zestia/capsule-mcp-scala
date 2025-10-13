@@ -18,10 +18,18 @@ package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{OpportunitiesResponse, Pagination}
+import com.zestia.capsulemcp.model.{
+  MilestonesResponse,
+  OpportunitiesResponse,
+  Pagination,
+  PipelinesResponse
+}
 import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
+import com.zestia.capsulemcp.service.CapsuleHttpClient.{
+  filterRequest,
+  getRequest
+}
 import zio.json.*
 
 object OpportunityTools:
@@ -51,6 +59,65 @@ object OpportunityTools:
     filterRequest[OpportunitiesResponse](
       "opportunities/filters/results",
       filter,
+      pagination
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("list_pipelines"),
+    description = Some(
+      "List Sales Pipelines for Opportunities, with optional searching by name"
+    )
+  )
+  def listPipelines(
+      @Param(
+        ToolParams.paginationDescription,
+        required = ToolParams.paginationRequired
+      ) pagination: Pagination,
+      @Param("Search Pipelines by name", required = false) query: Option[
+        String
+      ] = None
+  ): String = {
+    getRequest[PipelinesResponse](
+      "pipelines",
+      pagination,
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("list_milestones"),
+    description = Some(
+      "List Milestones across all Sales Pipelines. To list Milestones on a specific Pipeline, use `list_milestones_by_pipeline_id`"
+    )
+  )
+  def listMilestones(
+      @Param(
+        ToolParams.paginationDescription,
+        required = ToolParams.paginationRequired
+      ) pagination: Pagination
+  ): String = {
+    getRequest[MilestonesResponse](
+      "milestones/all",
+      pagination
+    ).toJson
+  }
+
+  @Tool(
+    name = Some("list_milestones_by_pipeline_id"),
+    description = Some(
+      "List Milestones associated with a Sales Pipeline"
+    )
+  )
+  def listMilestonesByPipelineId(
+      @Param(
+        ToolParams.paginationDescription,
+        required = ToolParams.paginationRequired
+      ) pagination: Pagination,
+      @Param("Sales Pipeline ID", required = true) pipelineId: Long
+  ): String = {
+    getRequest[MilestonesResponse](
+      s"pipelines/$pipelineId/milestones",
       pagination
     ).toJson
   }
