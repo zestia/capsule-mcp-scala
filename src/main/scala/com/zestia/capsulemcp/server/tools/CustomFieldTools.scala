@@ -25,50 +25,32 @@ import zio.json.*
 object CustomFieldTools:
 
   @Tool(
-    name = Some("list_contact_custom_fields"),
+    Some("list_contact_custom_fields"),
     description = Some("List Custom Fields defined for Contacts")
   )
   def listContactCustomFields(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionsResponse](
-      "parties/fields/definitions",
-      pagination
-    ).toJson
+    getRequest[FieldDefinitionsResponse]("parties/fields/definitions", pagination).toJson
 
   @Tool(
-    name = Some("list_opportunity_custom_fields"),
+    Some("list_opportunity_custom_fields"),
     description = Some(
       "List Custom Fields defined for Opportunities"
     )
   )
   def listOpportunityCustomFields(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionsResponse](
-      "opportunities/fields/definitions",
-      pagination
-    ).toJson
+    getRequest[FieldDefinitionsResponse]("opportunities/fields/definitions", pagination).toJson
 
   @Tool(
-    name = Some("list_project_custom_fields"),
+    Some("list_project_custom_fields"),
     description = Some(
       "List Custom Fields defined for Projects"
     )
   )
   def listProjectCustomFields(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionsResponse](
-      "kases/fields/definitions",
-      pagination
-    ).toJson
+    getRequest[FieldDefinitionsResponse]("kases/fields/definitions", pagination).toJson

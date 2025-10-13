@@ -25,47 +25,28 @@ import zio.json.*
 object TagTools:
 
   @Tool(
-    name = Some("list_contact_tags"),
+    Some("list_contact_tags"),
     description = Some("List Tags defined for Contacts")
   )
   def listContactTags(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      )
-      pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionsResponse](
-      "parties/tags",
-      pagination
-    ).toJson
+    getRequest[TagDefinitionsResponse]("parties/tags", pagination).toJson
 
   @Tool(
-    name = Some("list_opportunity_tags"),
+    Some("list_opportunity_tags"),
     description = Some("List Tags defined for Opportunities")
   )
   def listOpportunityTags(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionsResponse](
-      "opportunities/tags",
-      pagination
-    ).toJson
+    getRequest[TagDefinitionsResponse]("opportunities/tags", pagination).toJson
 
   @Tool(
-    name = Some("list_project_tags"),
+    Some("list_project_tags"),
     description = Some("List Tags defined for Projects")
   )
   def listProjectTags(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionsResponse](
-      "kases/tags",
-      pagination
-    ).toJson
+    getRequest[TagDefinitionsResponse]("kases/tags", pagination).toJson

@@ -1,7 +1,8 @@
+name := "capsule-mcp-scala"
+
 ThisBuild / version := "0.0.1"
 ThisBuild / scalaVersion := "3.7.2"
 ThisBuild / javacOptions ++= Seq("--release", "17")
-ThisBuild / name := "capsule-mcp-scala"
 ThisBuild / organization := "com.zestia"
 ThisBuild / organizationName := "Zestia Ltd"
 ThisBuild / startYear := Some(2025)

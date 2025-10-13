@@ -32,7 +32,7 @@ class FileLogger(className: String):
 
   private def log(level: String, msg: String): Unit =
     val timestamp = Instant.now().toString // ISO-8601 UTC timestamp
-    val line = s"$timestamp $level [${className}] $msg\n"
+    val line = s"$timestamp $level [$className] $msg\n"
     Files.write(
       logPath,
       line.getBytes(StandardCharsets.UTF_8),

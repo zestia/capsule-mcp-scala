@@ -18,17 +18,11 @@ package com.zestia.capsulemcp.model
 
 import zio.json.*
 
-case class ContactsResponse(parties: List[Party], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class ContactsResponse(parties: List[Party], meta: Meta) derives JsonDecoder, JsonEncoder
 
-case class OpportunitiesResponse(opportunities: List[Opportunity], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class OpportunitiesResponse(opportunities: List[Opportunity], meta: Meta) derives JsonDecoder, JsonEncoder
 
-case class ProjectsResponse(kases: List[Project], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class ProjectsResponse(kases: List[Project], meta: Meta) derives JsonDecoder, JsonEncoder
 
 case class FieldDefinitionsResponse(
     definitions: List[FieldDefinition],
@@ -36,25 +30,17 @@ case class FieldDefinitionsResponse(
 ) derives JsonDecoder,
       JsonEncoder
 
-case class TagDefinitionsResponse(tags: List[Tag], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class TagDefinitionsResponse(tags: List[Tag], meta: Meta) derives JsonDecoder, JsonEncoder
 
-case class PipelinesResponse(pipelines: List[Pipeline], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class PipelinesResponse(pipelines: List[Pipeline], meta: Meta) derives JsonDecoder, JsonEncoder
 
-case class MilestonesResponse(milestones: List[Milestone], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class MilestonesResponse(milestones: List[Milestone], meta: Meta) derives JsonDecoder, JsonEncoder
 
-case class BoardsResponse(boards: List[Board], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class LostReasonsResponse(lostReasons: List[Milestone], meta: Meta) derives JsonDecoder, JsonEncoder
 
-case class StagesResponse(stages: List[Stage], meta: Meta)
-    derives JsonDecoder,
-      JsonEncoder
+case class BoardsResponse(boards: List[Board], meta: Meta) derives JsonDecoder, JsonEncoder
+
+case class StagesResponse(stages: List[Stage], meta: Meta) derives JsonDecoder, JsonEncoder
 
 case class UsersResponse(users: List[User]) derives JsonDecoder, JsonEncoder
 

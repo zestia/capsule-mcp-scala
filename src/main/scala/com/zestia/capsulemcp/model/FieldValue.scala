@@ -82,8 +82,7 @@ object FieldValue:
                   id = id,
                   value = l,
                   definition = definition
-                )
-              )
+                ))
               .toRight("value is not a valid number")
           case Json.Bool(b) =>
             Right(

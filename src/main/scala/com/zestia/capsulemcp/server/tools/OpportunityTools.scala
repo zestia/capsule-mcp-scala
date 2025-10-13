@@ -19,6 +19,7 @@ package com.zestia.capsulemcp.server.tools
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.model.{
+  LostReasonsResponse,
   MilestonesResponse,
   OpportunitiesResponse,
   Pagination,
@@ -26,16 +27,13 @@ import com.zestia.capsulemcp.model.{
 }
 import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.{
-  filterRequest,
-  getRequest
-}
+import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
 import zio.json.*
 
 object OpportunityTools:
 
   @Tool(
-    name = Some("describe_search_opportunities"),
+    Some("describe_search_opportunities"),
     description = Some(
       "Returns a detailed description of how to use the `search_opportunities` tool."
     )
@@ -44,80 +42,66 @@ object OpportunityTools:
     searchToolDescription("opportunities", opportunityFieldReference)
 
   @Tool(
-    name = Some("search_opportunities"),
+    Some("search_opportunities"),
     description = Some(
       "Perform a search of Opportunities. Refer to `describe_search_opportunities` for tool description and usage"
     )
   )
   def searchOpportunities(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("array of zero or more conditions") filter: Filter
-  ): String = {
-    filterRequest[OpportunitiesResponse](
-      "opportunities/filters/results",
-      filter,
-      pagination
-    ).toJson
-  }
+  ): String =
+    filterRequest[OpportunitiesResponse]("opportunities/filters/results", filter, pagination).toJson
 
   @Tool(
-    name = Some("list_pipelines"),
+    Some("list_pipelines"),
     description = Some(
       "List Sales Pipelines for Opportunities, with optional searching by name"
     )
   )
   def listPipelines(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination,
-      @Param("Search Pipelines by name", required = false) query: Option[
-        String
-      ] = None
-  ): String = {
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
+      @Param("Search Pipelines by name", required = false) query: Option[String] = None
+  ): String =
     getRequest[PipelinesResponse](
       "pipelines",
       pagination,
-      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
-    ).toJson
-  }
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson
 
   @Tool(
-    name = Some("list_milestones"),
+    Some("list_milestones"),
     description = Some(
       "List Milestones across all Sales Pipelines. To list Milestones on a specific Pipeline, use `list_milestones_by_pipeline_id`"
     )
   )
   def listMilestones(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination
-  ): String = {
-    getRequest[MilestonesResponse](
-      "milestones/all",
-      pagination
-    ).toJson
-  }
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+  ): String =
+    getRequest[MilestonesResponse]("milestones/all", pagination).toJson
 
   @Tool(
-    name = Some("list_milestones_by_pipeline_id"),
+    Some("list_milestones_by_pipeline_id"),
     description = Some(
       "List Milestones associated with a Sales Pipeline"
     )
   )
   def listMilestonesByPipelineId(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Sales Pipeline ID", required = true) pipelineId: Long
-  ): String = {
-    getRequest[MilestonesResponse](
-      s"pipelines/$pipelineId/milestones",
-      pagination
-    ).toJson
-  }
+  ): String =
+    getRequest[MilestonesResponse](s"pipelines/$pipelineId/milestones", pagination).toJson
+
+  @Tool(
+    Some("list_lost_reasons"),
+    description = Some(
+      "List Lost Reasons, with optional searching by name. Lost Reasons allow users to record the reason an Opportunity is lost"
+    )
+  )
+  def listLostReasons(
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
+      @Param("Search Lost Reasons by name", required = false) query: Option[String] = None
+  ): String =
+    getRequest[LostReasonsResponse](
+      "lostreasons",
+      pagination,
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson

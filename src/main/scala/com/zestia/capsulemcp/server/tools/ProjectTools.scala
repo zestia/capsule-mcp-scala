@@ -18,24 +18,16 @@ package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{
-  BoardsResponse,
-  Pagination,
-  ProjectsResponse,
-  StagesResponse
-}
+import com.zestia.capsulemcp.model.{BoardsResponse, Pagination, ProjectsResponse, StagesResponse}
 import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.{
-  filterRequest,
-  getRequest
-}
+import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
 import zio.json.*
 
 object ProjectTools:
 
   @Tool(
-    name = Some("describe_search_projects"),
+    Some("describe_search_projects"),
     description = Some(
       "Returns a detailed description of how to use the `search_projects` tool."
     )
@@ -44,80 +36,51 @@ object ProjectTools:
     searchToolDescription("projects", projectFieldReference)
 
   @Tool(
-    name = Some("search_projects"),
+    Some("search_projects"),
     description = Some(
       "Perform a search of Projects. Refer to `describe_search_projects` for tool description and usage"
     )
   )
   def searchProjects(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("array of zero or more conditions") filter: Filter
-  ): String = {
-    filterRequest[ProjectsResponse](
-      "kases/filters/results",
-      filter,
-      pagination
-    ).toJson
-  }
+  ): String =
+    filterRequest[ProjectsResponse]("kases/filters/results", filter, pagination).toJson
 
   @Tool(
-    name = Some("list_boards"),
+    Some("list_boards"),
     description = Some(
       "List Boards for Projects, with optional searching by name"
     )
   )
   def listBoards(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination,
-      @Param("Search Boards by name", required = false) query: Option[
-        String
-      ] = None
-  ): String = {
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
+      @Param("Search Boards by name", required = false) query: Option[String] = None
+  ): String =
     getRequest[BoardsResponse](
       "boards",
       pagination,
-      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
-    ).toJson
-  }
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson
 
   @Tool(
-    name = Some("list_stages"),
+    Some("list_stages"),
     description = Some(
       "List Stages across all Project Boards. To list Stages on a specific Board, use `list_stages_by_board_id`"
     )
   )
   def listStages(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination
-  ): String = {
-    getRequest[StagesResponse](
-      "stages",
-      pagination
-    ).toJson
-  }
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+  ): String =
+    getRequest[StagesResponse]("stages", pagination).toJson
 
   @Tool(
-    name = Some("list_stages_by_board_id"),
+    Some("list_stages_by_board_id"),
     description = Some(
       "List Stages associated with a Project Board"
     )
   )
   def listStagesByBoardId(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination,
-      @Param(" Board ID", required = true) boardId: Long
-  ): String = {
-    getRequest[StagesResponse](
-      s"boards/$boardId/stages",
-      pagination
-    ).toJson
-  }
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
+      @Param("Board ID", required = true) boardId: Long
+  ): String =
+    getRequest[StagesResponse](s"boards/$boardId/stages", pagination).toJson

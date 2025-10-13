@@ -25,9 +25,9 @@ import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
 import zio.json.*
 
 object ContactTools:
-  
+
   @Tool(
-    name = Some("describe_search_contacts"),
+    Some("describe_search_contacts"),
     description = Some(
       "Returns a detailed description of how to use the `search_contacts` tool."
     )
@@ -36,21 +36,13 @@ object ContactTools:
     searchToolDescription("contacts", contactFieldReference)
 
   @Tool(
-    name = Some("search_contacts"),
+    Some("search_contacts"),
     description = Some(
       "Perform a search of contacts. Refer to `describe_search_contacts` for tool description and usage"
     )
   )
   def searchContacts(
-      @Param(
-        ToolParams.paginationDescription,
-        required = ToolParams.paginationRequired
-      ) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("array of zero or more conditions") filter: Filter
-  ): String = {
-    filterRequest[ContactsResponse](
-      "parties/filters/results",
-      filter,
-      pagination
-    ).toJson
-  }
+  ): String =
+    filterRequest[ContactsResponse]("parties/filters/results", filter, pagination).toJson

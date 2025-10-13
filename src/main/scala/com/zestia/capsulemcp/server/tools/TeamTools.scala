@@ -24,11 +24,8 @@ import zio.json.*
 object TeamTools:
 
   @Tool(
-    name = Some("list_teams"),
+    Some("list_teams"),
     description = Some("List Teams and team members")
   )
   def listTeams(): String =
-    getRequest[TeamsResponse](
-      "teams",
-      embed = List("memberships")
-    ).toJson
+    getRequest[TeamsResponse]("teams", embed = List("memberships")).toJson

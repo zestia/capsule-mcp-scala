@@ -24,10 +24,8 @@ import zio.json.*
 object UserTools:
 
   @Tool(
-    name = Some("list_users"),
+    Some("list_users"),
     description = Some("List Users")
   )
   def listUsers(): String =
-    getRequest[UsersResponse](
-      "users"
-    ).toJson
+    getRequest[UsersResponse]("users").toJson

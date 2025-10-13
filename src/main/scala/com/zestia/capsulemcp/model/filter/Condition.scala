@@ -19,14 +19,14 @@ package com.zestia.capsulemcp.model.filter
 import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
 import sttp.tapir.Schema.annotations.description
 import zio.json.ast.Json
-import zio.json.{JsonDecoder, JsonEncoder, jsonHint}
+import zio.json.{jsonHint, JsonDecoder, JsonEncoder}
 
 import scala.util.Try
 
 // TODO: bring back operator enum so it is in the schema and AI makes less mistakes
 // TODO: use enum for field names so they are in the schema and AI makes less mistakes
 // TODO: rename 'SimpleConditions' etc
-// TODO: do I still need @jsonHints 
+// TODO: do I still need @jsonHints
 
 // Jackson-style deserialisation needed for the under the hood @Param binders in fast-mcp-scala
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
@@ -112,8 +112,7 @@ object SimpleCondition:
                   field = fieldName,
                   operator = operator,
                   value = l
-                )
-              )
+                ))
               .toRight("value is not a valid number")
           case Json.Bool(b) =>
             Right(
