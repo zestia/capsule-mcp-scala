@@ -30,7 +30,7 @@ object ToolDescriptions:
       |  - `value`: the value to match against
       |  - `type`: the type of the field value
       |
-      |You can also optionally apply pagination:
+      |You can also customise pagination to fetch more pages of results:
       |  - `page`: the page number to return (default: 1)
       |  - `perPage`: the number of results per page (default: 100)
       |
@@ -145,4 +145,45 @@ object ToolDescriptions:
       |closedOn,Date
       |expectedCloseOn,Date
       |custom:{customFieldId},"Boolean, date, number, string"
+      |""".stripMargin
+
+  val calculateValueOfOpportunitiesToolDescription: String =
+    s"""
+      |Returns the calculated Total Value (based off 100% success) and Projected Value (based off Opportunity probability) of Opportunities, converted to the current user's currency.
+      |The `filter` parameter allows you to filter the Opportunities to calculate the values for, e.g. by Sales Pipeline, assignee or Milestone.
+      |You can include as many conditions as needed. The values returned are converted into the current user's currency.
+      |
+      |Each `condition` must specify:
+      |  - `field`: the contact field to filter on (e.g. `name`, `id`, `addedOn`)
+      |  - `operator`: the type of comparison (e.g. `is`, `is not`, `contains`, `is after`)
+      |  - `value`: the value to match against
+      |  - `type`: the type of the field value
+      |
+      |Example:
+      |{
+      |  "conditions": [
+      |    {
+      |      "fieldName": "name",
+      |      "operator": "contains",
+      |      "fieldValue": "John"
+      |    }
+      |  ]
+      |}
+      |
+      |Operator Reference:
+      |Operator,Supported Field Types,Type of Value
+      |is,"Boolean, date, number, string",As field type
+      |is not,"Boolean, date, number, string",As field type
+      |starts with,String,String
+      |ends with,String,String
+      |contains,String,String
+      |is greater than,Number,Number
+      |is less than,Number,Number
+      |is after,Date,Date
+      |is before,Date,Date
+      |is older than,Date,"Number (of days)"
+      |is within last,Date,"Number (of days)"
+      |is within next,Date,"Number (of days)"
+      |
+      |$opportunityFieldReference
       |""".stripMargin

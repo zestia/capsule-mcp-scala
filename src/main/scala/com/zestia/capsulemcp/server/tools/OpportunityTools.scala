@@ -22,6 +22,7 @@ import com.zestia.capsulemcp.model.{
   LostReasonsResponse,
   MilestonesResponse,
   OpportunitiesResponse,
+  OpportunityValueResponse,
   Pagination,
   PipelinesResponse
 }
@@ -52,6 +53,27 @@ object OpportunityTools:
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =
     filterRequest[OpportunitiesResponse]("opportunities/filters/results", filter, pagination).toJson
+
+  @Tool(
+    Some("describe_calculate_value_of_opportunities"),
+    Some(
+      "Returns a detailed description of how to use the `calculate_value_of_opportunities` tool."
+    )
+  )
+  def describeCalculateValueOfOpportunities(): String = calculateValueOfOpportunitiesToolDescription
+
+  @Tool(
+    Some("calculate_value_of_opportunities"),
+    Some(
+      "Get Total & Projected Values for Opportunities. See `describe_calculate_value_of_opportunities` for usage"
+    )
+  )
+  def calculateValueOfOpportunities(
+      @Param(
+        ToolParams.filterDescription
+      ) filter: Filter
+  ): String =
+    filterRequest[OpportunityValueResponse]("opportunities/value", filter).toJson
 
   @Tool(
     Some("list_pipelines"),

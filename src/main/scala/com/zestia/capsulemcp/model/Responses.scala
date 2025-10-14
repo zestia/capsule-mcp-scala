@@ -22,6 +22,11 @@ case class ContactsResponse(parties: List[Party], meta: Meta) derives JsonDecode
 
 case class OpportunitiesResponse(opportunities: List[Opportunity], meta: Meta) derives JsonDecoder, JsonEncoder
 
+case class OpportunityValueMeta(currency: String) derives JsonDecoder, JsonEncoder
+case class OpportunityValueResponse(totalValue: Double, projectedValue: Double, meta: OpportunityValueMeta)
+    derives JsonDecoder,
+      JsonEncoder
+
 case class ProjectsResponse(kases: List[Project], meta: Meta) derives JsonDecoder, JsonEncoder
 
 case class FieldDefinitionsResponse(
