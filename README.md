@@ -153,14 +153,14 @@ The [MCP Inspector](https://modelcontextprotocol.io/legacy/tools/inspector) is a
 See [developer documentation](https://github.com/modelcontextprotocol/inspector?tab=readme-ov-file#running-the-inspector) for installation.
 
 ```bash
-npx @modelcontextprotocol/inspector scala-cli . -e CAPSULE_API_TOKEN=yourToken -e CAPSULE_BASE_URL=https://api.capsule.run
+scala-cli clean . && npx @modelcontextprotocol/inspector scala-cli . -e CAPSULE_API_TOKEN=yourToken -e CAPSULE_BASE_URL=https://api.capsule.run
 ```
 
 #### Scala CLI
 Running your MCP server via your AI Assistant or the MCP Inspector starts up the server via `scala-cli` in the background.
 To run this manually instead, use:
 ```bash
-scala-cli run . -e CAPSULE_API_TOKEN=yourToken
+scala-cli clean . && scala-cli run . -e CAPSULE_API_TOKEN=yourToken
 ```
 
 You can optionally pass `-e CAPSULE_BASE_URL=baseUrl` to test against a specific instance of Capsule.
