@@ -17,7 +17,7 @@
 package com.zestia.capsulemcp.service
 
 import com.zestia.capsulemcp.model.*
-import com.zestia.capsulemcp.model.filter.{Filter, FilterRequestWrapper, SimpleCondition}
+import com.zestia.capsulemcp.model.filter.{Filter, FilterRequestWrapper, Condition}
 import sttp.client3.*
 import sttp.client3.ziojson.*
 import sttp.model.HeaderNames

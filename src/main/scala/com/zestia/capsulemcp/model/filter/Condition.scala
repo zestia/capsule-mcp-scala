@@ -23,51 +23,46 @@ import zio.json.{jsonHint, JsonDecoder, JsonEncoder}
 
 import scala.util.Try
 
-// TODO: bring back operator enum so it is in the schema and AI makes less mistakes
-// TODO: use enum for field names so they are in the schema and AI makes less mistakes
-// TODO: rename 'SimpleConditions' etc
-// TODO: do I still need @jsonHints
-
 // Jackson-style deserialisation needed for the under the hood @Param binders in fast-mcp-scala
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(
   Array(
     new JsonSubTypes.Type(
-      value = classOf[SimpleStringCondition],
+      value = classOf[StringCondition],
       name = "string"
     ),
     new JsonSubTypes.Type(
-      value = classOf[SimpleNumberCondition],
+      value = classOf[NumberCondition],
       name = "number"
     ),
     new JsonSubTypes.Type(
-      value = classOf[SimpleDateCondition],
+      value = classOf[DateCondition],
       name = "date"
     ),
     new JsonSubTypes.Type(
-      value = classOf[SimpleBooleanCondition],
+      value = classOf[BooleanCondition],
       name = "boolean"
     )
   )
 )
-sealed trait SimpleCondition:
+sealed trait Condition:
   @description("the name of the field to filter on") val field: String
   @description(
     "the operator to use (must be valid for the field type)"
   ) val operator: String
   @description("the type of the field value") val `type`: String
 
-object SimpleCondition:
-  implicit val encoder: JsonEncoder[SimpleCondition] =
+object Condition:
+  implicit val encoder: JsonEncoder[Condition] =
     JsonEncoder[Json].contramap { condition =>
       val valueFieldValue = condition match {
-        case SimpleStringCondition(_, _, _, value) =>
+        case StringCondition(_, _, _, value) =>
           Json.Str(value)
-        case SimpleDateCondition(_, _, _, value) =>
+        case DateCondition(_, _, _, value) =>
           Json.Str(value)
-        case SimpleNumberCondition(_, _, _, value) =>
+        case NumberCondition(_, _, _, value) =>
           Json.Num(value)
-        case SimpleBooleanCondition(_, _, _, value) =>
+        case BooleanCondition(_, _, _, value) =>
           Json.Bool(value)
       }
 
@@ -78,7 +73,7 @@ object SimpleCondition:
       )
     }
   // Custom decoder to automatically convert value to the correct type
-  implicit val decoder: JsonDecoder[SimpleCondition] =
+  implicit val decoder: JsonDecoder[Condition] =
     JsonDecoder[Json.Obj].mapOrFail { jsonObj =>
       for {
         fieldNameJson <- jsonObj.get("field").toRight("missing field")
@@ -99,7 +94,7 @@ object SimpleCondition:
         condition <- fieldValueJson match
           case Json.Str(s) =>
             Right(
-              SimpleStringCondition(
+              StringCondition(
                 field = fieldName,
                 operator = operator,
                 value = s
@@ -108,7 +103,7 @@ object SimpleCondition:
           case Json.Num(n) =>
             Try(n.longValue()).toOption
               .map(l =>
-                SimpleNumberCondition(
+                NumberCondition(
                   field = fieldName,
                   operator = operator,
                   value = l
@@ -116,7 +111,7 @@ object SimpleCondition:
               .toRight("value is not a valid number")
           case Json.Bool(b) =>
             Right(
-              SimpleBooleanCondition(
+              BooleanCondition(
                 field = fieldName,
                 operator = operator,
                 value = b
@@ -127,41 +122,41 @@ object SimpleCondition:
     }
 
 @jsonHint("string")
-final case class SimpleStringCondition(
+final case class StringCondition(
     `type`: String = "string",
     field: String,
     operator: String,
     @description(
       "the field value to filter on (must be valid for the field type)"
     ) value: String
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
+) extends Condition derives JsonDecoder, JsonEncoder
 
 @jsonHint("date")
-final case class SimpleDateCondition(
+final case class DateCondition(
     `type`: String = "date",
     field: String,
     operator: String,
     @description(
       "the field value to filter on (must be valid for the field type)"
     ) value: String
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
+) extends Condition derives JsonDecoder, JsonEncoder
 
 @jsonHint("number")
-final case class SimpleNumberCondition(
+final case class NumberCondition(
     `type`: String = "number",
     field: String,
     operator: String,
     @description(
       "the field value to filter on (must be valid for the field type)"
     ) value: Long
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
+) extends Condition derives JsonDecoder, JsonEncoder
 
 @jsonHint("boolean")
-final case class SimpleBooleanCondition(
+final case class BooleanCondition(
     `type`: String = "boolean",
     field: String,
     operator: String,
     @description(
       "the field value to filter on (must be valid for the field type)"
     ) value: Boolean
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
+) extends Condition derives JsonDecoder, JsonEncoder

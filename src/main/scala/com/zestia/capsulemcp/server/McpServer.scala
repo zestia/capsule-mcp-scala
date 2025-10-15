@@ -20,7 +20,7 @@ import com.tjclp.fastmcp.macros.RegistrationMacro.*
 import com.tjclp.fastmcp.server.FastMcpServer
 import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.model.filter.*
-import com.zestia.capsulemcp.model.filter.SimpleCondition.*
+import com.zestia.capsulemcp.model.filter.Condition.*
 import com.zestia.capsulemcp.server.tools.*
 import com.zestia.capsulemcp.service.CapsuleHttpClient.*
 import com.zestia.capsulemcp.util.{FileLogger, FileLogging}
