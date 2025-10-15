@@ -26,7 +26,7 @@ final case class Task(
     completedBy: Option[String],
     completedAt: Option[String],
     party: Option[Party],
-    kase: Option[Product],
+    kase: Option[Project],
     opportunity: Option[Opportunity],
     owner: Option[User],
     daysAfter: Option[Int],
