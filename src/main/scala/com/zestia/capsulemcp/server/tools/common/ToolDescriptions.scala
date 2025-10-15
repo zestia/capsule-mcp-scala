@@ -147,6 +147,16 @@ object ToolDescriptions:
       |custom:{customFieldId},"Boolean, date, number, string"
       |""".stripMargin
 
+  val activityFieldReference: String =
+    """
+      |Activity Search Field Reference:
+      |Field,Type
+      |user,Number
+      |taskCategory,Number
+      |activityType,Number
+      |addedOn,Date
+      |""".stripMargin
+
   val calculateValueOfOpportunitiesToolDescription: String =
     s"""
       |Returns the calculated Total Value (based off 100% success) and Projected Value (based off Opportunity probability) of Opportunities, converted to the current user's currency.
