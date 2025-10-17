@@ -18,8 +18,9 @@ package com.zestia.capsulemcp.model
 
 import zio.json.*
 
-// --- Models specific to Party ------------------------------------------
-
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/address"</a>
+ */
 final case class Address(
     id: Long,
     `type`: Option[String],
@@ -31,6 +32,9 @@ final case class Address(
 ) derives JsonDecoder,
       JsonEncoder
 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/email_address"</a>
+ */
 final case class EmailAddress(
     id: Long,
     `type`: Option[String],
@@ -38,6 +42,9 @@ final case class EmailAddress(
 ) derives JsonDecoder,
       JsonEncoder
 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/phone_number"</a>
+ */
 final case class PhoneNumber(
     id: Long,
     `type`: Option[String],
@@ -45,6 +52,9 @@ final case class PhoneNumber(
 ) derives JsonDecoder,
       JsonEncoder
 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/website"</a>
+ */
 final case class Website(
     id: Long,
     service: String,
@@ -57,8 +67,9 @@ final case class Website(
 enum PartyType:
   case person, organisation
 
-// --- Party -------------------------------------------------------------
-
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/party"</a>
+ */
 @jsonDiscriminator("type")
 sealed trait Party derives JsonDecoder, JsonEncoder:
   val id: Long

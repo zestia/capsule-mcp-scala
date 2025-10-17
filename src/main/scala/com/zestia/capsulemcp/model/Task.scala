@@ -1,4 +1,4 @@
-package com.zestia.capsulemcp.model.filter
+package com.zestia.capsulemcp.model
 
 import com.zestia.capsulemcp.model.*
 import zio.json.{JsonDecoder, JsonEncoder}
@@ -33,7 +33,7 @@ final case class Task(
     taskDelayRule: Option[String],
     taskDayDelayRule: Option[String],
     nextTask: Option[Task],
-    active: Option[String],
+    active: Option[Boolean],
     repeatDetails: Option[TaskRepeat],
     hasTrack: Option[Boolean]
 ) derives JsonDecoder,

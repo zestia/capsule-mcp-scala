@@ -23,6 +23,9 @@ import zio.json.*
 
 object TeamTools:
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Team#listTeams"</a>
+   */
   @Tool(
     Some("list_teams"),
     Some("List Teams and team members")

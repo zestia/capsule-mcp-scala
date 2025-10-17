@@ -26,6 +26,9 @@ import zio.json.*
 
 object ContactTools:
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
+   */
   @Tool(
     Some("describe_search_contacts"),
     Some(
@@ -35,6 +38,9 @@ object ContactTools:
   def describeSearchContacts(): String =
     searchToolDescription("contacts", contactFieldReference)
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
+   */
   @Tool(
     Some("search_contacts"),
     Some(

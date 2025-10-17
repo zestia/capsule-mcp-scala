@@ -18,6 +18,9 @@ package com.zestia.capsulemcp.model
 
 import zio.json.*
 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/field_definition"</a>
+ */
 case class FieldDefinition(
     id: Long,
     name: String,

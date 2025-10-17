@@ -33,6 +33,9 @@ import zio.json.*
 
 object OpportunityTools:
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
+   */
   @Tool(
     Some("describe_search_opportunities"),
     Some(
@@ -42,6 +45,9 @@ object OpportunityTools:
   def describeSearchOpportunities(): String =
     searchToolDescription("opportunities", opportunityFieldReference)
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
+   */
   @Tool(
     Some("search_opportunities"),
     Some(
@@ -75,6 +81,9 @@ object OpportunityTools:
   ): String =
     filterRequest[OpportunityValueResponse]("opportunities/value", filter).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Pipeline#listPipelines"</a>
+   */
   @Tool(
     Some("list_pipelines"),
     Some(
@@ -90,6 +99,9 @@ object OpportunityTools:
       pagination,
       queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestones"</a>
+   */
   @Tool(
     Some("list_milestones"),
     Some(
@@ -101,6 +113,9 @@ object OpportunityTools:
   ): String =
     getRequest[MilestonesResponse]("milestones/all", pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestonesForPipeline"</a>
+   */
   @Tool(
     Some("list_milestones_by_pipeline_id"),
     Some(
@@ -113,6 +128,9 @@ object OpportunityTools:
   ): String =
     getRequest[MilestonesResponse](s"pipelines/$pipelineId/milestones", pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Lost_Reason#listLostReasons"</a>
+   */
   @Tool(
     Some("list_lost_reasons"),
     Some(

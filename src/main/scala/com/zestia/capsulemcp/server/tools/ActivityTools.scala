@@ -45,4 +45,8 @@ object ActivityTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =
-    filterRequest[ActivitiesResponse]("activity/filters/results", filter, pagination).toJson
+    filterRequest[ActivitiesResponse](
+      "activities/filters/results",
+      filter,
+      pagination,
+      embed = List("entry", "task")).toJson

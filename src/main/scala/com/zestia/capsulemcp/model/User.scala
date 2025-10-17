@@ -18,9 +18,15 @@ package com.zestia.capsulemcp.model
 
 import zio.json.*
 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/user"</a>
+ */
 case class User(
     id: Long,
     username: String,
-    name: String
+    name: String,
+    currency: Option[String],
+    locale: Option[String],
+    party: Option[Party]
 ) derives JsonDecoder,
       JsonEncoder

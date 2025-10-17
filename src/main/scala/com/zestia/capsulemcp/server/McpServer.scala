@@ -49,6 +49,7 @@ object McpServer extends ZIOAppDefault with FileLogging:
           .scanAnnotations[TagTools.type]
           .scanAnnotations[UserTools.type]
           .scanAnnotations[TeamTools.type]
+          .scanAnnotations[ActivityTools.type]
       }
       // Run the server
       _ <- server.runStdio()

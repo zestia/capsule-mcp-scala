@@ -1,12 +1,9 @@
 package com.zestia.capsulemcp.model
 
-import com.zestia.capsulemcp.model.filter.Task
 import zio.json.{JsonDecoder, JsonEncoder}
 
-import java.util as ju
-
 /**
- * https://developer.capsulecrm.com/v2/models/nested_activity_type
+ * See <a href="https://developer.capsulecrm.com/v2/models/nested_activity_type"</a>
  */
 final case class ActivityType(
     id: Long,
@@ -25,13 +22,13 @@ final case class Activity(
     kase: Option[Project],
     opportunity: Option[Opportunity],
     parties: Option[List[Party]],
-    deleted: Boolean,
-    isRestricted: Boolean
+    deleted: Option[Boolean],
+    isRestricted: Option[Boolean]
 ) derives JsonDecoder,
       JsonEncoder
 
 /**
- * https://developer.capsulecrm.com/v2/models/entry
+ * See <a href="https://developer.capsulecrm.com/v2/models/entry"</a>
  */
 final case class Entry(
     id: Long,
@@ -53,7 +50,7 @@ final case class Entry(
       JsonEncoder
 
 /**
- * [https://developer.capsulecrm.com/v2/models/participant
+ * See <a href="https://developer.capsulecrm.com/v2/models/participant"</a>
  */
 final case class Attachment(
     id: Long,
@@ -65,7 +62,7 @@ final case class Attachment(
       JsonEncoder
 
 /**
- * [https://developer.capsulecrm.com/v2/models/participant
+ * See <a href="https://developer.capsulecrm.com/v2/models/participant"</a>
  */
 final case class Participant(
     id: Long,

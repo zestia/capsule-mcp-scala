@@ -24,6 +24,9 @@ import zio.json.*
 
 object TagTools:
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
+   */
   @Tool(
     Some("list_contact_tags"),
     Some("List Tags defined for Contacts")
@@ -33,6 +36,9 @@ object TagTools:
   ): String =
     getRequest[TagDefinitionsResponse]("parties/tags", pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
+   */
   @Tool(
     Some("list_opportunity_tags"),
     Some("List Tags defined for Opportunities")
@@ -42,6 +48,9 @@ object TagTools:
   ): String =
     getRequest[TagDefinitionsResponse]("opportunities/tags", pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
+   */
   @Tool(
     Some("list_project_tags"),
     Some("List Tags defined for Projects")

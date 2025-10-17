@@ -20,6 +20,9 @@ import com.zestia.capsulemcp.model.*
 import sttp.tapir.Schema.annotations.*
 import zio.json.*
 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/filter"</a>
+ */
 case class Filter(conditions: List[Condition]) derives JsonDecoder, JsonEncoder
 
 case class FilterRequestWrapper(filter: Filter) derives JsonDecoder, JsonEncoder

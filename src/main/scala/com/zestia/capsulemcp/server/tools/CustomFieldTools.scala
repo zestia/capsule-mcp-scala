@@ -24,6 +24,9 @@ import zio.json.*
 
 object CustomFieldTools:
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
+   */
   @Tool(
     Some("list_contact_custom_fields"),
     Some("List Custom Fields defined for Contacts")
@@ -33,6 +36,9 @@ object CustomFieldTools:
   ): String =
     getRequest[FieldDefinitionsResponse]("parties/fields/definitions", pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
+   */
   @Tool(
     Some("list_opportunity_custom_fields"),
     Some(
@@ -44,6 +50,9 @@ object CustomFieldTools:
   ): String =
     getRequest[FieldDefinitionsResponse]("opportunities/fields/definitions", pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
+   */
   @Tool(
     Some("list_project_custom_fields"),
     Some(

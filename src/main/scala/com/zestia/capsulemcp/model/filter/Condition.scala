@@ -23,7 +23,11 @@ import zio.json.{jsonHint, JsonDecoder, JsonEncoder}
 
 import scala.util.Try
 
-// Jackson-style deserialisation needed for the under the hood @Param binders in fast-mcp-scala
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/reference/filters"</a>
+ */
+
+// Jackson-style deserialisation needed for under the hood @Param binders in fast-mcp-scala
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(
   Array(

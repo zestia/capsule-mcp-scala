@@ -21,7 +21,7 @@ object ToolDescriptions:
       entityType: String,
       entityFieldReference: String
   ): String = s"""
-      |The `search_$entityType` tool allows you to filter contacts using a list of structured conditions. You can include as
+      |The `search_$entityType` tool allows you to filter $entityType using a list of structured conditions. You can include as
       |many conditions as needed.
       |
       |Each `condition` must specify:

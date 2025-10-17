@@ -26,6 +26,9 @@ import zio.json.*
 
 object ProjectTools:
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
+   */
   @Tool(
     Some("describe_search_projects"),
     Some(
@@ -35,6 +38,9 @@ object ProjectTools:
   def describeSearchProjects(): String =
     searchToolDescription("projects", projectFieldReference)
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
+   */
   @Tool(
     Some("search_projects"),
     Some(
@@ -47,6 +53,9 @@ object ProjectTools:
   ): String =
     filterRequest[ProjectsResponse]("kases/filters/results", filter, pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Board#listBoards"</a>
+   */
   @Tool(
     Some("list_boards"),
     Some(
@@ -62,6 +71,9 @@ object ProjectTools:
       pagination,
       queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStages"</a>
+   */
   @Tool(
     Some("list_stages"),
     Some(
@@ -73,6 +85,9 @@ object ProjectTools:
   ): String =
     getRequest[StagesResponse]("stages", pagination).toJson
 
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStagesForBoard"</a>
+   */
   @Tool(
     Some("list_stages_by_board_id"),
     Some(

@@ -18,8 +18,9 @@ package com.zestia.capsulemcp.model
 
 import zio.json.*
 
-// --- Models specific to Project ----------------------------------------
-
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/board"</a>
+ */
 final case class Board(
     id: Long,
     name: String,
@@ -27,6 +28,9 @@ final case class Board(
 ) derives JsonDecoder,
       JsonEncoder
 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/nested_stage"</a>
+ */
 final case class Stage(
     id: Long,
     name: String,
@@ -35,8 +39,9 @@ final case class Stage(
 ) derives JsonDecoder,
       JsonEncoder
 
-// --- Project -----------------------------------------------------------
-
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/project"</a>
+ */
 final case class Project(
     id: Long,
     party: Party,
