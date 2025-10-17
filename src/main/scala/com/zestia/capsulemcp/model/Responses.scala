@@ -51,6 +51,6 @@ case class UsersResponse(users: List[User]) derives JsonDecoder, JsonEncoder
 
 case class TeamsResponse(teams: List[Team]) derives JsonDecoder, JsonEncoder
 
-case class ActivitiesResponse(activities: List[Activity]) derives JsonDecoder, JsonEncoder
+case class ActivitiesResponse(activities: List[Activity], meta: Meta) derives JsonDecoder, JsonEncoder
 
 
