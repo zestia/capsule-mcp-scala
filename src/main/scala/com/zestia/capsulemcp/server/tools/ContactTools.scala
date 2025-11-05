@@ -31,9 +31,7 @@ object ContactTools:
    */
   @Tool(
     Some("describe_search_contacts"),
-    Some(
-      "Returns a detailed description of how to use the `search_contacts` tool."
-    )
+    Some("Returns a detailed description of how to use the `search_contacts` tool.")
   )
   def describeSearchContacts(): String =
     searchToolDescription("contacts", contactFieldReference)
@@ -43,9 +41,7 @@ object ContactTools:
    */
   @Tool(
     Some("search_contacts"),
-    Some(
-      "Perform a search of contacts. Refer to `describe_search_contacts` for tool description and usage"
-    )
+    Some("Perform a search of contacts. Refer to `describe_search_contacts` for tool description and usage")
   )
   def searchContacts(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,

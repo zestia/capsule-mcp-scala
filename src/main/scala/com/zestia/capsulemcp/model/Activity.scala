@@ -5,11 +5,7 @@ import zio.json.{JsonDecoder, JsonEncoder}
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/nested_activity_type"</a>
  */
-final case class ActivityType(
-    id: Long,
-    name: String
-) derives JsonDecoder,
-      JsonEncoder
+final case class ActivityType(id: Long, name: String) derives JsonDecoder, JsonEncoder
 
 final case class Activity(
     id: Long,
@@ -64,10 +60,6 @@ final case class Attachment(
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/participant"</a>
  */
-final case class Participant(
-    id: Long,
-    address: Option[String],
-    name: Option[String],
-    role: Option[String]
-) derives JsonDecoder,
+final case class Participant(id: Long, address: Option[String], name: Option[String], role: Option[String])
+    derives JsonDecoder,
       JsonEncoder

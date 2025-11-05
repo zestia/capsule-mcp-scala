@@ -29,6 +29,7 @@ import zio.*
 import zio.json.*
 
 object McpServer extends ZIOAppDefault with FileLogging:
+
   override def run =
     for
       _ <- ZIO.attempt {
@@ -49,8 +50,10 @@ object McpServer extends ZIOAppDefault with FileLogging:
           .scanAnnotations[TagTools.type]
           .scanAnnotations[UserTools.type]
           .scanAnnotations[TeamTools.type]
-          .scanAnnotations[ActivityTools.type]
       }
+      // Manually register tools with custom schemas
+      _ <- TaskTools.registerManualTools(server)
+      _ <- ActivityTools.registerManualTools(server)
       // Run the server
       _ <- server.runStdio()
     yield ()

@@ -26,9 +26,6 @@ object UserTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/User#listUsers"</a>
    */
-  @Tool(
-    Some("list_users"),
-    Some("List Users")
-  )
+  @Tool(Some("list_users"), Some("List Users"))
   def listUsers(): String =
     getRequest[UsersResponse]("users").toJson

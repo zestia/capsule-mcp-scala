@@ -21,22 +21,13 @@ import zio.json.*
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/board"</a>
  */
-final case class Board(
-    id: Long,
-    name: String,
-    description: Option[String]
-) derives JsonDecoder,
-      JsonEncoder
+final case class Board(id: Long, name: String, description: Option[String]) derives JsonDecoder, JsonEncoder
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/nested_stage"</a>
  */
-final case class Stage(
-    id: Long,
-    name: String,
-    description: Option[String],
-    board: Option[Board]
-) derives JsonDecoder,
+final case class Stage(id: Long, name: String, description: Option[String], board: Option[Board])
+    derives JsonDecoder,
       JsonEncoder
 
 /**
@@ -44,7 +35,7 @@ final case class Stage(
  */
 final case class Project(
     id: Long,
-    party: Party,
+    party: Option[Party],
     name: String,
     description: Option[String],
     owner: Option[User],

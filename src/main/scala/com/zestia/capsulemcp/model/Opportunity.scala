@@ -21,30 +21,17 @@ import zio.json.*
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/nested_lost_reason"</a>
  */
-final case class LostReason(
-    id: Long,
-    name: String
-) derives JsonDecoder,
-      JsonEncoder
+final case class LostReason(id: Long, name: String) derives JsonDecoder, JsonEncoder
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/opportunity_value"</a>
  */
-final case class OpportunityValue(
-    amount: Option[Double],
-    currency: Option[String]
-) derives JsonDecoder,
-      JsonEncoder
+final case class OpportunityValue(amount: Option[Double], currency: Option[String]) derives JsonDecoder, JsonEncoder
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/pipeline"</a>
  */
-final case class Pipeline(
-    id: Long,
-    name: String,
-    openMilestoneCount: Option[Long]
-) derives JsonDecoder,
-      JsonEncoder
+final case class Pipeline(id: Long, name: String, openMilestoneCount: Option[Long]) derives JsonDecoder, JsonEncoder
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/milestone"</a>

@@ -38,9 +38,7 @@ object OpportunityTools:
    */
   @Tool(
     Some("describe_search_opportunities"),
-    Some(
-      "Returns a detailed description of how to use the `search_opportunities` tool."
-    )
+    Some("Returns a detailed description of how to use the `search_opportunities` tool.")
   )
   def describeSearchOpportunities(): String =
     searchToolDescription("opportunities", opportunityFieldReference)
@@ -50,9 +48,7 @@ object OpportunityTools:
    */
   @Tool(
     Some("search_opportunities"),
-    Some(
-      "Perform a search of Opportunities. Refer to `describe_search_opportunities` for tool description and usage"
-    )
+    Some("Perform a search of Opportunities. Refer to `describe_search_opportunities` for tool description and usage")
   )
   def searchOpportunities(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
@@ -62,34 +58,21 @@ object OpportunityTools:
 
   @Tool(
     Some("describe_calculate_value_of_opportunities"),
-    Some(
-      "Returns a detailed description of how to use the `calculate_value_of_opportunities` tool."
-    )
+    Some("Returns a detailed description of how to use the `calculate_value_of_opportunities` tool.")
   )
   def describeCalculateValueOfOpportunities(): String = calculateValueOfOpportunitiesToolDescription
 
   @Tool(
     Some("calculate_value_of_opportunities"),
-    Some(
-      "Get Total & Projected Values for Opportunities. See `describe_calculate_value_of_opportunities` for usage"
-    )
+    Some("Get Total & Projected Values for Opportunities. See `describe_calculate_value_of_opportunities` for usage")
   )
-  def calculateValueOfOpportunities(
-      @Param(
-        ToolParams.filterDescription
-      ) filter: Filter
-  ): String =
+  def calculateValueOfOpportunities(@Param(ToolParams.filterDescription) filter: Filter): String =
     filterRequest[OpportunityValueResponse]("opportunities/value", filter).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Pipeline#listPipelines"</a>
    */
-  @Tool(
-    Some("list_pipelines"),
-    Some(
-      "List Sales Pipelines for Opportunities, with optional searching by name"
-    )
-  )
+  @Tool(Some("list_pipelines"), Some("List Sales Pipelines for Opportunities, with optional searching by name"))
   def listPipelines(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Search Pipelines by name", required = false) query: Option[String] = None
@@ -97,7 +80,8 @@ object OpportunityTools:
     getRequest[PipelinesResponse](
       "pipelines",
       pagination,
-      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
+    ).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestones"</a>
@@ -116,12 +100,7 @@ object OpportunityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestonesForPipeline"</a>
    */
-  @Tool(
-    Some("list_milestones_by_pipeline_id"),
-    Some(
-      "List Milestones associated with a Sales Pipeline"
-    )
-  )
+  @Tool(Some("list_milestones_by_pipeline_id"), Some("List Milestones associated with a Sales Pipeline"))
   def listMilestonesByPipelineId(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Sales Pipeline ID", required = true) pipelineId: Long
@@ -144,4 +123,5 @@ object OpportunityTools:
     getRequest[LostReasonsResponse](
       "lostreasons",
       pagination,
-      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
+    ).toJson

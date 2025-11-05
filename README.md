@@ -139,7 +139,7 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 | **Users**           | `list_users`                                | Retrieves all Users                                                                       | ❌                       |
 | **Teams**           | `list_teams`                                | Retrieves all Teams and Team members                                                      | ❌                       |
 | **Tasks**           | Coming soon                                 |                                                                                           | ✅                       |
-| **Activity**        | Coming soon                                 |                                                                                           | ✅                       |
+| **Activity**        | `search_activity`                           | Retrieve Activity with basic filtering ability                                            | ✅                       |
 
 ## Development
 

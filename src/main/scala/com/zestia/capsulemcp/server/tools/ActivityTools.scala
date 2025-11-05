@@ -16,37 +16,80 @@
 
 package com.zestia.capsulemcp.server.tools
 
-import com.tjclp.fastmcp.core.{Param, Tool}
-import com.zestia.capsulemcp.model.filter.Filter
+import com.tjclp.fastmcp.macros.MapToFunctionMacro
+import com.tjclp.fastmcp.server.FastMcpServer
 import com.zestia.capsulemcp.model.*
-import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
-import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
+import com.zestia.capsulemcp.model.filter.Filter
+import com.zestia.capsulemcp.server.tools.common.{FilterOperators, SchemaBuilders, SchemaTypes}
+import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
+import zio.*
 import zio.json.*
 
-object ActivityTools:
+object ActivityTools extends HasManualTools:
 
-  @Tool(
-    Some("describe_search_activity"),
-    Some(
-      "Returns a detailed description of how to use the `search_activities` tool."
+  /**
+   * Define the valid filter fields for activities
+   */
+  private val activityFilterFields = List(
+    SchemaTypes.FilterField(
+      name = "user",
+      valueType = "number",
+      operators = FilterOperators.numberOperators,
+      description = "User ID"
+    ),
+    SchemaTypes.FilterField(
+      name = "taskCategory",
+      valueType = "number",
+      operators = FilterOperators.numberOperators,
+      description = "Task Category ID"
+    ),
+    SchemaTypes.FilterField(
+      name = "activityType",
+      valueType = "number",
+      operators = FilterOperators.numberOperators,
+      description = "Activity Type ID"
+    ),
+    SchemaTypes.FilterField(
+      name = "addedOn",
+      valueType = "date",
+      operators = FilterOperators.dateOperators,
+      description = "Date the activity was added (format: YYYY-MM-DD)"
     )
   )
-  def describeSearchActivities(): String =
-    searchToolDescription("activities", activityFieldReference)
 
-  @Tool(
-    Some("search_activities"),
-    Some(
-      "Perform a search of Activities. Refer to `describe_search_activities` for tool description and usage"
+  /**
+   * Schema for the search_activities tool
+   */
+  private val searchActivitiesSchema: String = SchemaBuilders.objectSchema(
+    Map(
+      "pagination" -> SchemaTypes.pagination,
+      "filter" -> SchemaTypes.filterWithFields(activityFilterFields)
     )
   )
-  def searchActivities(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param(ToolParams.filterDescription) filter: Filter
+
+  private def searchActivities(
+      pagination: Option[Pagination],
+      filter: Filter
   ): String =
     filterRequest[ActivitiesResponse](
       "activities/filters/results",
       filter,
-      pagination,
-      embed = List("entry", "task")).toJson
+      pagination.getOrElse(Pagination()),
+      embed = List("entry", "task")
+    ).toJson
+
+  /**
+   * Register manual tools that need custom schemas
+   */
+  override def registerManualTools(server: FastMcpServer): ZIO[Any, Throwable, Unit] =
+    for
+      // Register search_activities
+      _ <- {
+        server.tool(
+          name = "search_activities",
+          description = Some("Perform a search of Activities"),
+          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(searchActivities)(args)),
+          inputSchema = Right(searchActivitiesSchema)
+        )
+      }
+    yield ()

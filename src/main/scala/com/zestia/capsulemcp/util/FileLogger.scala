@@ -33,23 +33,13 @@ class FileLogger(className: String):
   private def log(level: String, msg: String): Unit =
     val timestamp = Instant.now().toString // ISO-8601 UTC timestamp
     val line = s"$timestamp $level [$className] $msg\n"
-    Files.write(
-      logPath,
-      line.getBytes(StandardCharsets.UTF_8),
-      StandardOpenOption.CREATE,
-      StandardOpenOption.APPEND
-    )
+    Files.write(logPath, line.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.APPEND)
 
 object FileLogger:
   private val logPath = Paths.get("capsule-mcp.log")
 
   // Initialise log file on startup (create or truncate)
   def init(): Unit =
-    Files.write(
-      logPath,
-      Array.emptyByteArray,
-      StandardOpenOption.CREATE,
-      StandardOpenOption.TRUNCATE_EXISTING
-    )
+    Files.write(logPath, Array.emptyByteArray, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
 
   def apply(name: String): FileLogger = new FileLogger(name)

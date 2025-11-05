@@ -27,10 +27,7 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
-  @Tool(
-    Some("list_contact_tags"),
-    Some("List Tags defined for Contacts")
-  )
+  @Tool(Some("list_contact_tags"), Some("List Tags defined for Contacts"))
   def listContactTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
@@ -39,10 +36,7 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
-  @Tool(
-    Some("list_opportunity_tags"),
-    Some("List Tags defined for Opportunities")
-  )
+  @Tool(Some("list_opportunity_tags"), Some("List Tags defined for Opportunities"))
   def listOpportunityTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
@@ -51,10 +45,7 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
-  @Tool(
-    Some("list_project_tags"),
-    Some("List Tags defined for Projects")
-  )
+  @Tool(Some("list_project_tags"), Some("List Tags defined for Projects"))
   def listProjectTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =

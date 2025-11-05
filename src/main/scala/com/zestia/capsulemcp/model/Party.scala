@@ -35,33 +35,18 @@ final case class Address(
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/email_address"</a>
  */
-final case class EmailAddress(
-    id: Long,
-    `type`: Option[String],
-    address: String
-) derives JsonDecoder,
-      JsonEncoder
+final case class EmailAddress(id: Long, `type`: Option[String], address: String) derives JsonDecoder, JsonEncoder
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/phone_number"</a>
  */
-final case class PhoneNumber(
-    id: Long,
-    `type`: Option[String],
-    number: String
-) derives JsonDecoder,
-      JsonEncoder
+final case class PhoneNumber(id: Long, `type`: Option[String], number: String) derives JsonDecoder, JsonEncoder
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/website"</a>
  */
-final case class Website(
-    id: Long,
-    service: String,
-    address: String,
-    `type`: Option[String],
-    url: String
-) derives JsonDecoder,
+final case class Website(id: Long, service: String, address: String, `type`: Option[String], url: String)
+    derives JsonDecoder,
       JsonEncoder
 
 enum PartyType:

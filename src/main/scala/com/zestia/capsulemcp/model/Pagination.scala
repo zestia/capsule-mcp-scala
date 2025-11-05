@@ -21,9 +21,7 @@ import zio.json.{JsonDecoder, JsonEncoder}
 
 case class Pagination(
     @description("Page number") @default(Pagination.DEFAULT_PAGE) page: Int = Pagination.DEFAULT_PAGE,
-    @description("Page size") @default(
-      Pagination.DEFAULT_PER_PAGE
-    ) perPage: Int = Pagination.DEFAULT_PER_PAGE
+    @description("Page size") @default(Pagination.DEFAULT_PER_PAGE) perPage: Int = Pagination.DEFAULT_PER_PAGE
 ) derives JsonDecoder,
       JsonEncoder:
 

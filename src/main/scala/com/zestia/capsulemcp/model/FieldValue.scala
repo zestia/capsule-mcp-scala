@@ -25,6 +25,7 @@ sealed trait FieldValue:
   val definition: FieldDefinition
 
 object FieldValue:
+
   implicit val encoder: JsonEncoder[FieldValue] =
     JsonEncoder[Json].contramap { fieldValue =>
       val valueFieldValue = fieldValue match {
@@ -41,11 +42,7 @@ object FieldValue:
           case Right(j) => j
           case Left(err) => Json.Null
 
-      Json.Obj(
-        "id" -> Json.Num(fieldValue.id),
-        "value" -> valueFieldValue,
-        "definition" -> defJson
-      )
+      Json.Obj("id" -> Json.Num(fieldValue.id), "value" -> valueFieldValue, "definition" -> defJson)
     }
 
   implicit val decoder: JsonDecoder[FieldValue] =
@@ -68,48 +65,25 @@ object FieldValue:
 
         fieldValue <- valueJson match
           case Json.Str(s) =>
-            Right(
-              FieldValueString(
-                id = id,
-                value = s,
-                definition = definition
-              )
-            )
+            Right(FieldValueString(id = id, value = s, definition = definition))
           case Json.Num(n) =>
             Try(n.longValue()).toOption
-              .map(l =>
-                FieldValueNumber(
-                  id = id,
-                  value = l,
-                  definition = definition
-                ))
+              .map(l => FieldValueNumber(id = id, value = l, definition = definition))
               .toRight("value is not a valid number")
           case Json.Bool(b) =>
-            Right(
-              FieldValueBoolean(
-                id = id,
-                value = b,
-                definition = definition
-              )
-            )
+            Right(FieldValueBoolean(id = id, value = b, definition = definition))
           case _ => Left("unsupported value type")
       } yield fieldValue
     }
 
-final case class FieldValueString(
-    id: Long,
-    value: String,
-    definition: FieldDefinition
-) extends FieldValue derives JsonDecoder, JsonEncoder
+final case class FieldValueString(id: Long, value: String, definition: FieldDefinition) extends FieldValue
+    derives JsonDecoder,
+      JsonEncoder
 
-final case class FieldValueNumber(
-    id: Long,
-    value: Long,
-    definition: FieldDefinition
-) extends FieldValue derives JsonDecoder, JsonEncoder
+final case class FieldValueNumber(id: Long, value: Long, definition: FieldDefinition) extends FieldValue
+    derives JsonDecoder,
+      JsonEncoder
 
-final case class FieldValueBoolean(
-    id: Long,
-    value: Boolean,
-    definition: FieldDefinition
-) extends FieldValue derives JsonDecoder, JsonEncoder
+final case class FieldValueBoolean(id: Long, value: Boolean, definition: FieldDefinition) extends FieldValue
+    derives JsonDecoder,
+      JsonEncoder

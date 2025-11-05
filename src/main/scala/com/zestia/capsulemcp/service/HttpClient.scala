@@ -42,25 +42,17 @@ abstract class HttpClient extends FileLogging:
     val url = s"$baseUrl/$path"
     uri"$url?$params"
 
-  protected def handleResponseAsJson[T: {JsonDecoder, ClassTag}](
-      response: Identity[Response[String]]
-  ): T =
+  protected def handleResponseAsJson[T: {JsonDecoder, ClassTag}](response: Identity[Response[String]]): T =
     if (response.code.isSuccess) {
       response.body.fromJson[T] match {
         case Right(result) =>
           logger.info(s"Response: ${response.code}")
           result
         case Left(error) =>
-          logger.error(
-            s"Could not deserialize response to JSON: $error\nBody: ${response.body}"
-          )
+          logger.error(s"Could not deserialize response to JSON: $error\nBody: ${response.body}")
           throw new RuntimeException(s"Error reading response: $error")
       }
     } else {
-      logger.error(
-        s"API request failed: ${response.code}\nBody: ${response.body}"
-      )
-      throw new RuntimeException(
-        s"API error: ${response.code}\nBody: ${response.body}"
-      )
+      logger.error(s"API request failed: ${response.code}\nBody: ${response.body}")
+      throw new RuntimeException(s"API error: ${response.code}\nBody: ${response.body}")
     }

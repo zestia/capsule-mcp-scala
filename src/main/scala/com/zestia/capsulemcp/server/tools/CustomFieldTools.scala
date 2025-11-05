@@ -27,10 +27,7 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
-  @Tool(
-    Some("list_contact_custom_fields"),
-    Some("List Custom Fields defined for Contacts")
-  )
+  @Tool(Some("list_contact_custom_fields"), Some("List Custom Fields defined for Contacts"))
   def listContactCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
@@ -39,12 +36,7 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
-  @Tool(
-    Some("list_opportunity_custom_fields"),
-    Some(
-      "List Custom Fields defined for Opportunities"
-    )
-  )
+  @Tool(Some("list_opportunity_custom_fields"), Some("List Custom Fields defined for Opportunities"))
   def listOpportunityCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
@@ -53,12 +45,7 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
-  @Tool(
-    Some("list_project_custom_fields"),
-    Some(
-      "List Custom Fields defined for Projects"
-    )
-  )
+  @Tool(Some("list_project_custom_fields"), Some("List Custom Fields defined for Projects"))
   def listProjectCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =

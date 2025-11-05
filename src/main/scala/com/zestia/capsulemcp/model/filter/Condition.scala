@@ -31,32 +31,19 @@ import scala.util.Try
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(
   Array(
-    new JsonSubTypes.Type(
-      value = classOf[StringCondition],
-      name = "string"
-    ),
-    new JsonSubTypes.Type(
-      value = classOf[NumberCondition],
-      name = "number"
-    ),
-    new JsonSubTypes.Type(
-      value = classOf[DateCondition],
-      name = "date"
-    ),
-    new JsonSubTypes.Type(
-      value = classOf[BooleanCondition],
-      name = "boolean"
-    )
+    new JsonSubTypes.Type(value = classOf[StringCondition], name = "string"),
+    new JsonSubTypes.Type(value = classOf[NumberCondition], name = "number"),
+    new JsonSubTypes.Type(value = classOf[DateCondition], name = "date"),
+    new JsonSubTypes.Type(value = classOf[BooleanCondition], name = "boolean")
   )
 )
 sealed trait Condition:
   @description("the name of the field to filter on") val field: String
-  @description(
-    "the operator to use (must be valid for the field type)"
-  ) val operator: String
+  @description("the operator to use (must be valid for the field type)") val operator: String
   @description("the type of the field value") val `type`: String
 
 object Condition:
+
   implicit val encoder: JsonEncoder[Condition] =
     JsonEncoder[Json].contramap { condition =>
       val valueFieldValue = condition match {
@@ -76,6 +63,7 @@ object Condition:
         "value" -> valueFieldValue
       )
     }
+
   // Custom decoder to automatically convert value to the correct type
   implicit val decoder: JsonDecoder[Condition] =
     JsonDecoder[Json.Obj].mapOrFail { jsonObj =>
@@ -97,30 +85,13 @@ object Condition:
 
         condition <- fieldValueJson match
           case Json.Str(s) =>
-            Right(
-              StringCondition(
-                field = fieldName,
-                operator = operator,
-                value = s
-              )
-            )
+            Right(StringCondition(field = fieldName, operator = operator, value = s))
           case Json.Num(n) =>
             Try(n.longValue()).toOption
-              .map(l =>
-                NumberCondition(
-                  field = fieldName,
-                  operator = operator,
-                  value = l
-                ))
+              .map(l => NumberCondition(field = fieldName, operator = operator, value = l))
               .toRight("value is not a valid number")
           case Json.Bool(b) =>
-            Right(
-              BooleanCondition(
-                field = fieldName,
-                operator = operator,
-                value = b
-              )
-            )
+            Right(BooleanCondition(field = fieldName, operator = operator, value = b))
           case _ => Left("unsupported value type")
       } yield condition
     }
@@ -130,9 +101,7 @@ final case class StringCondition(
     `type`: String = "string",
     field: String,
     operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: String
+    @description("the field value to filter on (must be valid for the field type)") value: String
 ) extends Condition derives JsonDecoder, JsonEncoder
 
 @jsonHint("date")
@@ -140,9 +109,7 @@ final case class DateCondition(
     `type`: String = "date",
     field: String,
     operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: String
+    @description("the field value to filter on (must be valid for the field type)") value: String
 ) extends Condition derives JsonDecoder, JsonEncoder
 
 @jsonHint("number")
@@ -150,9 +117,7 @@ final case class NumberCondition(
     `type`: String = "number",
     field: String,
     operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: Long
+    @description("the field value to filter on (must be valid for the field type)") value: Long
 ) extends Condition derives JsonDecoder, JsonEncoder
 
 @jsonHint("boolean")
@@ -160,7 +125,5 @@ final case class BooleanCondition(
     `type`: String = "boolean",
     field: String,
     operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: Boolean
+    @description("the field value to filter on (must be valid for the field type)") value: Boolean
 ) extends Condition derives JsonDecoder, JsonEncoder

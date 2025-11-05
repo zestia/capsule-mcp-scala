@@ -17,10 +17,8 @@
 package com.zestia.capsulemcp.server.tools.common
 
 object ToolDescriptions:
-  def searchToolDescription(
-      entityType: String,
-      entityFieldReference: String
-  ): String = s"""
+
+  def searchToolDescription(entityType: String, entityFieldReference: String): String = s"""
       |The `search_$entityType` tool allows you to filter $entityType using a list of structured conditions. You can include as
       |many conditions as needed.
       |
@@ -145,16 +143,6 @@ object ToolDescriptions:
       |closedOn,Date
       |expectedCloseOn,Date
       |custom:{customFieldId},"Boolean, date, number, string"
-      |""".stripMargin
-
-  val activityFieldReference: String =
-    """
-      |Activity Search Field Reference:
-      |Field,Type
-      |user,Number
-      |taskCategory,Number
-      |activityType,Number
-      |addedOn,Date
       |""".stripMargin
 
   val calculateValueOfOpportunitiesToolDescription: String =

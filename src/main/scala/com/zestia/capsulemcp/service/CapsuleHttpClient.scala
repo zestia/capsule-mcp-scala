@@ -17,7 +17,7 @@
 package com.zestia.capsulemcp.service
 
 import com.zestia.capsulemcp.model.*
-import com.zestia.capsulemcp.model.filter.{Filter, FilterRequestWrapper, Condition}
+import com.zestia.capsulemcp.model.filter.{Filter, FilterRequestWrapper}
 import sttp.client3.*
 import sttp.client3.ziojson.*
 import sttp.model.HeaderNames
@@ -28,6 +28,7 @@ import scala.reflect.ClassTag
 object CapsuleHttpClient extends HttpClient:
   private val DEFAULT_CAPSULE_HOST = "https://api.capsulecrm.com"
   private val API_TOKEN: String = sys.env("CAPSULE_API_TOKEN")
+
   private def requestWithBearer: RequestT[Empty, Either[String, String], Any] =
     baseRequest
       .header(HeaderNames.Authorization, s"Bearer $API_TOKEN")

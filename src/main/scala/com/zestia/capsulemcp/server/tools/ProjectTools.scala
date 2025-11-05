@@ -31,9 +31,7 @@ object ProjectTools:
    */
   @Tool(
     Some("describe_search_projects"),
-    Some(
-      "Returns a detailed description of how to use the `search_projects` tool."
-    )
+    Some("Returns a detailed description of how to use the `search_projects` tool.")
   )
   def describeSearchProjects(): String =
     searchToolDescription("projects", projectFieldReference)
@@ -43,9 +41,7 @@ object ProjectTools:
    */
   @Tool(
     Some("search_projects"),
-    Some(
-      "Perform a search of Projects. Refer to `describe_search_projects` for tool description and usage"
-    )
+    Some("Perform a search of Projects. Refer to `describe_search_projects` for tool description and usage")
   )
   def searchProjects(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
@@ -56,12 +52,7 @@ object ProjectTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Board#listBoards"</a>
    */
-  @Tool(
-    Some("list_boards"),
-    Some(
-      "List Boards for Projects, with optional searching by name"
-    )
-  )
+  @Tool(Some("list_boards"), Some("List Boards for Projects, with optional searching by name"))
   def listBoards(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Search Boards by name", required = false) query: Option[String] = None
@@ -69,16 +60,15 @@ object ProjectTools:
     getRequest[BoardsResponse](
       "boards",
       pagination,
-      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))).toJson
+      queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
+    ).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStages"</a>
    */
   @Tool(
     Some("list_stages"),
-    Some(
-      "List Stages across all Project Boards. To list Stages on a specific Board, use `list_stages_by_board_id`"
-    )
+    Some("List Stages across all Project Boards. To list Stages on a specific Board, use `list_stages_by_board_id`")
   )
   def listStages(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
@@ -88,12 +78,7 @@ object ProjectTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStagesForBoard"</a>
    */
-  @Tool(
-    Some("list_stages_by_board_id"),
-    Some(
-      "List Stages associated with a Project Board"
-    )
-  )
+  @Tool(Some("list_stages_by_board_id"), Some("List Stages associated with a Project Board"))
   def listStagesByBoardId(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Board ID", required = true) boardId: Long

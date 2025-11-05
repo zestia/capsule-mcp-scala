@@ -23,17 +23,14 @@ case class ContactsResponse(parties: List[Party], meta: Meta) derives JsonDecode
 case class OpportunitiesResponse(opportunities: List[Opportunity], meta: Meta) derives JsonDecoder, JsonEncoder
 
 case class OpportunityValueMeta(currency: String) derives JsonDecoder, JsonEncoder
+
 case class OpportunityValueResponse(totalValue: Double, projectedValue: Double, meta: OpportunityValueMeta)
     derives JsonDecoder,
       JsonEncoder
 
 case class ProjectsResponse(kases: List[Project], meta: Meta) derives JsonDecoder, JsonEncoder
 
-case class FieldDefinitionsResponse(
-    definitions: List[FieldDefinition],
-    meta: Meta
-) derives JsonDecoder,
-      JsonEncoder
+case class FieldDefinitionsResponse(definitions: List[FieldDefinition], meta: Meta) derives JsonDecoder, JsonEncoder
 
 case class TagDefinitionsResponse(tags: List[Tag], meta: Meta) derives JsonDecoder, JsonEncoder
 
@@ -53,4 +50,4 @@ case class TeamsResponse(teams: List[Team]) derives JsonDecoder, JsonEncoder
 
 case class ActivitiesResponse(activities: List[Activity], meta: Meta) derives JsonDecoder, JsonEncoder
 
-
+case class TasksResponse(tasks: List[Task], meta: Meta) derives JsonDecoder, JsonEncoder
