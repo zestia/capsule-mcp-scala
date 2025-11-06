@@ -19,7 +19,7 @@ package com.zestia.capsulemcp.server.tools.common
 import com.zestia.capsulemcp.server.tools.common.FilterOperators.Operator.*
 
 /**
- * Filter operators for use in search/filter schemas
+ * Filter operators for use in list/filter schemas
  */
 object FilterOperators:
 

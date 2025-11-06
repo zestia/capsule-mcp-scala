@@ -58,16 +58,16 @@ object ActivityTools extends HasManualTools:
   )
 
   /**
-   * Schema for the search_activities tool
+   * Schema for the list_activities tool
    */
-  private val searchActivitiesSchema: String = SchemaBuilders.objectSchema(
+  private val listActivitiesSchema: String = SchemaBuilders.objectSchema(
     Map(
       "pagination" -> SchemaTypes.pagination,
       "filter" -> SchemaTypes.filterWithFields(activityFilterFields)
     )
   )
 
-  private def searchActivities(
+  private def listActivities(
       pagination: Option[Pagination],
       filter: Filter
   ): String =
@@ -83,13 +83,13 @@ object ActivityTools extends HasManualTools:
    */
   override def registerManualTools(server: FastMcpServer): ZIO[Any, Throwable, Unit] =
     for
-      // Register search_activities
+      // Register list_activities
       _ <- {
         server.tool(
-          name = "search_activities",
-          description = Some("Perform a search of Activities"),
-          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(searchActivities)(args)),
-          inputSchema = Right(searchActivitiesSchema)
+          name = "list_activities",
+          description = Some("Retrieve Activities with basic filtering ability"),
+          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listActivities)(args)),
+          inputSchema = Right(listActivitiesSchema)
         )
       }
     yield ()

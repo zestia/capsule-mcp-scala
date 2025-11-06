@@ -30,20 +30,22 @@ object ProjectTools:
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
   @Tool(
-    Some("describe_search_projects"),
-    Some("Returns a detailed description of how to use the `search_projects` tool.")
+    Some("describe_list_projects"),
+    Some("Returns a detailed description of how to use the `list_projects` tool.")
   )
   def describeSearchProjects(): String =
-    searchToolDescription("projects", projectFieldReference)
+    listToolDescription("projects", projectFieldReference)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
   @Tool(
-    Some("search_projects"),
-    Some("Perform a search of Projects. Refer to `describe_search_projects` for tool description and usage")
+    Some("list_projects"),
+    Some(
+      "List Projectes with comprehensive filtering ability. Refer to `describe_list_projects` for tool description and usage"
+    )
   )
-  def searchProjects(
+  def listProjects(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =

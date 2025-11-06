@@ -30,20 +30,22 @@ object ContactTools:
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
   @Tool(
-    Some("describe_search_contacts"),
-    Some("Returns a detailed description of how to use the `search_contacts` tool.")
+    Some("describe_list_contacts"),
+    Some("Returns a detailed description of how to use the `list_contacts` tool.")
   )
   def describeSearchContacts(): String =
-    searchToolDescription("contacts", contactFieldReference)
+    listToolDescription("contacts", contactFieldReference)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
   @Tool(
-    Some("search_contacts"),
-    Some("Perform a search of contacts. Refer to `describe_search_contacts` for tool description and usage")
+    Some("list_contacts"),
+    Some(
+      "List Contacts with comprehensive filtering ability. Refer to `describe_list_contacts` for tool description and usage"
+    )
   )
-  def searchContacts(
+  def listContacts(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =

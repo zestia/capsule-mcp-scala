@@ -115,14 +115,14 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 
 | **Data Type**       | **Tool Name**                               | **Description**                                                                           | **Paginated Response?** | 
 |---------------------|---------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------|
-| **Contacts**        | `describe_search_contacts`                  | Describes how to use the `search_contacts` Tool in detail                                 | ❌                       |
-|                     | `search_contacts`                           | Retrieve Contacts with comprehensive filtering ability                                    | ✅                       |
-| **Opportunities**   | `describe_search_opportunities`             | Describes how to use the `search_opportunities` Tool in detail                            | ❌                       |
-|                     | `search_opportunities`                      | Retrieve Opportunities with comprehensive filtering ability                               | ✅                       |
+| **Contacts**        | `describe_list_contacts`                    | Describes how to use the `list_contacts` Tool in detail                                   | ❌                       |
+|                     | `list_contacts`                             | Retrieve Contacts with comprehensive filtering ability                                    | ✅                       |
+| **Opportunities**   | `describe_list_opportunities`               | Describes how to use the `list_opportunities` Tool in detail                              | ❌                       |
+|                     | `list_opportunities`                        | Retrieve Opportunities with comprehensive filtering ability                               | ✅                       |
 |                     | `describe_calculate_value_of_opportunities` | Describes how to use the `calculate_value_of_opportunities` Tool in detail                | ❌                       |
 |                     | `calculate_value_of_opportunities`          | Retrieves Total & Projected Values for Opportunities with comprehensive filtering ability | ❌                       |
-| **Projects**        | `describe_search_projects`                  | Describes how to use the `search_projects` Tool in detail                                 | ❌                       |
-|                     | `search_projects`                           | Retrieve Projects with comprehensive filtering ability                                    | ✅                       |
+| **Projects**        | `describe_list_projects`                    | Describes how to use the `list_projects` Tool in detail                                   | ❌                       |
+|                     | `list_projects`                             | Retrieve Projects with comprehensive filtering ability                                    | ✅                       |
 | **Custom Fields**   | `list_contact_custom_fields`                | Retrieves Custom Fields defined for Contacts                                              | ✅                       |
 |                     | `list_opportunity_custom_fields`            | Retrieves Custom Fields defined for Opportunities                                         | ✅                       |
 |                     | `list_project_custom_fields`                | Retrieves Custom Fields defined for Projects                                              | ✅                       |
@@ -138,8 +138,9 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 |                     | `list_project_tags`                         | Retrieves Tags defined for Projects                                                       | ✅                       |
 | **Users**           | `list_users`                                | Retrieves all Users                                                                       | ❌                       |
 | **Teams**           | `list_teams`                                | Retrieves all Teams and Team members                                                      | ❌                       |
-| **Tasks**           | Coming soon                                 |                                                                                           | ✅                       |
-| **Activity**        | `search_activity`                           | Retrieve Activity with basic filtering ability                                            | ✅                       |
+| **Tasks**           | `list_tasks`                                | Retrieve Tasks with basic filtering ability                                               | ✅                       |
+| **Tracks**          | `list_tracks`                               | List tracks for a specific project, contact or opportunity.                               | ✅                       |
+| **Activity**        | `list_activity`                             | Retrieve Activity with basic filtering ability                                            | ✅                       |
 
 ## Development
 

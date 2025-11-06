@@ -37,20 +37,22 @@ object OpportunityTools:
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
   @Tool(
-    Some("describe_search_opportunities"),
-    Some("Returns a detailed description of how to use the `search_opportunities` tool.")
+    Some("describe_list_opportunities"),
+    Some("Returns a detailed description of how to use the `list_opportunities` tool.")
   )
   def describeSearchOpportunities(): String =
-    searchToolDescription("opportunities", opportunityFieldReference)
+    listToolDescription("opportunities", opportunityFieldReference)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
   @Tool(
-    Some("search_opportunities"),
-    Some("Perform a search of Opportunities. Refer to `describe_search_opportunities` for tool description and usage")
+    Some("list_opportunities"),
+    Some(
+      "List Opportunities with comprehensive filtering ability. Refer to `describe_list_opportunities` for tool description and usage"
+    )
   )
-  def searchOpportunities(
+  def listOpportunities(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =

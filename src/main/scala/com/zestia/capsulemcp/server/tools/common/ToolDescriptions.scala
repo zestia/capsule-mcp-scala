@@ -18,8 +18,8 @@ package com.zestia.capsulemcp.server.tools.common
 
 object ToolDescriptions:
 
-  def searchToolDescription(entityType: String, entityFieldReference: String): String = s"""
-      |The `search_$entityType` tool allows you to filter $entityType using a list of structured conditions. You can include as
+  def listToolDescription(entityType: String, entityFieldReference: String): String = s"""
+      |The `list_$entityType` tool allows you to filter $entityType using a list of structured conditions. You can include as
       |many conditions as needed.
       |
       |Each `condition` must specify:
