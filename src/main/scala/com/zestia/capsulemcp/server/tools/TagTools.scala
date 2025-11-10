@@ -24,6 +24,9 @@ import zio.json.*
 
 object TagTools:
 
+  private def listTagsForEntity(entityPath: String, pagination: Pagination): String =
+    getRequest[TagDefinitionListWrapper](s"$entityPath/tags", pagination).toJson
+
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
@@ -31,7 +34,7 @@ object TagTools:
   def listContactTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionListWrapper]("parties/tags", pagination).toJson
+    listTagsForEntity("parties", pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
@@ -40,7 +43,7 @@ object TagTools:
   def listOpportunityTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionListWrapper]("opportunities/tags", pagination).toJson
+    listTagsForEntity("opportunities", pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
@@ -49,4 +52,4 @@ object TagTools:
   def listProjectTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionListWrapper]("kases/tags", pagination).toJson
+    listTagsForEntity("kases", pagination)

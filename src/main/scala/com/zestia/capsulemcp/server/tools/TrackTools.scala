@@ -33,6 +33,9 @@ object TrackTools:
   ): String =
     getRequest[TrackWrapper](s"tracks/$id", embed = List("tasks")).toJson
 
+  private def listTracksForEntity(entityPath: String, entityId: Long, pagination: Pagination): String =
+    getRequest[TrackListWrapper](s"$entityPath/$entityId/tracks", pagination, embed = List("tasks")).toJson
+
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Track#listTrack"</a>
    */
@@ -41,7 +44,7 @@ object TrackTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Contact ID", required = true) contactId: Long
   ): String =
-    getRequest[TrackListWrapper](s"parties/$contactId/tracks", pagination, embed = List("tasks")).toJson
+    listTracksForEntity("parties", contactId, pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Track#listTrack"</a>
@@ -51,7 +54,7 @@ object TrackTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Opportunity ID", required = true) opportunityId: Long
   ): String =
-    getRequest[TrackListWrapper](s"opportunities/$opportunityId/tracks", pagination, embed = List("tasks")).toJson
+    listTracksForEntity("opportunities", opportunityId, pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Track#listTrack"</a>
@@ -61,4 +64,4 @@ object TrackTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Project ID", required = true) projectId: Long
   ): String =
-    getRequest[TrackListWrapper](s"kases/$projectId/tracks", pagination, embed = List("tasks")).toJson
+    listTracksForEntity("kases", projectId, pagination)

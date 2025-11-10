@@ -24,6 +24,9 @@ import zio.json.*
 
 object CustomFieldTools:
 
+  private def listCustomFieldsForEntity(entityPath: String, pagination: Pagination): String =
+    getRequest[FieldDefinitionListWrapper](s"$entityPath/fields/definitions", pagination).toJson
+
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
@@ -31,7 +34,7 @@ object CustomFieldTools:
   def listContactCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionListWrapper]("parties/fields/definitions", pagination).toJson
+    listCustomFieldsForEntity("parties", pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
@@ -40,7 +43,7 @@ object CustomFieldTools:
   def listOpportunityCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionListWrapper]("opportunities/fields/definitions", pagination).toJson
+    listCustomFieldsForEntity("opportunities", pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
@@ -49,4 +52,4 @@ object CustomFieldTools:
   def listProjectCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionListWrapper]("kases/fields/definitions", pagination).toJson
+    listCustomFieldsForEntity("kases", pagination)
