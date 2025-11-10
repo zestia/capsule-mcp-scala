@@ -18,7 +18,7 @@ package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{BoardsResponse, Pagination, ProjectsResponse, StagesResponse}
+import com.zestia.capsulemcp.model.{BoardListWrapper, Pagination, ProjectListWrapper, StageListWrapper}
 import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
@@ -49,7 +49,7 @@ object ProjectTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =
-    filterRequest[ProjectsResponse]("kases/filters/results", filter, pagination).toJson
+    filterRequest[ProjectListWrapper]("kases/filters/results", filter, pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Board#listBoards"</a>
@@ -59,7 +59,7 @@ object ProjectTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Search Boards by name", required = false) query: Option[String] = None
   ): String =
-    getRequest[BoardsResponse](
+    getRequest[BoardListWrapper](
       "boards",
       pagination,
       queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
@@ -75,7 +75,7 @@ object ProjectTools:
   def listStages(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[StagesResponse]("stages", pagination).toJson
+    getRequest[StageListWrapper]("stages", pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStagesForBoard"</a>
@@ -85,4 +85,4 @@ object ProjectTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Board ID", required = true) boardId: Long
   ): String =
-    getRequest[StagesResponse](s"boards/$boardId/stages", pagination).toJson
+    getRequest[StageListWrapper](s"boards/$boardId/stages", pagination).toJson

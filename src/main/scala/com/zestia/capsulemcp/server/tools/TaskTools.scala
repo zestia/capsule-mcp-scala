@@ -68,7 +68,7 @@ object TaskTools extends HasManualTools:
       relatedTo.map(list => "relatedTo" -> list.mkString(","))
     ).flatten.toMap
 
-    getRequest[TasksResponse]("tasks", pagination.getOrElse(Pagination()), queryParams).toJson
+    getRequest[TaskListWrapper]("tasks", pagination.getOrElse(Pagination()), queryParams).toJson
   }
 
   /**

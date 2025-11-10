@@ -17,7 +17,7 @@
 package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
-import com.zestia.capsulemcp.model.{FieldDefinitionsResponse, Pagination}
+import com.zestia.capsulemcp.model.{FieldDefinitionListWrapper, Pagination}
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.json.*
@@ -31,7 +31,7 @@ object CustomFieldTools:
   def listContactCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionsResponse]("parties/fields/definitions", pagination).toJson
+    getRequest[FieldDefinitionListWrapper]("parties/fields/definitions", pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
@@ -40,7 +40,7 @@ object CustomFieldTools:
   def listOpportunityCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionsResponse]("opportunities/fields/definitions", pagination).toJson
+    getRequest[FieldDefinitionListWrapper]("opportunities/fields/definitions", pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
@@ -49,4 +49,4 @@ object CustomFieldTools:
   def listProjectCustomFields(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[FieldDefinitionsResponse]("kases/fields/definitions", pagination).toJson
+    getRequest[FieldDefinitionListWrapper]("kases/fields/definitions", pagination).toJson

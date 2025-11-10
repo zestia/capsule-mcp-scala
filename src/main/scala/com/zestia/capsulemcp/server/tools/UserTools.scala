@@ -17,7 +17,7 @@
 package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.Tool
-import com.zestia.capsulemcp.model.UsersResponse
+import com.zestia.capsulemcp.model.UserListWrapper
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.json.*
 
@@ -28,4 +28,4 @@ object UserTools:
    */
   @Tool(Some("list_users"), Some("List Users"))
   def listUsers(): String =
-    getRequest[UsersResponse]("users").toJson
+    getRequest[UserListWrapper]("users").toJson

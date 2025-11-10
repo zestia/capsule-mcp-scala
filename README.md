@@ -139,7 +139,10 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 | **Users**           | `list_users`                                | Retrieves all Users                                                                       | ❌                       |
 | **Teams**           | `list_teams`                                | Retrieves all Teams and Team members                                                      | ❌                       |
 | **Tasks**           | `list_tasks`                                | Retrieve Tasks with basic filtering ability                                               | ✅                       |
-| **Tracks**          | `list_tracks`                               | List tracks for a specific project, contact or opportunity.                               | ✅                       |
+| **Tracks**          | `get_track_by_id`                           | Get Track by ID                                                                           | ❌                       |
+|                     | `list_tracks_for_contact`                   | List Tracks for specified Contact                                                         | ✅                       |
+|                     | `list_tracks_for_opportunity`               | List Tracks for specified Opportunity                                                     | ✅                       |
+|                     | `list_tracks_for_project`                   | List Tracks for specified Project                                                         | ✅                       |
 | **Activity**        | `list_activity`                             | Retrieve Activity with basic filtering ability                                            | ✅                       |
 
 ## Development

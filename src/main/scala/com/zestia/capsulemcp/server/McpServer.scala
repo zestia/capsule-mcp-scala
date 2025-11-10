@@ -50,6 +50,7 @@ object McpServer extends ZIOAppDefault with FileLogging:
           .scanAnnotations[TagTools.type]
           .scanAnnotations[UserTools.type]
           .scanAnnotations[TeamTools.type]
+          .scanAnnotations[TrackTools.type]
       }
       // Manually register tools with custom schemas
       _ <- TaskTools.registerManualTools(server)

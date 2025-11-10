@@ -17,7 +17,7 @@
 package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.Tool
-import com.zestia.capsulemcp.model.{TeamsResponse, UsersResponse}
+import com.zestia.capsulemcp.model.{TeamListWrapper, UserListWrapper}
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.json.*
 
@@ -28,4 +28,4 @@ object TeamTools:
    */
   @Tool(Some("list_teams"), Some("List Teams and team members"))
   def listTeams(): String =
-    getRequest[TeamsResponse]("teams", embed = List("memberships")).toJson
+    getRequest[TeamListWrapper]("teams", embed = List("memberships")).toJson

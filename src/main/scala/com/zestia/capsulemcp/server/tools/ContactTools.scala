@@ -18,7 +18,7 @@ package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{ContactsResponse, Pagination}
+import com.zestia.capsulemcp.model.{ContactListWrapper, Pagination}
 import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
@@ -49,4 +49,4 @@ object ContactTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =
-    filterRequest[ContactsResponse]("parties/filters/results", filter, pagination).toJson
+    filterRequest[ContactListWrapper]("parties/filters/results", filter, pagination).toJson

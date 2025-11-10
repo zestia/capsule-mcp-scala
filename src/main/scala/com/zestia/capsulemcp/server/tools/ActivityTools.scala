@@ -71,7 +71,7 @@ object ActivityTools extends HasManualTools:
       pagination: Option[Pagination],
       filter: Filter
   ): String =
-    filterRequest[ActivitiesResponse](
+    filterRequest[ActivityListWrapper](
       "activities/filters/results",
       filter,
       pagination.getOrElse(Pagination()),

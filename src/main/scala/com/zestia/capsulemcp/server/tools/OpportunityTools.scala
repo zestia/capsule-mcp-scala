@@ -19,12 +19,12 @@ package com.zestia.capsulemcp.server.tools
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.model.{
-  LostReasonsResponse,
-  MilestonesResponse,
-  OpportunitiesResponse,
-  OpportunityValueResponse,
+  LostReasonListWrapper,
+  MilestoneListWrapper,
+  OpportunityListWrapper,
+  OpportunityValueWrapper,
   Pagination,
-  PipelinesResponse
+  PipelineListWrapper
 }
 import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
@@ -56,7 +56,7 @@ object OpportunityTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param(ToolParams.filterDescription) filter: Filter
   ): String =
-    filterRequest[OpportunitiesResponse]("opportunities/filters/results", filter, pagination).toJson
+    filterRequest[OpportunityListWrapper]("opportunities/filters/results", filter, pagination).toJson
 
   @Tool(
     Some("describe_calculate_value_of_opportunities"),
@@ -69,7 +69,7 @@ object OpportunityTools:
     Some("Get Total & Projected Values for Opportunities. See `describe_calculate_value_of_opportunities` for usage")
   )
   def calculateValueOfOpportunities(@Param(ToolParams.filterDescription) filter: Filter): String =
-    filterRequest[OpportunityValueResponse]("opportunities/value", filter).toJson
+    filterRequest[OpportunityValueWrapper]("opportunities/value", filter).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Pipeline#listPipelines"</a>
@@ -79,7 +79,7 @@ object OpportunityTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Search Pipelines by name", required = false) query: Option[String] = None
   ): String =
-    getRequest[PipelinesResponse](
+    getRequest[PipelineListWrapper](
       "pipelines",
       pagination,
       queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
@@ -97,7 +97,7 @@ object OpportunityTools:
   def listMilestones(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[MilestonesResponse]("milestones/all", pagination).toJson
+    getRequest[MilestoneListWrapper]("milestones/all", pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestonesForPipeline"</a>
@@ -107,7 +107,7 @@ object OpportunityTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Sales Pipeline ID", required = true) pipelineId: Long
   ): String =
-    getRequest[MilestonesResponse](s"pipelines/$pipelineId/milestones", pagination).toJson
+    getRequest[MilestoneListWrapper](s"pipelines/$pipelineId/milestones", pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Lost_Reason#listLostReasons"</a>
@@ -122,7 +122,7 @@ object OpportunityTools:
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
       @Param("Search Lost Reasons by name", required = false) query: Option[String] = None
   ): String =
-    getRequest[LostReasonsResponse](
+    getRequest[LostReasonListWrapper](
       "lostreasons",
       pagination,
       queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))

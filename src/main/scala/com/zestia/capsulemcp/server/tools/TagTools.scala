@@ -17,7 +17,7 @@
 package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
-import com.zestia.capsulemcp.model.{Pagination, TagDefinitionsResponse}
+import com.zestia.capsulemcp.model.{Pagination, TagDefinitionListWrapper}
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.json.*
@@ -31,7 +31,7 @@ object TagTools:
   def listContactTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionsResponse]("parties/tags", pagination).toJson
+    getRequest[TagDefinitionListWrapper]("parties/tags", pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
@@ -40,7 +40,7 @@ object TagTools:
   def listOpportunityTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionsResponse]("opportunities/tags", pagination).toJson
+    getRequest[TagDefinitionListWrapper]("opportunities/tags", pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
@@ -49,4 +49,4 @@ object TagTools:
   def listProjectTags(
       @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
   ): String =
-    getRequest[TagDefinitionsResponse]("kases/tags", pagination).toJson
+    getRequest[TagDefinitionListWrapper]("kases/tags", pagination).toJson
