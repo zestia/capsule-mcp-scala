@@ -28,6 +28,8 @@ lazy val root = (project in file("."))
       "com.softwaremill.sttp.client3" %% "zio-json" % "3.11.0",
 
       // Testing
-      "org.scalatest" %% "scalatest" % "3.2.19" % Test
+      "org.scalatest" %% "scalatest" % "3.2.19" % Test,
+      "com.networknt" % "json-schema-validator" % "2.0.0" % Test,
+      "io.circe" %% "circe-parser" % "0.14.15" % Test
     )
   )

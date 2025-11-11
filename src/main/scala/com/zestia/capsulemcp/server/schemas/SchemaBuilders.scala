@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zestia.capsulemcp.server.tools.common
+package com.zestia.capsulemcp.server.schemas
 
 import io.circe.*
 

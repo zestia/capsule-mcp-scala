@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.zestia.capsulemcp.server.tools.common
+package com.zestia.capsulemcp.model.filter
 
-import com.zestia.capsulemcp.server.tools.common.FilterOperators.Operator.*
+import com.zestia.capsulemcp.model.filter.FilterOperators.Operator.*
 
 /**
  * Filter operators for use in list/filter schemas

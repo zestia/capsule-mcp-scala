@@ -19,29 +19,12 @@ package com.zestia.capsulemcp.server.tools
 import com.tjclp.fastmcp.macros.MapToFunctionMacro
 import com.tjclp.fastmcp.server.FastMcpServer
 import com.zestia.capsulemcp.model.*
-import com.zestia.capsulemcp.server.tools.common.{SchemaBuilders, SchemaTypes}
+import com.zestia.capsulemcp.server.schemas.TaskSchemas
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.*
 import zio.json.*
 
 object TaskTools extends HasManualTools:
-
-  private val listTasksSchema: String = SchemaBuilders.objectSchema(
-    Map(
-      "pagination" -> SchemaTypes.pagination,
-      "since" -> SchemaBuilders.dateTime("Filter Tasks updated since this datetime"),
-      "status" -> SchemaBuilders.string("Filter Tasks by status", Some(List("open", "completed", "pending"))),
-      "owner" -> SchemaBuilders.integer("Filter Tasks by owner user ID"),
-      "category" -> SchemaBuilders.integer("Filter Tasks by Task Category ID"),
-      "dueFrom" -> SchemaBuilders.dateTime("Filter Tasks due from this datetime"),
-      "dueTo" -> SchemaBuilders.dateTime("Filter Tasks due to this datetime"),
-      "repeating" -> SchemaBuilders.boolean("Filter repeating or non-repeating Tasks"),
-      "relatedTo" -> SchemaBuilders.arrayOfEnum(
-        "Filter by one or more entity types. 'kase' = internal name for a Project",
-        List("party", "opportunity", "kase")
-      )
-    )
-  )
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Task#listTasks"</a>
@@ -49,7 +32,7 @@ object TaskTools extends HasManualTools:
   private def listTasks(
       pagination: Option[Pagination],
       since: Option[String],
-      status: Option[String],
+      status: Option[List[String]],
       owner: Option[Int],
       category: Option[Int],
       dueFrom: Option[String],
@@ -59,7 +42,7 @@ object TaskTools extends HasManualTools:
   ): String = {
     val queryParams = List(
       since.map("since" -> _),
-      status.map("status" -> _),
+      status.map(list => "status" -> list.mkString(",")),
       owner.map("owner" -> _),
       category.map("category" -> _),
       dueFrom.map("dueFrom" -> _),
@@ -84,7 +67,7 @@ object TaskTools extends HasManualTools:
           "List Tasks with optional filtering. By default only Tasks with a status of 'OPEN' are returned."
         ),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listTasks)(args)),
-        inputSchema = Right(listTasksSchema)
+        inputSchema = Right(TaskSchemas.listTasksSchema)
       )
     }
     // Add more manual tool registrations here

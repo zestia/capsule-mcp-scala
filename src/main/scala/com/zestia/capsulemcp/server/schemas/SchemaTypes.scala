@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.zestia.capsulemcp.server.tools.common
+package com.zestia.capsulemcp.server.schemas
 
-import io.circe.*
-import FilterOperators.*
 import com.zestia.capsulemcp.model.Pagination
+import com.zestia.capsulemcp.model.filter.FilterOperators.*
+import io.circe.*
 
 /**
  * Reusable JSON schema type definitions

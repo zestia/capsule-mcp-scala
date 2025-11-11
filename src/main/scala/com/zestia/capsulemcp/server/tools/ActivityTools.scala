@@ -20,52 +20,12 @@ import com.tjclp.fastmcp.macros.MapToFunctionMacro
 import com.tjclp.fastmcp.server.FastMcpServer
 import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.server.tools.common.{FilterOperators, SchemaBuilders, SchemaTypes}
+import com.zestia.capsulemcp.server.schemas.ActivitySchemas
 import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
 import zio.*
 import zio.json.*
 
 object ActivityTools extends HasManualTools:
-
-  /**
-   * Define the valid filter fields for activities
-   */
-  private val activityFilterFields = List(
-    SchemaTypes.FilterField(
-      name = "user",
-      valueType = "number",
-      operators = FilterOperators.numberOperators,
-      description = "User ID"
-    ),
-    SchemaTypes.FilterField(
-      name = "taskCategory",
-      valueType = "number",
-      operators = FilterOperators.numberOperators,
-      description = "Task Category ID"
-    ),
-    SchemaTypes.FilterField(
-      name = "activityType",
-      valueType = "number",
-      operators = FilterOperators.numberOperators,
-      description = "Activity Type ID"
-    ),
-    SchemaTypes.FilterField(
-      name = "addedOn",
-      valueType = "date",
-      operators = FilterOperators.dateOperators,
-      description = "Date the activity was added (format: YYYY-MM-DD)"
-    )
-  )
-
-  /**
-   * Schema for the list_activities tool
-   */
-  private val listActivitiesSchema: String = SchemaBuilders.objectSchema(
-    Map(
-      "pagination" -> SchemaTypes.pagination,
-      "filter" -> SchemaTypes.filterWithFields(activityFilterFields)
-    )
-  )
 
   private def listActivities(
       pagination: Option[Pagination],
@@ -89,7 +49,7 @@ object ActivityTools extends HasManualTools:
           name = "list_activities",
           description = Some("Retrieve Activities with basic filtering ability"),
           handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listActivities)(args)),
-          inputSchema = Right(listActivitiesSchema)
+          inputSchema = Right(ActivitySchemas.activityFilterSchema)
         )
       }
     yield ()

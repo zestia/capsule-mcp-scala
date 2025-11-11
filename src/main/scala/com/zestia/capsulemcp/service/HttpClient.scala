@@ -24,15 +24,15 @@ import com.zestia.capsulemcp.model.Pagination
 import scala.reflect.ClassTag
 
 abstract class HttpClient extends FileLogging:
-  protected val backend: SttpBackend[Identity, Any] = HttpClientSyncBackend()
+  protected val backend: SttpBackend[Identity, Any]
   protected val baseUrl: String
 
   protected def baseRequest: RequestT[Empty, Either[String, String], Any] =
     basicRequest
-      .header(HeaderNames.UserAgent, "capsule-mcp")
+      .header(HeaderNames.UserAgent, "capsule-mcp-v1")
       .header(HeaderNames.ContentType, "application/json")
 
-  protected def constructUri(
+  protected[service] def constructUri(
       baseUrl: String,
       path: String,
       pagination: Pagination,
