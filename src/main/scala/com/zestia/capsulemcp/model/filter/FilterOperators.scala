@@ -41,9 +41,8 @@ object FilterOperators:
   val stringOperators = List(Is, IsNot, StartsWith, EndsWith, Contains)
   val dateOperators = List(Is, IsNot, IsAfter, IsBefore)
   val booleanOperators = List(Is, IsNot)
-  
+
   /**
    * Helper to convert operators to their string values
    */
-  extension (operators: List[Operator])
-    def toStrings: List[String] = operators.map(_.value)
+  extension (operators: List[Operator]) def toStrings: List[String] = operators.map(_.value)

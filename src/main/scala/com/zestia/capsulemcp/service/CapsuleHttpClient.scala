@@ -28,7 +28,7 @@ import scala.reflect.ClassTag
 trait BaseCapsuleHttpClient extends HttpClient:
 
   private val DEFAULT_EMBEDS = List("meta", "fields", "tags", "missingImportantFields")
-  
+
   private[service] def requestWithBearer: RequestT[Empty, Either[String, String], Any] =
     baseRequest.header(HeaderNames.Authorization, s"Bearer $apiToken")
 
@@ -37,7 +37,7 @@ trait BaseCapsuleHttpClient extends HttpClient:
     Map("embed" -> allEmbeds.mkString(","))
 
   protected def apiToken: String
-  
+
   /**
    * Execute an HTTP request without a body (e.g., GET, DELETE)
    */
@@ -119,5 +119,5 @@ object CapsuleHttpClient extends BaseCapsuleHttpClient:
 
   override protected val baseUrl: String =
     s"${sys.env.getOrElse("CAPSULE_BASE_URL", DEFAULT_CAPSULE_HOST)}/api/v2"
-    
-  override protected val backend: SttpBackend[Identity, Any] = HttpClientSyncBackend()  
+
+  override protected val backend: SttpBackend[Identity, Any] = HttpClientSyncBackend()

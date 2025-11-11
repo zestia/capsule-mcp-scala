@@ -16,7 +16,7 @@
 
 package com.zestia.capsulemcp.server.schemas
 
-import com.networknt.schema.{InputFormat, Schema, SchemaRegistry, SpecificationVersion, Error => ValidationError}
+import com.networknt.schema.{Error => ValidationError, InputFormat, Schema, SchemaRegistry, SpecificationVersion}
 import com.zestia.capsulemcp.server.schemas.TaskSchemas
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
