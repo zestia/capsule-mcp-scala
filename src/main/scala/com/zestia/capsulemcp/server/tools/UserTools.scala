@@ -16,8 +16,8 @@
 
 package com.zestia.capsulemcp.server.tools
 
-import com.tjclp.fastmcp.core.Tool
-import com.zestia.capsulemcp.model.UserListWrapper
+import com.tjclp.fastmcp.core.{Param, Tool}
+import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.json.*
 
@@ -29,3 +29,19 @@ object UserTools:
   @Tool(Some("list_users"), Some("List Users"))
   def listUsers(): String =
     getRequest[UserListWrapper]("users").toJson
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/User#showUser"</a>
+   */
+  @Tool(Some("get_user"), Some("Get User by ID"))
+  def getUser(
+      @Param("User ID") id: Long
+  ): String =
+    getRequest[UserWrapper](s"users/$id", embed = List("party")).toJson
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/User#showCurrentUser"</a>
+   */
+  @Tool(Some("get_current_user"), Some("Get the current User"))
+  def getCurrentUser(): String =
+    getRequest[UserWrapper]("users/current", embed = List("party")).toJson

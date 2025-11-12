@@ -20,8 +20,8 @@ lazy val root = (project in file("."))
       "com.tjclp" %% "fast-mcp-scala" % "0.2.1",
 
       // ZIO Core
-      "dev.zio" %% "zio" % "2.1.20",
-      "dev.zio" %% "zio-json" % "0.7.44",
+      "dev.zio" %% "zio" % "2.1.22",
+      "dev.zio" %% "zio-json" % "0.7.45",
 
       // HTTP Client
       "com.softwaremill.sttp.client3" %% "core" % "3.11.0",

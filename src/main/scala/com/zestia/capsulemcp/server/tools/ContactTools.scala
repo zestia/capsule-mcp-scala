@@ -16,37 +16,35 @@
 
 package com.zestia.capsulemcp.server.tools
 
+import com.zestia.capsulemcp.server.schemas.ContactSchemas
+import com.tjclp.fastmcp.macros.MapToFunctionMacro
+import com.tjclp.fastmcp.server.FastMcpServer
+import com.zestia.capsulemcp.model.*
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{ContactListWrapper, Pagination}
-import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
-import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
+import com.zestia.capsulemcp.server.schemas.ActivitySchemas
+import com.zestia.capsulemcp.service.CapsuleHttpClient.*
+import zio.*
 import zio.json.*
 
 object ContactTools:
 
   /**
+   * Manually registered tool
+   *
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
-  @Tool(
-    Some("describe_list_contacts"),
-    Some("Returns a detailed description of how to use the `list_contacts` tool.")
-  )
-  def describeSearchContacts(): String =
-    listToolDescription("contacts", contactFieldReference)
-
-  /**
-   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
-   */
-  @Tool(
-    Some("list_contacts"),
-    Some(
-      "List Contacts with comprehensive filtering ability. Refer to `describe_list_contacts` for tool description and usage"
-    )
-  )
   def listContacts(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param(ToolParams.filterDescription) filter: Filter
+      pagination: Option[Pagination],
+      filter: Filter
   ): String =
     filterRequest[ContactListWrapper]("parties/filters/results", filter, pagination).toJson
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Party#showParty"</a>
+   */
+  @Tool(Some("get_contact"), Some("Get a Contact"))
+  def getEntry(
+      @Param("Contact ID") id: Long
+  ): String =
+    getRequest[ContactWrapper](s"parties/$id").toJson

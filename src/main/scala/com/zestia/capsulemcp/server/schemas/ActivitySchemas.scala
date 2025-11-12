@@ -16,7 +16,7 @@
 
 package com.zestia.capsulemcp.server.schemas
 
-import com.zestia.capsulemcp.model.filter.FilterOperators
+import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
 
 /**
  * JSON Schemas for Activity-related Tools
@@ -26,29 +26,25 @@ object ActivitySchemas:
   /**
    * Valid filter fields for activities
    */
-  private val activityFilterFields: List[SchemaTypes.FilterField] = List(
-    SchemaTypes.FilterField(
+  private val activityFilterFields: List[FilterField] = List(
+    FilterField(
       name = "user",
-      valueType = "number",
-      operators = FilterOperators.numberOperators,
+      valueType = ValueType.Number,
       description = "User ID"
     ),
-    SchemaTypes.FilterField(
+    FilterField(
       name = "taskCategory",
-      valueType = "number",
-      operators = FilterOperators.numberOperators,
+      valueType = ValueType.Number,
       description = "Task Category ID"
     ),
-    SchemaTypes.FilterField(
+    FilterField(
       name = "activityType",
-      valueType = "number",
-      operators = FilterOperators.numberOperators,
+      valueType = ValueType.Number,
       description = "Activity Type ID"
     ),
-    SchemaTypes.FilterField(
+    FilterField(
       name = "addedOn",
-      valueType = "date",
-      operators = FilterOperators.dateOperators,
+      valueType = ValueType.Date,
       description = "Date the activity was added (format: YYYY-MM-DD)"
     )
   )
@@ -58,7 +54,7 @@ object ActivitySchemas:
    */
   val activityFilterSchema: String = SchemaBuilders.objectSchema(
     Map(
-      "pagination" -> SchemaTypes.pagination,
-      "filter" -> SchemaTypes.filterWithFields(activityFilterFields)
+      "pagination" -> paginationSchema,
+      "filter" -> buildFilterSchema(activityFilterFields)
     )
   )

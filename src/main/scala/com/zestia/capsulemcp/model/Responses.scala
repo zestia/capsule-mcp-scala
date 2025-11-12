@@ -18,9 +18,13 @@ package com.zestia.capsulemcp.model
 
 import zio.json.*
 
+case class ResponseWrapper[T](response: T, paginationHasMore: Option[Boolean]) derives JsonDecoder, JsonEncoder
+
 case class ContactListWrapper(parties: List[Party], meta: Meta) derives JsonDecoder, JsonEncoder
+case class ContactWrapper(party: Party) derives JsonDecoder, JsonEncoder
 
 case class OpportunityListWrapper(opportunities: List[Opportunity], meta: Meta) derives JsonDecoder, JsonEncoder
+case class OpportunityWrapper(opportunity: Opportunity) derives JsonDecoder, JsonEncoder
 
 case class OpportunityValueMeta(currency: String) derives JsonDecoder, JsonEncoder
 
@@ -29,29 +33,42 @@ case class OpportunityValueWrapper(totalValue: Double, projectedValue: Double, m
       JsonEncoder
 
 case class ProjectListWrapper(kases: List[Project], meta: Meta) derives JsonDecoder, JsonEncoder
+case class ProjectWrapper(kase: Project) derives JsonDecoder, JsonEncoder
 
 case class FieldDefinitionListWrapper(definitions: List[FieldDefinition], meta: Meta) derives JsonDecoder, JsonEncoder
+case class FieldDefinitionWrapper(definition: FieldDefinition) derives JsonDecoder, JsonEncoder
 
 case class TagDefinitionListWrapper(tags: List[Tag], meta: Meta) derives JsonDecoder, JsonEncoder
+case class TagDefinitionWrapper(tag: Tag) derives JsonDecoder, JsonEncoder
 
 case class PipelineListWrapper(pipelines: List[Pipeline], meta: Meta) derives JsonDecoder, JsonEncoder
+case class PipelineWrapper(pipeline: Pipeline) derives JsonDecoder, JsonEncoder
 
 case class MilestoneListWrapper(milestones: List[Milestone], meta: Meta) derives JsonDecoder, JsonEncoder
+case class MilestoneWrapper(milestone: Milestone) derives JsonDecoder, JsonEncoder
 
-case class LostReasonListWrapper(lostReasons: List[Milestone], meta: Meta) derives JsonDecoder, JsonEncoder
+case class LostReasonListWrapper(lostReasons: List[LostReason], meta: Meta) derives JsonDecoder, JsonEncoder
+case class LostReasonWrapper(lostReason: LostReason) derives JsonDecoder, JsonEncoder
 
 case class BoardListWrapper(boards: List[Board], meta: Meta) derives JsonDecoder, JsonEncoder
+case class BoardWrapper(board: Board) derives JsonDecoder, JsonEncoder
 
 case class StageListWrapper(stages: List[Stage], meta: Meta) derives JsonDecoder, JsonEncoder
+case class StageWrapper(stage: Stage) derives JsonDecoder, JsonEncoder
 
 case class UserListWrapper(users: List[User]) derives JsonDecoder, JsonEncoder
+case class UserWrapper(user: User) derives JsonDecoder, JsonEncoder
 
 case class TeamListWrapper(teams: List[Team]) derives JsonDecoder, JsonEncoder
+case class TeamWrapper(team: Team) derives JsonDecoder, JsonEncoder
 
 case class ActivityListWrapper(activities: List[Activity], meta: Meta) derives JsonDecoder, JsonEncoder
 
+case class EntryListWrapper(entries: List[Entry]) derives JsonDecoder, JsonEncoder
+case class EntryWrapper(entry: Entry) derives JsonDecoder, JsonEncoder
+
 case class TaskListWrapper(tasks: List[Task], meta: Meta) derives JsonDecoder, JsonEncoder
+case class TaskWrapper(task: Task) derives JsonDecoder, JsonEncoder
 
 case class TrackListWrapper(tracks: List[Track]) derives JsonDecoder, JsonEncoder
-
 case class TrackWrapper(track: Track) derives JsonDecoder, JsonEncoder

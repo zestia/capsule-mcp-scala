@@ -26,7 +26,7 @@ object TaskSchemas:
    */
   val listTasksSchema: String = SchemaBuilders.objectSchema(
     Map(
-      "pagination" -> SchemaTypes.pagination,
+      "pagination" -> SchemaTypes.paginationSchema,
       "since" -> SchemaBuilders.dateTime("Filter Tasks updated since this datetime"),
       "status" -> SchemaBuilders.arrayOfEnum(
         "Filter Tasks by one or more statuses",

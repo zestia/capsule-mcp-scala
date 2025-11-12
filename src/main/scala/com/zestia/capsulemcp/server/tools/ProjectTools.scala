@@ -18,8 +18,7 @@ package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{BoardListWrapper, Pagination, ProjectListWrapper, StageListWrapper}
-import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
+import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
 import zio.json.*
@@ -27,36 +26,31 @@ import zio.json.*
 object ProjectTools:
 
   /**
+   * Manually registered tool
+   *
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
-  @Tool(
-    Some("describe_list_projects"),
-    Some("Returns a detailed description of how to use the `list_projects` tool.")
-  )
-  def describeSearchProjects(): String =
-    listToolDescription("projects", projectFieldReference)
-
-  /**
-   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
-   */
-  @Tool(
-    Some("list_projects"),
-    Some(
-      "List Projectes with comprehensive filtering ability. Refer to `describe_list_projects` for tool description and usage"
-    )
-  )
   def listProjects(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param(ToolParams.filterDescription) filter: Filter
+      pagination: Option[Pagination],
+      filter: Filter
   ): String =
     filterRequest[ProjectListWrapper]("kases/filters/results", filter, pagination).toJson
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Project#showProject"</a>
+   */
+  @Tool(Some("get_project"), Some("Get a Project by ID"))
+  def getProject(
+      @Param("Project ID") id: Long
+  ): String =
+    getRequest[ProjectWrapper](s"kases/$id").toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Board#listBoards"</a>
    */
   @Tool(Some("list_boards"), Some("List Boards for Projects, with optional searching by name"))
   def listBoards(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Search Boards by name", required = false) query: Option[String] = None
   ): String =
     getRequest[BoardListWrapper](
@@ -66,6 +60,15 @@ object ProjectTools:
     ).toJson
 
   /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Board#showBoard"</a>
+   */
+  @Tool(Some("get_board"), Some("Get a Project Board by ID"))
+  def getBoard(
+      @Param("Board ID") id: Long
+  ): String =
+    getRequest[BoardWrapper](s"boards/$id").toJson
+
+  /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStages"</a>
    */
   @Tool(
@@ -73,16 +76,25 @@ object ProjectTools:
     Some("List Stages across all Project Boards. To list Stages on a specific Board, use `list_stages_by_board_id`")
   )
   def listStages(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     getRequest[StageListWrapper]("stages", pagination).toJson
 
   /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#showStage"</a>
+   */
+  @Tool(Some("get_stage"), Some("Get a Project Stage by ID"))
+  def getStage(
+      @Param("Stage ID") id: Long
+  ): String =
+    getRequest[StageWrapper](s"stages/$id").toJson
+
+  /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStagesForBoard"</a>
    */
-  @Tool(Some("list_stages_by_board_id"), Some("List Stages associated with a Project Board"))
+  @Tool(Some("list_stages_by_board"), Some("List Stages associated with a Project Board"))
   def listStagesByBoardId(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param("Board ID", required = true) boardId: Long
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Board ID") boardId: Long
   ): String =
     getRequest[StageListWrapper](s"boards/$boardId/stages", pagination).toJson

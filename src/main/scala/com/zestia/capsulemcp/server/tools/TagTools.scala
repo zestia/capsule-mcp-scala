@@ -17,22 +17,52 @@
 package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
-import com.zestia.capsulemcp.model.{Pagination, TagDefinitionListWrapper}
+import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.json.*
 
 object TagTools:
 
-  private def listTagsForEntity(entityPath: String, pagination: Pagination): String =
+  private def getTagForEntity(entityPath: String, id: Long): String =
+    getRequest[TagDefinitionWrapper](s"$entityPath/tags/$id").toJson
+
+  private def listTagsForEntity(entityPath: String, pagination: Option[Pagination]): String =
     getRequest[TagDefinitionListWrapper](s"$entityPath/tags", pagination).toJson
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#showTag"</a>
+   */
+  @Tool(Some("get_contact_tag"), Some("Get Contact Tag Definition by ID"))
+  def getContactTag(
+      @Param("Tag ID") id: Long
+  ): String =
+    getTagForEntity("parties", id)
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#showTag"</a>
+   */
+  @Tool(Some("get_opportunity_tag"), Some("Get Opportunity Tag Definition by ID"))
+  def getOpportunityTag(
+      @Param("Tag ID") id: Long
+  ): String =
+    getTagForEntity("opportunities", id)
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#showTag"</a>
+   */
+  @Tool(Some("get_project_tag"), Some("Get Project Tag Definition by ID"))
+  def getProjectTag(
+      @Param("Tag ID") id: Long
+  ): String =
+    getTagForEntity("kases", id)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
   @Tool(Some("list_contact_tags"), Some("List Tags defined for Contacts"))
   def listContactTags(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     listTagsForEntity("parties", pagination)
 
@@ -41,7 +71,7 @@ object TagTools:
    */
   @Tool(Some("list_opportunity_tags"), Some("List Tags defined for Opportunities"))
   def listOpportunityTags(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     listTagsForEntity("opportunities", pagination)
 
@@ -50,6 +80,6 @@ object TagTools:
    */
   @Tool(Some("list_project_tags"), Some("List Tags defined for Projects"))
   def listProjectTags(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     listTagsForEntity("kases", pagination)

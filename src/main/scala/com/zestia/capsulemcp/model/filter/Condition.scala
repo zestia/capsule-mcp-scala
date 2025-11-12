@@ -16,45 +16,70 @@
 
 package com.zestia.capsulemcp.model.filter
 
-import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer, JsonNode}
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import sttp.tapir.Schema.annotations.description
 import zio.json.ast.Json
-import zio.json.{jsonHint, JsonDecoder, JsonEncoder}
+import zio.json.{JsonDecoder, JsonEncoder}
 
 import scala.util.Try
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/reference/filters"</a>
  */
-
-// Jackson-style deserialisation needed for under the hood @Param binders in fast-mcp-scala
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes(
-  Array(
-    new JsonSubTypes.Type(value = classOf[StringCondition], name = "string"),
-    new JsonSubTypes.Type(value = classOf[NumberCondition], name = "number"),
-    new JsonSubTypes.Type(value = classOf[DateCondition], name = "date"),
-    new JsonSubTypes.Type(value = classOf[BooleanCondition], name = "boolean")
-  )
-)
+@JsonDeserialize(`using` = classOf[ConditionDeserializer])
 sealed trait Condition:
-  @description("the name of the field to filter on") val field: String
-  @description("the operator to use (must be valid for the field type)") val operator: String
-  @description("the type of the field value") val `type`: String
+  val field: String
+  val operator: String
+
+final case class StringCondition(
+    field: String,
+    operator: String,
+    value: String
+) extends Condition derives JsonDecoder, JsonEncoder
+
+final case class NumberCondition(
+    field: String,
+    operator: String,
+    value: Long
+) extends Condition derives JsonDecoder, JsonEncoder
+
+final case class BooleanCondition(
+    field: String,
+    operator: String,
+    value: Boolean
+) extends Condition derives JsonDecoder, JsonEncoder
+
+final case class MoneyCondition(
+    field: String,
+    operator: String,
+    value: MoneyValue
+) extends Condition derives JsonDecoder, JsonEncoder
+
+final case class MoneyValue(
+    currency: String,
+    amount: Double
+) derives JsonDecoder,
+      JsonEncoder
 
 object Condition:
 
+  // ZIO serialisation used in HttpClient
   implicit val encoder: JsonEncoder[Condition] =
     JsonEncoder[Json].contramap { condition =>
       val valueFieldValue = condition match {
-        case StringCondition(_, _, _, value) =>
+        case StringCondition(_, _, value) =>
           Json.Str(value)
-        case DateCondition(_, _, _, value) =>
-          Json.Str(value)
-        case NumberCondition(_, _, _, value) =>
+        case NumberCondition(_, _, value) =>
           Json.Num(value)
-        case BooleanCondition(_, _, _, value) =>
+        case BooleanCondition(_, _, value) =>
           Json.Bool(value)
+        case MoneyCondition(_, _, value) =>
+          Json.Obj(
+            "currency" -> Json.Str(value.currency),
+            "amount" -> Json.Num(value.amount)
+          )
       }
 
       Json.Obj(
@@ -64,66 +89,26 @@ object Condition:
       )
     }
 
-  // Custom decoder to automatically convert value to the correct type
-  implicit val decoder: JsonDecoder[Condition] =
-    JsonDecoder[Json.Obj].mapOrFail { jsonObj =>
-      for {
-        fieldNameJson <- jsonObj.get("field").toRight("missing field")
-        operatorJson <- jsonObj.get("operator").toRight("missing operator")
-        fieldValueJson <- jsonObj
-          .get("value")
-          .toRight("missing value")
+class ConditionDeserializer extends JsonDeserializer[Condition]:
 
-        fieldName <- fieldNameJson
-          .as[String]
-          .left
-          .map(_ => "field must be a string")
-        operator <- operatorJson
-          .as[String]
-          .left
-          .map(_ => "operator must be a string")
+  // Jackson-style deserialization needed by fast-mcp-scala to read Tool argument payloads
+  override def deserialize(p: JsonParser, context: DeserializationContext): Condition =
+    val node: JsonNode = p.getCodec.readTree(p)
 
-        condition <- fieldValueJson match
-          case Json.Str(s) =>
-            Right(StringCondition(field = fieldName, operator = operator, value = s))
-          case Json.Num(n) =>
-            Try(n.longValue()).toOption
-              .map(l => NumberCondition(field = fieldName, operator = operator, value = l))
-              .toRight("value is not a valid number")
-          case Json.Bool(b) =>
-            Right(BooleanCondition(field = fieldName, operator = operator, value = b))
-          case _ => Left("unsupported value type")
-      } yield condition
+    val field = node.get("field").asText()
+    val operator = node.get("operator").asText()
+    val valueNode = node.get("value")
+
+    if (valueNode.isTextual) {
+      StringCondition(field, operator, valueNode.asText())
+    } else if (valueNode.isNumber) {
+      NumberCondition(field, operator, valueNode.asLong())
+    } else if (valueNode.isBoolean) {
+      BooleanCondition(field, operator, valueNode.asBoolean())
+    } else if (valueNode.isObject) {
+      val currency = valueNode.get("currency").asText()
+      val amount = valueNode.get("amount").asDouble()
+      MoneyCondition(field, operator, MoneyValue(currency, amount))
+    } else {
+      throw new IllegalArgumentException(s"Unsupported value type in condition: ${valueNode.getNodeType}")
     }
-
-@jsonHint("string")
-final case class StringCondition(
-    `type`: String = "string",
-    field: String,
-    operator: String,
-    @description("the field value to filter on (must be valid for the field type)") value: String
-) extends Condition derives JsonDecoder, JsonEncoder
-
-@jsonHint("date")
-final case class DateCondition(
-    `type`: String = "date",
-    field: String,
-    operator: String,
-    @description("the field value to filter on (must be valid for the field type)") value: String
-) extends Condition derives JsonDecoder, JsonEncoder
-
-@jsonHint("number")
-final case class NumberCondition(
-    `type`: String = "number",
-    field: String,
-    operator: String,
-    @description("the field value to filter on (must be valid for the field type)") value: Long
-) extends Condition derives JsonDecoder, JsonEncoder
-
-@jsonHint("boolean")
-final case class BooleanCondition(
-    `type`: String = "boolean",
-    field: String,
-    operator: String,
-    @description("the field value to filter on (must be valid for the field type)") value: Boolean
-) extends Condition derives JsonDecoder, JsonEncoder

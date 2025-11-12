@@ -23,13 +23,16 @@ import com.zestia.capsulemcp.server.schemas.TaskSchemas
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.*
 import zio.json.*
+import com.tjclp.fastmcp.core.{Param, Tool}
 
-object TaskTools extends HasManualTools:
+object TaskTools:
 
   /**
+   * Manually registered tool
+   *
    * See <a href="https://developer.capsulecrm.com/v2/operations/Task#listTasks"</a>
    */
-  private def listTasks(
+  def listTasks(
       pagination: Option[Pagination],
       since: Option[String],
       status: Option[List[String]],
@@ -51,25 +54,14 @@ object TaskTools extends HasManualTools:
       relatedTo.map(list => "relatedTo" -> list.mkString(","))
     ).flatten.toMap
 
-    getRequest[TaskListWrapper]("tasks", pagination.getOrElse(Pagination()), queryParams).toJson
+    getRequest[TaskListWrapper]("tasks", pagination, queryParams).toJson
   }
 
   /**
-   * Register manual tools that need custom schemas (workaround for annotation bugs)
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Task#showTask"</a>
    */
-  override def registerManualTools(server: FastMcpServer): ZIO[Any, Throwable, Unit] =
-    for
-    // Register list_tasks
-    _ <- {
-      server.tool(
-        name = "list_tasks",
-        description = Some(
-          "List Tasks with optional filtering. By default only Tasks with a status of 'OPEN' are returned."
-        ),
-        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listTasks)(args)),
-        inputSchema = Right(TaskSchemas.listTasksSchema)
-      )
-    }
-    // Add more manual tool registrations here
-    // _ <- server.tool(...)
-    yield ()
+  @Tool(Some("get_task"), Some("Get a Task by ID"))
+  def getTask(
+      @Param("Task ID") id: Long
+  ): String =
+    getRequest[TaskWrapper](s"tasks/$id").toJson

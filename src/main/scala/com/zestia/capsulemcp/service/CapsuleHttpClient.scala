@@ -17,7 +17,7 @@
 package com.zestia.capsulemcp.service
 
 import com.zestia.capsulemcp.model.*
-import com.zestia.capsulemcp.model.filter.{Filter, FilterRequestWrapper}
+import com.zestia.capsulemcp.model.filter.*
 import sttp.client3.*
 import sttp.client3.ziojson.*
 import sttp.model.{HeaderNames, Method}
@@ -44,10 +44,10 @@ trait BaseCapsuleHttpClient extends HttpClient:
   private def executeRequest[T: {JsonDecoder, ClassTag}](
       method: Method,
       path: String,
-      pagination: Pagination,
+      pagination: Option[Pagination],
       queryParams: Map[String, Any],
       embed: List[String]
-  ): T =
+  ): ResponseWrapper[T] =
     val embedMap = buildEmbedMap(embed)
     val uri = constructUri(baseUrl, path, pagination, queryParams ++ embedMap)
 
@@ -66,11 +66,11 @@ trait BaseCapsuleHttpClient extends HttpClient:
   private def executeRequestWithBody[T: {JsonDecoder, ClassTag}, B: JsonEncoder](
       method: Method,
       path: String,
-      pagination: Pagination,
+      pagination: Option[Pagination],
       queryParams: Map[String, Any],
       embed: List[String],
       body: B
-  ): T =
+  ): ResponseWrapper[T] =
     val embedMap = buildEmbedMap(embed)
     val uri = constructUri(baseUrl, path, pagination, queryParams ++ embedMap)
 
@@ -86,19 +86,19 @@ trait BaseCapsuleHttpClient extends HttpClient:
 
   def getRequest[T: {JsonDecoder, ClassTag}](
       path: String,
-      pagination: Pagination = Pagination(),
+      pagination: Option[Pagination] = None,
       queryParams: Map[String, Any] = Map.empty,
       embed: List[String] = List.empty
-  ): T =
+  ): ResponseWrapper[T] =
     executeRequest[T](Method.GET, path, pagination, queryParams, embed)
 
   def filterRequest[T: {JsonDecoder, ClassTag}](
       path: String,
       filter: Filter,
-      pagination: Pagination = Pagination(),
+      pagination: Option[Pagination] = None,
       queryParams: Map[String, Any] = Map.empty,
       embed: List[String] = List.empty
-  ): T =
+  ): ResponseWrapper[T] =
     executeRequestWithBody[T, FilterRequestWrapper](
       Method.POST,
       path,

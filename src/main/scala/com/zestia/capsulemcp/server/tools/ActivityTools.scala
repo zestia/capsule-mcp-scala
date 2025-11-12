@@ -19,37 +19,68 @@ package com.zestia.capsulemcp.server.tools
 import com.tjclp.fastmcp.macros.MapToFunctionMacro
 import com.tjclp.fastmcp.server.FastMcpServer
 import com.zestia.capsulemcp.model.*
-import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.server.schemas.ActivitySchemas
-import com.zestia.capsulemcp.service.CapsuleHttpClient.filterRequest
 import zio.*
+import com.tjclp.fastmcp.core.{Param, Tool}
+import com.zestia.capsulemcp.model.filter.Filter
+import com.zestia.capsulemcp.server.tools.common.ToolParams
+import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
 import zio.json.*
 
-object ActivityTools extends HasManualTools:
+object ActivityTools:
 
-  private def listActivities(
+  /**
+   * Manually registered tool
+   */
+  def listActivities(
       pagination: Option[Pagination],
       filter: Filter
   ): String =
     filterRequest[ActivityListWrapper](
       "activities/filters/results",
       filter,
-      pagination.getOrElse(Pagination()),
+      pagination,
       embed = List("entry", "task")
     ).toJson
 
+  private def listEntriesForEntity(entityPath: String, id: Long, pagination: Option[Pagination]): String =
+    getRequest[EntryListWrapper](s"$entityPath/$id/entries", pagination).toJson
+
   /**
-   * Register manual tools that need custom schemas
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#listEntriesForEntity"</a>
    */
-  override def registerManualTools(server: FastMcpServer): ZIO[Any, Throwable, Unit] =
-    for
-      // Register list_activities
-      _ <- {
-        server.tool(
-          name = "list_activities",
-          description = Some("Retrieve Activities with basic filtering ability"),
-          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listActivities)(args)),
-          inputSchema = Right(ActivitySchemas.activityFilterSchema)
-        )
-      }
-    yield ()
+  @Tool(Some("list_entries_for_contact"), Some("List notes, emails and completed tasks for a Contact"))
+  def listEntriesForContact(
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Contact ID") id: Long
+  ): String =
+    listEntriesForEntity("parties", id, pagination)
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#listEntriesForEntity"</a>
+   */
+  @Tool(Some("list_entries_for_opportunity"), Some("List notes, emails and completed tasks for an Opportunity"))
+  def listEntriesForOpportunity(
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Opportunity ID") id: Long
+  ): String =
+    listEntriesForEntity("opportunities", id, pagination)
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#listEntriesForEntity"</a>
+   */
+  @Tool(Some("list_entries_for_project"), Some("List notes, emails and completed tasks for a Project"))
+  def listEntriesForProject(
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Project ID") id: Long
+  ): String =
+    listEntriesForEntity("kases", id, pagination)
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#showEntry"</a>
+   */
+  @Tool(Some("get_entry"), Some("Get an Entry (notes, emails and completed tasks) by ID"))
+  def getEntry(
+      @Param("Entry ID") id: Long
+  ): String =
+    getRequest[EntryWrapper](s"entries/$id").toJson

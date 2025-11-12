@@ -18,15 +18,7 @@ package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.model.{
-  LostReasonListWrapper,
-  MilestoneListWrapper,
-  OpportunityListWrapper,
-  OpportunityValueWrapper,
-  Pagination,
-  PipelineListWrapper
-}
-import com.zestia.capsulemcp.server.tools.common.ToolDescriptions.*
+import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
 import zio.json.*
@@ -34,49 +26,40 @@ import zio.json.*
 object OpportunityTools:
 
   /**
+   * Manually registered tool
+   *
    * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
    */
-  @Tool(
-    Some("describe_list_opportunities"),
-    Some("Returns a detailed description of how to use the `list_opportunities` tool.")
-  )
-  def describeSearchOpportunities(): String =
-    listToolDescription("opportunities", opportunityFieldReference)
-
-  /**
-   * See <a href="https://developer.capsulecrm.com/v2/operations/Filter#runAdHocFilterQuery"</a>
-   */
-  @Tool(
-    Some("list_opportunities"),
-    Some(
-      "List Opportunities with comprehensive filtering ability. Refer to `describe_list_opportunities` for tool description and usage"
-    )
-  )
   def listOpportunities(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param(ToolParams.filterDescription) filter: Filter
+      pagination: Option[Pagination],
+      filter: Filter
   ): String =
     filterRequest[OpportunityListWrapper]("opportunities/filters/results", filter, pagination).toJson
 
-  @Tool(
-    Some("describe_calculate_value_of_opportunities"),
-    Some("Returns a detailed description of how to use the `calculate_value_of_opportunities` tool.")
-  )
-  def describeCalculateValueOfOpportunities(): String = calculateValueOfOpportunitiesToolDescription
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Opportunity#showOpportunity"</a>
+   */
+  @Tool(Some("get_opportunity"), Some("Get an Opportunity by ID"))
+  def getOpportunity(
+      @Param("Opportunity ID") id: Long
+  ): String =
+    getRequest[OpportunityWrapper](s"opportunities/$id").toJson
 
-  @Tool(
-    Some("calculate_value_of_opportunities"),
-    Some("Get Total & Projected Values for Opportunities. See `describe_calculate_value_of_opportunities` for usage")
-  )
-  def calculateValueOfOpportunities(@Param(ToolParams.filterDescription) filter: Filter): String =
-    filterRequest[OpportunityValueWrapper]("opportunities/value", filter).toJson
+  /**
+   * Manually registered tool
+   */
+  def calculateValueOfOpportunities(
+      pagination: Option[Pagination],
+      filter: Filter
+  ): String =
+    filterRequest[OpportunityValueWrapper]("opportunities/value", filter, pagination).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Pipeline#listPipelines"</a>
    */
   @Tool(Some("list_pipelines"), Some("List Sales Pipelines for Opportunities, with optional searching by name"))
   def listPipelines(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Search Pipelines by name", required = false) query: Option[String] = None
   ): String =
     getRequest[PipelineListWrapper](
@@ -86,26 +69,44 @@ object OpportunityTools:
     ).toJson
 
   /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Pipeline#showPipeline"</a>
+   */
+  @Tool(Some("get_pipeline"), Some("Get a Pipeline by ID"))
+  def getPipeline(
+      @Param("Pipeline ID") id: Long
+  ): String =
+    getRequest[PipelineWrapper](s"pipelines/$id").toJson
+
+  /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestones"</a>
    */
   @Tool(
     Some("list_milestones"),
     Some(
-      "List Milestones across all Sales Pipelines. To list Milestones on a specific Pipeline, use `list_milestones_by_pipeline_id`"
+      "List Milestones across all Sales Pipelines. To list Milestones on a specific Pipeline, use `list_milestones_by_pipeline`"
     )
   )
   def listMilestones(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     getRequest[MilestoneListWrapper]("milestones/all", pagination).toJson
 
   /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#showMilestone"</a>
+   */
+  @Tool(Some("get_milestone"), Some("Get a Milestone by ID"))
+  def getMilestone(
+      @Param("Milestone ID") id: Long
+  ): String =
+    getRequest[MilestoneWrapper](s"milestones/$id").toJson
+
+  /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestonesForPipeline"</a>
    */
-  @Tool(Some("list_milestones_by_pipeline_id"), Some("List Milestones associated with a Sales Pipeline"))
+  @Tool(Some("list_milestones_by_pipeline"), Some("List Milestones associated with a Sales Pipeline"))
   def listMilestonesByPipelineId(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
-      @Param("Sales Pipeline ID", required = true) pipelineId: Long
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Sales Pipeline ID") pipelineId: Long
   ): String =
     getRequest[MilestoneListWrapper](s"pipelines/$pipelineId/milestones", pagination).toJson
 
@@ -119,7 +120,7 @@ object OpportunityTools:
     )
   )
   def listLostReasons(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Search Lost Reasons by name", required = false) query: Option[String] = None
   ): String =
     getRequest[LostReasonListWrapper](
@@ -127,3 +128,12 @@ object OpportunityTools:
       pagination,
       queryParams = query.fold(Map.empty[String, String])(q => Map("q" -> q))
     ).toJson
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Lost_Reason#showLostReason"</a>
+   */
+  @Tool(Some("get_lost_reason"), Some("Get a Lost Reason by ID"))
+  def getLostReason(
+      @Param("Lost Reason ID") id: Long
+  ): String =
+    getRequest[LostReasonWrapper](s"lostreasons/$id").toJson

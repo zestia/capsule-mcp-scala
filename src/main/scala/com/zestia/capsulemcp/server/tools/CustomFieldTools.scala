@@ -17,22 +17,52 @@
 package com.zestia.capsulemcp.server.tools
 
 import com.tjclp.fastmcp.core.{Param, Tool}
-import com.zestia.capsulemcp.model.{FieldDefinitionListWrapper, Pagination}
+import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.json.*
 
 object CustomFieldTools:
 
-  private def listCustomFieldsForEntity(entityPath: String, pagination: Pagination): String =
+  private def getCustomFieldForEntity(entityPath: String, id: Long): String =
+    getRequest[FieldDefinitionWrapper](s"$entityPath/fields/definitions/$id").toJson
+
+  private def listCustomFieldsForEntity(entityPath: String, pagination: Option[Pagination]): String =
     getRequest[FieldDefinitionListWrapper](s"$entityPath/fields/definitions", pagination).toJson
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
+   */
+  @Tool(Some("get_contact_custom_field"), Some("Get Contact Custom Field Definition by ID"))
+  def getContactCustomField(
+      @Param("Custom Field Definition ID") id: Long
+  ): String =
+    getCustomFieldForEntity("parties", id)
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
+   */
+  @Tool(Some("get_opportunity_custom_field"), Some("Get Opportunity Custom Field Definition by ID"))
+  def getOpportunityCustomField(
+      @Param("Custom Field Definition ID") id: Long
+  ): String =
+    getCustomFieldForEntity("opportunities", id)
+
+  /**
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
+   */
+  @Tool(Some("get_project_custom_field"), Some("Get Project Custom Field Definition by ID"))
+  def getProjectCustomField(
+      @Param("Custom Field Definition ID") id: Long
+  ): String =
+    getCustomFieldForEntity("kases", id)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
   @Tool(Some("list_contact_custom_fields"), Some("List Custom Fields defined for Contacts"))
   def listContactCustomFields(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     listCustomFieldsForEntity("parties", pagination)
 
@@ -41,7 +71,7 @@ object CustomFieldTools:
    */
   @Tool(Some("list_opportunity_custom_fields"), Some("List Custom Fields defined for Opportunities"))
   def listOpportunityCustomFields(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     listCustomFieldsForEntity("opportunities", pagination)
 
@@ -50,6 +80,6 @@ object CustomFieldTools:
    */
   @Tool(Some("list_project_custom_fields"), Some("List Custom Fields defined for Projects"))
   def listProjectCustomFields(
-      @Param(ToolParams.paginationDescription, required = ToolParams.paginationRequired) pagination: Pagination
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     listCustomFieldsForEntity("kases", pagination)

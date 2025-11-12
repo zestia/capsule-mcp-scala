@@ -23,6 +23,6 @@ import zio.json.*
 /**
  * See <a href="https://developer.capsulecrm.com/v2/models/filter"</a>
  */
-case class Filter(conditions: List[Condition]) derives JsonDecoder, JsonEncoder
+case class Filter(conditions: List[Condition]) derives JsonEncoder
 
-case class FilterRequestWrapper(filter: Filter) derives JsonDecoder, JsonEncoder
+case class FilterRequestWrapper(filter: Filter) derives JsonEncoder

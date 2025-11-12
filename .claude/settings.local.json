@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sbt scalafmtCheckAll:*)",
+      "Bash(sbt scalafmtAll:*)",
+      "Bash(sbt test)",
+      "Bash(sbt compile)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

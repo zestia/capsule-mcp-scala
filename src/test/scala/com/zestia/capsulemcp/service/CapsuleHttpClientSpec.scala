@@ -73,13 +73,26 @@ class CapsuleHttpClientSpec extends AnyFlatSpec with Matchers:
       val uri: Uri = client.constructUri(
         "https://api.example.com/api/v2",
         "parties",
-        Pagination(page = 2, perPage = 50),
+        Some(Pagination(page = 2, perPage = 50)),
         Map("embed" -> "meta,fields")
       )
 
       // then
       uri.toString shouldBe "https://api.example.com/api/v2/parties?embed=meta,fields&page=2&perPage=50"
     }
+
+  it should "set default pagination parameters if not specified" in new CapsuleHttpClientFixture {
+    // given
+    val uri: Uri = client.constructUri(
+      "https://api.example.com/api/v2",
+      "parties",
+      None,
+      Map("embed" -> "meta,fields")
+    )
+
+    // then
+    uri.toString shouldBe "https://api.example.com/api/v2/parties?embed=meta,fields&page=1&perPage=100"
+  }
 
   "getRequest" should "successfully deserialize response from GET request" in {
     // given
@@ -107,14 +120,14 @@ class CapsuleHttpClientSpec extends AnyFlatSpec with Matchers:
     val client = new TestCapsuleHttpClient(backend)
 
     // when
-    val result: ContactListWrapper = client.getRequest[ContactListWrapper](
+    val wrapper = client.getRequest[ContactListWrapper](
       "parties",
-      Pagination(page = 1, perPage = 10)
+      Some(Pagination(page = 1, perPage = 10))
     )
 
     // then
-    result.parties should have size 1
-    result.parties.head.id shouldBe 123
+    wrapper.response.parties should have size 1
+    wrapper.response.parties.head.id shouldBe 123
   }
 
   "filterRequest" should "send POST request with filter body" in {
@@ -151,18 +164,18 @@ class CapsuleHttpClientSpec extends AnyFlatSpec with Matchers:
     val client = new TestCapsuleHttpClient(backend)
 
     // when
-    val result = client.filterRequest[ActivityListWrapper](
+    val wrapper = client.filterRequest[ActivityListWrapper](
       "activities/filters/results",
       Filter(
         conditions = List(
           NumberCondition(field = "user", operator = "is", value = 123)
         )
       ),
-      Pagination(page = 1, perPage = 10)
+      Some(Pagination(page = 1, perPage = 10))
     )
 
     // then
-    result.activities should have size 1
+    wrapper.response.activities should have size 1
   }
 
   private class TestCapsuleHttpClient(protected val backend: SttpBackend[Identity, Any]) extends BaseCapsuleHttpClient:
