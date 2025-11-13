@@ -36,7 +36,7 @@ sealed trait Condition:
 final case class StringCondition(
     field: String,
     operator: String,
-    value: String
+    value: Option[String]
 ) extends Condition derives JsonDecoder, JsonEncoder
 
 final case class NumberCondition(
@@ -69,7 +69,9 @@ object Condition:
   implicit val encoder: JsonEncoder[Condition] =
     JsonEncoder[Json].contramap { condition =>
       val valueFieldValue = condition match {
-        case StringCondition(_, _, value) =>
+        case StringCondition(_, _, None) =>
+          Json.Null
+        case StringCondition(_, _, Some(value)) =>
           Json.Str(value)
         case NumberCondition(_, _, value) =>
           Json.Num(value)
@@ -99,8 +101,10 @@ class ConditionDeserializer extends JsonDeserializer[Condition]:
     val operator = node.get("operator").asText()
     val valueNode = node.get("value")
 
-    if (valueNode.isTextual) {
-      StringCondition(field, operator, valueNode.asText())
+    if (valueNode.isNull) {
+      StringCondition(field, operator, None)
+    } else if (valueNode.isTextual) {
+      StringCondition(field, operator, Some(valueNode.asText()))
     } else if (valueNode.isNumber) {
       NumberCondition(field, operator, valueNode.asLong())
     } else if (valueNode.isBoolean) {
