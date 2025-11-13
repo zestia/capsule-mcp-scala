@@ -30,6 +30,8 @@ lazy val root = (project in file("."))
       // Testing
       "org.scalatest" %% "scalatest" % "3.2.19" % Test,
       "com.networknt" % "json-schema-validator" % "2.0.0" % Test,
-      "io.circe" %% "circe-parser" % "0.14.15" % Test
+      "io.circe" %% "circe-parser" % "0.14.15" % Test,
+      "dev.zio" %% "zio-test" % "2.1.22" % Test,
+      "dev.zio" %% "zio-test-sbt" % "2.1.22" % Test
     )
   )

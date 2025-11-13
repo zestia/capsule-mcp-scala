@@ -47,20 +47,29 @@ object McpServer extends ZIOAppDefault with FileLogging:
       server <- ZIO.succeed(FastMcpServer("McpServer"))
       // Process tools using the scanAnnotations macro extension method
       _ <- ZIO.attempt {
-        // This macro finds all methods with @Tool, @Prompt or @Resource annotations
-        // and registers them with the server
-        server
-          .scanAnnotations[OpportunityTools.type]
-          .scanAnnotations[ContactTools.type]
-          .scanAnnotations[ProjectTools.type]
-          .scanAnnotations[CustomFieldTools.type]
-          .scanAnnotations[TagTools.type]
-          .scanAnnotations[UserTools.type]
-          .scanAnnotations[TeamTools.type]
-          .scanAnnotations[TrackTools.type]
-          .scanAnnotations[ActivityTools.type]
+        registerAnnotatedTools(server)
       }
       // Manually register tools with custom schemas
+      _ <- registerManualTools(server)
+      // Run the server
+      _ <- server.runStdio()
+    yield ()
+
+  private[server] def registerAnnotatedTools(server: FastMcpServer): FastMcpServer =
+    // This macro finds all methods with @Tool, @Prompt or @Resource annotations and registers them with the server
+    server
+      .scanAnnotations[OpportunityTools.type]
+      .scanAnnotations[ContactTools.type]
+      .scanAnnotations[ProjectTools.type]
+      .scanAnnotations[CustomFieldTools.type]
+      .scanAnnotations[TagTools.type]
+      .scanAnnotations[UserTools.type]
+      .scanAnnotations[TeamTools.type]
+      .scanAnnotations[TrackTools.type]
+      .scanAnnotations[ActivityTools.type]
+
+  private[server] def registerManualTools(server: FastMcpServer): ZIO[Any, Throwable, Unit] =
+    for
       _ <- server.tool(
         name = "list_tasks",
         description = Some(
@@ -75,40 +84,30 @@ object McpServer extends ZIOAppDefault with FileLogging:
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listActivities)(args)),
         inputSchema = Right(ActivitySchemas.filterSchema)
       )
-      _ <- {
-        server.tool(
-          name = "list_contacts",
-          description = Some("List Contacts with comprehensive filtering ability"),
-          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listContacts)(args)),
-          inputSchema = Right(ContactSchemas.filterSchema)
-        )
-      }
-      _ <- {
-        server.tool(
-          name = "list_projects",
-          description = Some(
-            "List Projects with comprehensive filtering ability. Any references to kase/case are internal/legacy names for Projects"
-          ),
-          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listProjects)(args)),
-          inputSchema = Right(ProjectSchemas.filterSchema)
-        )
-      }
-      _ <- {
-        server.tool(
-          name = "list_opportunities",
-          description = Some("List Opportunities with comprehensive filtering ability"),
-          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listOpportunities)(args)),
-          inputSchema = Right(OpportunitySchemas.filterSchema)
-        )
-      }
-      _ <- {
-        server.tool(
-          name = "calculate_value_of_opportunities",
-          description = Some("Get Total & Projected Values for Opportunities with comprehensive filtering ability"),
-          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(calculateValueOfOpportunities)(args)),
-          inputSchema = Right(OpportunitySchemas.filterSchema)
-        )
-      }
-      // Run the server
-      _ <- server.runStdio()
+      _ <- server.tool(
+        name = "list_contacts",
+        description = Some("List Contacts with comprehensive filtering ability"),
+        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listContacts)(args)),
+        inputSchema = Right(ContactSchemas.filterSchema)
+      )
+      _ <- server.tool(
+        name = "list_projects",
+        description = Some(
+          "List Projects with comprehensive filtering ability. Any references to kase/case are internal/legacy names for Projects"
+        ),
+        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listProjects)(args)),
+        inputSchema = Right(ProjectSchemas.filterSchema)
+      )
+      _ <- server.tool(
+        name = "list_opportunities",
+        description = Some("List Opportunities with comprehensive filtering ability"),
+        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listOpportunities)(args)),
+        inputSchema = Right(OpportunitySchemas.filterSchema)
+      )
+      _ <- server.tool(
+        name = "calculate_value_of_opportunities",
+        description = Some("Get Total & Projected Values for Opportunities with comprehensive filtering ability"),
+        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(calculateValueOfOpportunities)(args)),
+        inputSchema = Right(OpportunitySchemas.filterSchema)
+      )
     yield ()
