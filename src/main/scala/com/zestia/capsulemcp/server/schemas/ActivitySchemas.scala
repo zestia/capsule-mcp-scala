@@ -24,8 +24,8 @@ import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
 object ActivitySchemas extends HasFilterSchema:
 
   override protected val filterFields: List[FilterField] = List(
-    FilterField("user", ValueType.Number, "User ID"),
-    FilterField("taskCategory", ValueType.Number, "Task Category ID"),
-    FilterField("activityType", ValueType.Number, "Activity Type ID"),
-    FilterField("addedOn", ValueType.Date, "Date the activity was added (format: YYYY-MM-DD)")
+    ExactMatchFilterField("user", "User ID", ValueType.Number),
+    ExactMatchFilterField("taskCategory", "Task Category ID", ValueType.Number),
+    ExactMatchFilterField("activityType", "Activity Type ID", ValueType.Number),
+    DateFilterField("addedOn", "Date the activity was added (format: YYYY-MM-DD)")
   )

@@ -168,20 +168,90 @@ object SchemaTypes:
       "enum" -> Json.arr(field.operators.toStrings.map(Json.fromString)*)
     )
 
-  case class FilterField(
-      name: String,
-      valueType: ValueType,
-      description: String,
-      isPattern: Boolean = false, // if true, use regex pattern for matching field name instead of const
-      mandatory: Boolean = false
-  ):
+  /**
+   * Base trait for filter fields
+   */
+  sealed trait FilterField:
+    val name: String
+    val description: String
+    val isPattern: Boolean
+    val mandatory: Boolean
+    def valueType: ValueType
+    def operators: List[Operator]
 
-    /**
-     * Derive operators from valueType
-     */
-    def operators: List[Operator] = valueType match
-      case ValueType.Boolean => FilterOperators.booleanOperators
-      case ValueType.String => FilterOperators.stringOperators
-      case ValueType.Date => FilterOperators.dateOperators
-      case ValueType.Number => FilterOperators.numberOperators
-      case ValueType.Money => FilterOperators.numberOperators
+  /**
+   * String filter field with default string operators (is, is not, contains, starts with, ends with)
+   */
+  case class StringFilterField(
+      name: String,
+      description: String,
+      isPattern: Boolean = false,
+      mandatory: Boolean = false,
+      operatorsOverride: Option[List[Operator]] = None
+  ) extends FilterField:
+    def valueType: ValueType = ValueType.String
+    def operators: List[Operator] = operatorsOverride.getOrElse(FilterOperators.stringOperators)
+
+  /**
+   * Number filter field with default number operators (is, is not, is greater than, is less than)
+   */
+  case class NumberFilterField(
+      name: String,
+      description: String,
+      isPattern: Boolean = false,
+      mandatory: Boolean = false,
+      operatorsOverride: Option[List[Operator]] = None
+  ) extends FilterField:
+    def valueType: ValueType = ValueType.Number
+    def operators: List[Operator] = operatorsOverride.getOrElse(FilterOperators.numberOperators)
+
+  /**
+   * Boolean filter field with default boolean operators (is, is not)
+   */
+  case class BooleanFilterField(
+      name: String,
+      description: String,
+      isPattern: Boolean = false,
+      operatorsOverride: Option[List[Operator]] = None
+  ) extends FilterField:
+    def valueType: ValueType = ValueType.Boolean
+    def operators: List[Operator] = operatorsOverride.getOrElse(FilterOperators.booleanOperators)
+    val mandatory: Boolean = true
+
+  /**
+   * Date filter field with default date operators (is, is not, is before, is after)
+   */
+  case class DateFilterField(
+      name: String,
+      description: String,
+      isPattern: Boolean = false,
+      mandatory: Boolean = false,
+      operatorsOverride: Option[List[Operator]] = None
+  ) extends FilterField:
+    def valueType: ValueType = ValueType.Date
+    def operators: List[Operator] = operatorsOverride.getOrElse(FilterOperators.dateOperators)
+
+  /**
+   * Money filter field with default number operators
+   */
+  case class MoneyFilterField(
+      name: String,
+      description: String,
+      isPattern: Boolean = false,
+      mandatory: Boolean = false,
+      operatorsOverride: Option[List[Operator]] = None
+  ) extends FilterField:
+    def valueType: ValueType = ValueType.Money
+    def operators: List[Operator] = operatorsOverride.getOrElse(FilterOperators.numberOperators)
+
+  /**
+   * For fields that only support 'is' and 'is not' operators even if their field type might indicate otherwise
+   */
+  case class ExactMatchFilterField(
+      name: String,
+      description: String,
+      valueType: ValueType, // typically Number or String
+      isPattern: Boolean = false,
+      mandatory: Boolean = false
+  ) extends FilterField:
+    def operators: List[Operator] = FilterOperators.booleanOperators

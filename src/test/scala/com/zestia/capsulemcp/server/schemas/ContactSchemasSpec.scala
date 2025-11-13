@@ -25,10 +25,14 @@ import scala.jdk.CollectionConverters.*
 
 class ContactSchemasSpec extends AnyFlatSpec with Matchers:
 
-  "ContactSchemas.contactFilterSchema" should "produce valid JSON schema" in new ContactSchemasFixture {
+  "ContactSchemas.filterSchema" should "produce valid JSON schema" in new ContactSchemasFixture {
     val exampleBody: String =
       """
-        |{}
+        |{
+        |  "filter": {
+        |    "conditions": []
+        |  }
+        |}
         |""".stripMargin
 
     val errors: List[ValidationError] = filterSchema.validate(exampleBody, InputFormat.JSON).asScala.toList
@@ -92,4 +96,4 @@ class ContactSchemasSpec extends AnyFlatSpec with Matchers:
 
 private trait ContactSchemasFixture:
   private val schemaRegistry = SchemaRegistry.withDefaultDialect(SpecificationVersion.DRAFT_7)
-  protected val filterSchema: Schema = schemaRegistry.getSchema(ContactSchemas.contactFilterSchema)
+  protected val filterSchema: Schema = schemaRegistry.getSchema(ContactSchemas.filterSchema)

@@ -25,10 +25,14 @@ import scala.jdk.CollectionConverters.*
 
 class ProjectSchemasSpec extends AnyFlatSpec with Matchers:
 
-  "ProjectSchemas.projectFilterSchema" should "produce valid JSON schema" in new ProjectSchemasFixture {
+  "ProjectSchemas.filterSchema" should "produce valid JSON schema" in new ProjectSchemasFixture {
     val exampleBody: String =
       """
-        |{}
+        |{
+        |  "filter": {
+        |    "conditions": []
+        |  }
+        |}
         |""".stripMargin
 
     val errors: List[ValidationError] = filterSchema.validate(exampleBody, InputFormat.JSON).asScala.toList
@@ -91,4 +95,4 @@ class ProjectSchemasSpec extends AnyFlatSpec with Matchers:
 
 private trait ProjectSchemasFixture:
   private val schemaRegistry = SchemaRegistry.withDefaultDialect(SpecificationVersion.DRAFT_7)
-  protected val filterSchema: Schema = schemaRegistry.getSchema(ProjectSchemas.projectFilterSchema)
+  protected val filterSchema: Schema = schemaRegistry.getSchema(ProjectSchemas.filterSchema)

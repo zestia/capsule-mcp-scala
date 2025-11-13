@@ -16,7 +16,7 @@
 
 package com.zestia.capsulemcp.server.schemas
 
-import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
+import com.zestia.capsulemcp.server.schemas.SchemaTypes.{ValueType, *}
 
 /**
  * JSON Schemas for Project-related Tools
@@ -24,27 +24,27 @@ import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
 object ProjectSchemas extends HasFilterSchema with HasCustomFieldFilterFields:
 
   override protected val filterFields: List[FilterField] = List(
-    FilterField("id", ValueType.Number, "Project ID"),
-    FilterField("name", ValueType.String, "Project name"),
-    FilterField("status", ValueType.String, "Project status (open, closed)"),
-    FilterField("primaryContact", ValueType.Number, "Primary contact ID"),
-    FilterField("primaryContactName", ValueType.String, "Primary contact name"),
-    FilterField("board", ValueType.String, "Board name"),
-    FilterField("board", ValueType.Number, "Board ID"),
-    FilterField("stage", ValueType.String, "Stage name"),
-    FilterField("stage", ValueType.Number, "Stage ID"),
-    FilterField("tag", ValueType.Number, "Tag ID"),
-    FilterField("tag", ValueType.String, "Tag name"),
-    FilterField("owner", ValueType.String, "Owner name"),
-    FilterField("owner", ValueType.Number, "Owner ID"),
-    FilterField("team", ValueType.String, "Team name"),
-    FilterField("team", ValueType.Number, "Team ID"),
-    FilterField("isOpen", ValueType.Boolean, "Is open", mandatory = true),
-    FilterField("hasTags", ValueType.Boolean, "Has tags", mandatory = true),
-    FilterField("hasOpenTasks", ValueType.Boolean, "Has open tasks", mandatory = true),
-    FilterField("addedOn", ValueType.Date, "Date added"),
-    FilterField("updatedOn", ValueType.Date, "Date updated"),
-    FilterField("closedOn", ValueType.Date, "Date closed on"),
-    FilterField("expectedCloseOn", ValueType.Date, "Expected date close on"),
-    FilterField("startOn", ValueType.Date, "Start on date")
+    ExactMatchFilterField("id", "Project ID", ValueType.Number),
+    StringFilterField("name", "Project name"),
+    ExactMatchFilterField("status", "Project status (open, closed)", ValueType.String),
+    ExactMatchFilterField("primaryContact", "Primary contact ID", ValueType.Number),
+    StringFilterField("primaryContactName", "Primary contact name"),
+    ExactMatchFilterField("board", "Board name", ValueType.String),
+    ExactMatchFilterField("board", "Board ID", ValueType.Number),
+    ExactMatchFilterField("stage", "Stage name", ValueType.String),
+    ExactMatchFilterField("stage", "Stage ID", ValueType.Number),
+    ExactMatchFilterField("tag", "Tag ID", ValueType.Number),
+    ExactMatchFilterField("tag", "Tag name", ValueType.String),
+    ExactMatchFilterField("owner", "User owner name", ValueType.String),
+    ExactMatchFilterField("owner", "User owner ID", ValueType.Number),
+    ExactMatchFilterField("team", "Team owner name", ValueType.String),
+    ExactMatchFilterField("team", "Team owner ID", ValueType.Number),
+    BooleanFilterField("isOpen", "Is open"),
+    BooleanFilterField("hasTags", "Has tags"),
+    BooleanFilterField("hasOpenTasks", "Has open tasks"),
+    DateFilterField("addedOn", "Date added"),
+    DateFilterField("updatedOn", "Date updated"),
+    DateFilterField("closedOn", "Date closed on"),
+    DateFilterField("expectedCloseOn", "Expected date close on"),
+    DateFilterField("startOn", "Start on date")
   ) ++ customFieldFilterFields

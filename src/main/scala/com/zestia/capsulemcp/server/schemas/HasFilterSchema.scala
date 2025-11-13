@@ -9,12 +9,10 @@ trait HasFilterSchema:
    */
   protected val filterFields: List[FilterField] = List()
 
-  val filterSchema: String = SchemaBuilders.objectSchema(
-    Map(
+  def filterSchema: String = SchemaBuilders.objectSchema(
+    properties = Map(
       "pagination" -> paginationSchema,
-      "filter" -> buildFilterSchema(filterFields),
-      "required" -> Json.arr(
-        Json.fromString("filter")
-      )
-    )
+      "filter" -> buildFilterSchema(filterFields)
+    ),
+    required = List("filter")
   )

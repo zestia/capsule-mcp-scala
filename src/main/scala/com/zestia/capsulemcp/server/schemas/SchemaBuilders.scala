@@ -100,33 +100,11 @@ object SchemaBuilders:
   /**
    * Build a complete object schema from a map of property names to their schemas
    */
-  def objectSchema(properties: Map[String, Json]): String =
+  def objectSchema(properties: Map[String, Json], required: List[String] = List.empty): String =
     Json
       .obj(
         "type" -> Json.fromString("object"),
-        "properties" -> Json.obj(properties.toSeq*)
+        "properties" -> Json.obj(properties.toSeq*),
+        "required" -> Json.arr(required.map(Json.fromString)*)
       )
       .spaces2
-
-  /**
-   * Build a complete object schema with additional options (required fields, etc.)
-   */
-  def objectSchemaWithOptions(
-      properties: Map[String, Json],
-      required: List[String] = List.empty,
-      additionalProperties: Boolean = true
-  ): String =
-    val base = Json.obj(
-      "type" -> Json.fromString("object"),
-      "properties" -> Json.obj(properties.toSeq*)
-    )
-
-    val withRequired =
-      if (required.nonEmpty)
-        base.deepMerge(Json.obj("required" -> Json.arr(required.map(Json.fromString)*)))
-      else base
-
-    val withAdditional =
-      withRequired.deepMerge(Json.obj("additionalProperties" -> Json.fromBoolean(additionalProperties)))
-
-    withAdditional.spaces2

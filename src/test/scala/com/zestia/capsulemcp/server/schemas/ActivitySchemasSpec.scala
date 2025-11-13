@@ -25,10 +25,14 @@ import scala.jdk.CollectionConverters.*
 
 class ActivitySchemasSpec extends AnyFlatSpec with Matchers:
 
-  "ActivitySchemas.activityFilterSchema" should "produce valid JSON schema" in new ActivitySchemasFixture {
+  "ActivitySchemas.filterSchema" should "produce valid JSON schema" in new ActivitySchemasFixture {
     val exampleBody: String =
       """
-        |{}
+        |{
+        |  "filter": {
+        |    "conditions": []
+        |  }
+        |}
         |""".stripMargin
 
     val errors: List[ValidationError] = filterSchema.validate(exampleBody, InputFormat.JSON).asScala.toList
@@ -75,4 +79,4 @@ class ActivitySchemasSpec extends AnyFlatSpec with Matchers:
 
 private trait ActivitySchemasFixture:
   private val schemaRegistry = SchemaRegistry.withDefaultDialect(SpecificationVersion.DRAFT_7)
-  protected val filterSchema: Schema = schemaRegistry.getSchema(ActivitySchemas.activityFilterSchema)
+  protected val filterSchema: Schema = schemaRegistry.getSchema(ActivitySchemas.filterSchema)

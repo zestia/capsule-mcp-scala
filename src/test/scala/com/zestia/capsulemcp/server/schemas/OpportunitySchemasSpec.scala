@@ -25,10 +25,14 @@ import scala.jdk.CollectionConverters.*
 
 class OpportunitySchemasSpec extends AnyFlatSpec with Matchers:
 
-  "OpportunitySchemas.opportunityFilterSchema" should "produce valid JSON schema" in new OpportunitySchemasFixture {
+  "OpportunitySchemas.filterSchema" should "produce valid JSON schema" in new OpportunitySchemasFixture {
     val exampleBody: String =
       """
-        |{}
+        |{
+        |  "filter": {
+        |    "conditions": []
+        |  }
+        |}
         |""".stripMargin
 
     val errors: List[ValidationError] = filterSchema.validate(exampleBody, InputFormat.JSON).asScala.toList
@@ -91,4 +95,4 @@ class OpportunitySchemasSpec extends AnyFlatSpec with Matchers:
 
 private trait OpportunitySchemasFixture:
   private val schemaRegistry = SchemaRegistry.withDefaultDialect(SpecificationVersion.DRAFT_7)
-  protected val filterSchema: Schema = schemaRegistry.getSchema(OpportunitySchemas.opportunityFilterSchema)
+  protected val filterSchema: Schema = schemaRegistry.getSchema(OpportunitySchemas.filterSchema)
