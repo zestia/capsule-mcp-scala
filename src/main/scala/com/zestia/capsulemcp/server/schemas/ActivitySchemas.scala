@@ -21,40 +21,11 @@ import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
 /**
  * JSON Schemas for Activity-related Tools
  */
-object ActivitySchemas:
+object ActivitySchemas extends HasFilterSchema:
 
-  /**
-   * Valid filter fields for activities
-   */
-  private val activityFilterFields: List[FilterField] = List(
-    FilterField(
-      name = "user",
-      valueType = ValueType.Number,
-      description = "User ID"
-    ),
-    FilterField(
-      name = "taskCategory",
-      valueType = ValueType.Number,
-      description = "Task Category ID"
-    ),
-    FilterField(
-      name = "activityType",
-      valueType = ValueType.Number,
-      description = "Activity Type ID"
-    ),
-    FilterField(
-      name = "addedOn",
-      valueType = ValueType.Date,
-      description = "Date the activity was added (format: YYYY-MM-DD)"
-    )
-  )
-
-  /**
-   * Schema for the list_activities tool
-   */
-  val activityFilterSchema: String = SchemaBuilders.objectSchema(
-    Map(
-      "pagination" -> paginationSchema,
-      "filter" -> buildFilterSchema(activityFilterFields)
-    )
+  override protected val filterFields: List[FilterField] = List(
+    FilterField("user", ValueType.Number, "User ID"),
+    FilterField("taskCategory", ValueType.Number, "Task Category ID"),
+    FilterField("activityType", ValueType.Number, "Activity Type ID"),
+    FilterField("addedOn", ValueType.Date, "Date the activity was added (format: YYYY-MM-DD)")
   )

@@ -21,12 +21,9 @@ import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
 /**
  * JSON Schemas for Opportunity-related Tools
  */
-object OpportunitySchemas extends HasCustomFieldFilterFields:
+object OpportunitySchemas extends HasFilterSchema with HasCustomFieldFilterFields:
 
-  /**
-   * Valid filter fields for opportunities. See https://developer.capsulecrm.com/v2/reference/filters#field-reference
-   */
-  private val opportunityFilterFields: List[FilterField] = List(
+  override protected val filterFields: List[FilterField] = List(
     FilterField("id", ValueType.Number, "Opportunity ID"),
     FilterField("name", ValueType.String, "Opportunity name"),
     FilterField("status", ValueType.String, "Opportunity status (open, won, lost)"),
@@ -60,13 +57,3 @@ object OpportunitySchemas extends HasCustomFieldFilterFields:
     FilterField("expectedCloseOn", ValueType.Date, "Expected date close on"),
     FilterField("lastContactedOn", ValueType.Date, "Last contacted date")
   ) ++ customFieldFilterFields
-
-  /**
-   * Schema for the list_opportunities tool
-   */
-  val opportunityFilterSchema: String = SchemaBuilders.objectSchema(
-    Map(
-      "pagination" -> paginationSchema,
-      "filter" -> buildFilterSchema(opportunityFilterFields)
-    )
-  )

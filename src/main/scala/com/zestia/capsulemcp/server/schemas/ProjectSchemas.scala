@@ -21,12 +21,9 @@ import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
 /**
  * JSON Schemas for Project-related Tools
  */
-object ProjectSchemas extends HasCustomFieldFilterFields:
+object ProjectSchemas extends HasFilterSchema with HasCustomFieldFilterFields:
 
-  /**
-   * Valid filter fields for opportunities. See https://developer.capsulecrm.com/v2/reference/filters#field-reference
-   */
-  private val projectFilterFields: List[FilterField] = List(
+  override protected val filterFields: List[FilterField] = List(
     FilterField("id", ValueType.Number, "Project ID"),
     FilterField("name", ValueType.String, "Project name"),
     FilterField("status", ValueType.String, "Project status (open, closed)"),
@@ -51,13 +48,3 @@ object ProjectSchemas extends HasCustomFieldFilterFields:
     FilterField("expectedCloseOn", ValueType.Date, "Expected date close on"),
     FilterField("startOn", ValueType.Date, "Start on date")
   ) ++ customFieldFilterFields
-
-  /**
-   * Schema for the list_opportunities tool
-   */
-  val projectFilterSchema: String = SchemaBuilders.objectSchema(
-    Map(
-      "pagination" -> paginationSchema,
-      "filter" -> buildFilterSchema(projectFilterFields)
-    )
-  )

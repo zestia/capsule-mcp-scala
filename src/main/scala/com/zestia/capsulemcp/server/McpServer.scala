@@ -73,14 +73,14 @@ object McpServer extends ZIOAppDefault with FileLogging:
         name = "list_activities",
         description = Some("List Activities with basic filtering ability"),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listActivities)(args)),
-        inputSchema = Right(ActivitySchemas.activityFilterSchema)
+        inputSchema = Right(ActivitySchemas.filterSchema)
       )
       _ <- {
         server.tool(
           name = "list_contacts",
           description = Some("List Contacts with comprehensive filtering ability"),
           handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listContacts)(args)),
-          inputSchema = Right(ContactSchemas.contactFilterSchema)
+          inputSchema = Right(ContactSchemas.filterSchema)
         )
       }
       _ <- {
@@ -90,7 +90,7 @@ object McpServer extends ZIOAppDefault with FileLogging:
             "List Projects with comprehensive filtering ability. Any references to kase/case are internal/legacy names for Projects"
           ),
           handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listProjects)(args)),
-          inputSchema = Right(ProjectSchemas.projectFilterSchema)
+          inputSchema = Right(ProjectSchemas.filterSchema)
         )
       }
       _ <- {
@@ -98,7 +98,7 @@ object McpServer extends ZIOAppDefault with FileLogging:
           name = "list_opportunities",
           description = Some("List Opportunities with comprehensive filtering ability"),
           handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listOpportunities)(args)),
-          inputSchema = Right(OpportunitySchemas.opportunityFilterSchema)
+          inputSchema = Right(OpportunitySchemas.filterSchema)
         )
       }
       _ <- {
@@ -106,7 +106,7 @@ object McpServer extends ZIOAppDefault with FileLogging:
           name = "calculate_value_of_opportunities",
           description = Some("Get Total & Projected Values for Opportunities with comprehensive filtering ability"),
           handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(calculateValueOfOpportunities)(args)),
-          inputSchema = Right(OpportunitySchemas.opportunityFilterSchema)
+          inputSchema = Right(OpportunitySchemas.filterSchema)
         )
       }
       // Run the server

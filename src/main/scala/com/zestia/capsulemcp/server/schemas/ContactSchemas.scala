@@ -21,14 +21,11 @@ import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
 /**
  * JSON Schemas for Contact-related Tools
  */
-object ContactSchemas extends HasCustomFieldFilterFields:
+object ContactSchemas extends HasFilterSchema with HasCustomFieldFilterFields:
 
   private val parentOrgCustomFieldNamePattern = "^org\\.custom:\\d+$"
 
-  /**
-   * Valid filter fields for contacts. See https://developer.capsulecrm.com/v2/reference/filters#field-reference
-   */
-  private val contactFilterFields: List[FilterField] = List(
+  override protected val filterFields: List[FilterField] = List(
     FilterField("id", ValueType.Number, "Contact ID"),
     FilterField("name", ValueType.String, "Contact name"),
     FilterField("jobTitle", ValueType.String, "Job Title"),
@@ -88,13 +85,3 @@ object ContactSchemas extends HasCustomFieldFilterFields:
       isPattern = true
     )
   ) ++ customFieldFilterFields
-
-  /**
-   * Schema for the list_activities tool
-   */
-  val contactFilterSchema: String = SchemaBuilders.objectSchema(
-    Map(
-      "pagination" -> paginationSchema,
-      "filter" -> buildFilterSchema(contactFilterFields)
-    )
-  )
