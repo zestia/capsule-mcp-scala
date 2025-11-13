@@ -1,9 +1,26 @@
+/*
+ * Copyright 2025 Zestia Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.zestia.capsulemcp.model
 
 import zio.json.*
 
-// --- Models specific to Party ------------------------------------------
-
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/address"</a>
+ */
 final case class Address(
     id: Long,
     `type`: Option[String],
@@ -15,34 +32,29 @@ final case class Address(
 ) derives JsonDecoder,
       JsonEncoder
 
-final case class EmailAddress(
-    id: Long,
-    `type`: Option[String],
-    address: String
-) derives JsonDecoder,
-      JsonEncoder
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/email_address"</a>
+ */
+final case class EmailAddress(id: Long, `type`: Option[String], address: String) derives JsonDecoder, JsonEncoder
 
-final case class PhoneNumber(
-    id: Long,
-    `type`: Option[String],
-    number: String
-) derives JsonDecoder,
-      JsonEncoder
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/phone_number"</a>
+ */
+final case class PhoneNumber(id: Long, `type`: Option[String], number: String) derives JsonDecoder, JsonEncoder
 
-final case class Website(
-    id: Long,
-    service: String,
-    address: String,
-    `type`: Option[String],
-    url: String
-) derives JsonDecoder,
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/website"</a>
+ */
+final case class Website(id: Long, service: String, address: String, `type`: Option[String], url: String)
+    derives JsonDecoder,
       JsonEncoder
 
 enum PartyType:
   case person, organisation
 
-// --- Party -------------------------------------------------------------
-
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/models/party"</a>
+ */
 @jsonDiscriminator("type")
 sealed trait Party derives JsonDecoder, JsonEncoder:
   val id: Long

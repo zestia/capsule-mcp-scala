@@ -1,58 +1,87 @@
+/*
+ * Copyright 2025 Zestia Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.zestia.capsulemcp.model.filter
 
-import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer, JsonNode}
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import sttp.tapir.Schema.annotations.description
 import zio.json.ast.Json
-import zio.json.{JsonDecoder, JsonEncoder, jsonHint}
+import zio.json.{JsonDecoder, JsonEncoder}
 
 import scala.util.Try
 
-// TODO: bring back operator enum so it is in the schema and AI makes less mistakes
-// TODO: use enum for field names so they are in the schema and AI makes less mistakes
-// TODO: rename 'SimpleConditions' etc
-// TODO: do I still need @jsonHints 
+/**
+ * See <a href="https://developer.capsulecrm.com/v2/reference/filters"</a>
+ */
+@JsonDeserialize(`using` = classOf[ConditionDeserializer])
+sealed trait Condition:
+  val field: String
+  val operator: String
 
-// Jackson-style deserialisation needed for the under the hood @ToolParam binders in fast-mcp-scala
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes(
-  Array(
-    new JsonSubTypes.Type(
-      value = classOf[SimpleStringCondition],
-      name = "string"
-    ),
-    new JsonSubTypes.Type(
-      value = classOf[SimpleNumberCondition],
-      name = "number"
-    ),
-    new JsonSubTypes.Type(
-      value = classOf[SimpleDateCondition],
-      name = "date"
-    ),
-    new JsonSubTypes.Type(
-      value = classOf[SimpleBooleanCondition],
-      name = "boolean"
-    )
-  )
-)
-sealed trait SimpleCondition:
-  @description("the name of the field to filter on") val field: String
-  @description(
-    "the operator to use (must be valid for the field type)"
-  ) val operator: String
-  @description("the type of the field value") val `type`: String
+final case class StringCondition(
+    field: String,
+    operator: String,
+    value: Option[String]
+) extends Condition derives JsonDecoder, JsonEncoder
 
-object SimpleCondition:
-  implicit val encoder: JsonEncoder[SimpleCondition] =
+final case class NumberCondition(
+    field: String,
+    operator: String,
+    value: Long
+) extends Condition derives JsonDecoder, JsonEncoder
+
+final case class BooleanCondition(
+    field: String,
+    operator: String,
+    value: Boolean
+) extends Condition derives JsonDecoder, JsonEncoder
+
+final case class MoneyCondition(
+    field: String,
+    operator: String,
+    value: MoneyValue
+) extends Condition derives JsonDecoder, JsonEncoder
+
+final case class MoneyValue(
+    currency: String,
+    amount: Double
+) derives JsonDecoder,
+      JsonEncoder
+
+object Condition:
+
+  // ZIO serialisation used in HttpClient
+  implicit val encoder: JsonEncoder[Condition] =
     JsonEncoder[Json].contramap { condition =>
       val valueFieldValue = condition match {
-        case SimpleStringCondition(_, _, _, value) =>
+        case StringCondition(_, _, None) =>
+          Json.Null
+        case StringCondition(_, _, Some(value)) =>
           Json.Str(value)
-        case SimpleDateCondition(_, _, _, value) =>
-          Json.Str(value)
-        case SimpleNumberCondition(_, _, _, value) =>
+        case NumberCondition(_, _, value) =>
           Json.Num(value)
-        case SimpleBooleanCondition(_, _, _, value) =>
+        case BooleanCondition(_, _, value) =>
           Json.Bool(value)
+        case MoneyCondition(_, _, value) =>
+          Json.Obj(
+            "currency" -> Json.Str(value.currency),
+            "amount" -> Json.Num(value.amount)
+          )
       }
 
       Json.Obj(
@@ -61,92 +90,29 @@ object SimpleCondition:
         "value" -> valueFieldValue
       )
     }
-  // Custom decoder to automatically convert value to the correct type
-  implicit val decoder: JsonDecoder[SimpleCondition] =
-    JsonDecoder[Json.Obj].mapOrFail { jsonObj =>
-      for {
-        fieldNameJson <- jsonObj.get("field").toRight("missing field")
-        operatorJson <- jsonObj.get("operator").toRight("missing operator")
-        fieldValueJson <- jsonObj
-          .get("value")
-          .toRight("missing value")
 
-        fieldName <- fieldNameJson
-          .as[String]
-          .left
-          .map(_ => "field must be a string")
-        operator <- operatorJson
-          .as[String]
-          .left
-          .map(_ => "operator must be a string")
+class ConditionDeserializer extends JsonDeserializer[Condition]:
 
-        condition <- fieldValueJson match
-          case Json.Str(s) =>
-            Right(
-              SimpleStringCondition(
-                field = fieldName,
-                operator = operator,
-                value = s
-              )
-            )
-          case Json.Num(n) =>
-            Try(n.longValue()).toOption
-              .map(l =>
-                SimpleNumberCondition(
-                  field = fieldName,
-                  operator = operator,
-                  value = l
-                )
-              )
-              .toRight("value is not a valid number")
-          case Json.Bool(b) =>
-            Right(
-              SimpleBooleanCondition(
-                field = fieldName,
-                operator = operator,
-                value = b
-              )
-            )
-          case _ => Left("unsupported value type")
-      } yield condition
+  // Jackson-style deserialization needed by fast-mcp-scala to read Tool argument payloads
+  override def deserialize(p: JsonParser, context: DeserializationContext): Condition =
+    val node: JsonNode = p.getCodec.readTree(p)
+
+    val field = node.get("field").asText()
+    val operator = node.get("operator").asText()
+    val valueNode = node.get("value")
+
+    if (valueNode.isNull) {
+      StringCondition(field, operator, None)
+    } else if (valueNode.isTextual) {
+      StringCondition(field, operator, Some(valueNode.asText()))
+    } else if (valueNode.isNumber) {
+      NumberCondition(field, operator, valueNode.asLong())
+    } else if (valueNode.isBoolean) {
+      BooleanCondition(field, operator, valueNode.asBoolean())
+    } else if (valueNode.isObject) {
+      val currency = valueNode.get("currency").asText()
+      val amount = valueNode.get("amount").asDouble()
+      MoneyCondition(field, operator, MoneyValue(currency, amount))
+    } else {
+      throw new IllegalArgumentException(s"Unsupported value type in condition: ${valueNode.getNodeType}")
     }
-
-@jsonHint("string")
-final case class SimpleStringCondition(
-    `type`: String = "string",
-    field: String,
-    operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: String
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
-
-@jsonHint("date")
-final case class SimpleDateCondition(
-    `type`: String = "date",
-    field: String,
-    operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: String
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
-
-@jsonHint("number")
-final case class SimpleNumberCondition(
-    `type`: String = "number",
-    field: String,
-    operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: Long
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
-
-@jsonHint("boolean")
-final case class SimpleBooleanCondition(
-    `type`: String = "boolean",
-    field: String,
-    operator: String,
-    @description(
-      "the field value to filter on (must be valid for the field type)"
-    ) value: Boolean
-) extends SimpleCondition derives JsonDecoder, JsonEncoder
