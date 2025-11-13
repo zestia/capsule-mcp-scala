@@ -28,7 +28,17 @@ object CustomFieldTools:
     getRequest[FieldDefinitionWrapper](s"$entityPath/fields/definitions/$id").toJson
 
   private def listCustomFieldsForEntity(entityPath: String, pagination: Option[Pagination]): String =
-    getRequest[FieldDefinitionListWrapper](s"$entityPath/fields/definitions", pagination).toJson
+    getRequest[FieldDefinitionListWrapper](
+      s"$entityPath/fields/definitions",
+      pagination,
+      Map("includeDataTagFields" -> false)
+    ).toJson
+
+  private def listCustomFieldDefinitionsForTag(entityPath: String, id: Long, pagination: Option[Pagination]): String =
+    getRequest[FieldDefinitionListWrapper](
+      s"$entityPath/tags/$id/definitions",
+      pagination
+    ).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
@@ -83,3 +93,32 @@ object CustomFieldTools:
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
     listCustomFieldsForEntity("kases", pagination)
+
+  @Tool(
+    Some("list_custom_fields_for_contact_data_tag"),
+    Some("List Custom Fields defined for a Contact DataTag (a type of Tag used to group Custom Fields together)")
+  )
+  def listCustomFieldsContactDataTag(
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Tag ID") id: Long
+  ): String =
+    listCustomFieldDefinitionsForTag("parties", id, pagination)
+
+  @Tool(
+    Some("list_custom_fields_for_opportunity_data_tag"),
+    Some("List Custom Fields defined for an Opportunity DataTag (a type of Tag used to group Custom Fields together)")
+  )
+  def listCustomFieldsOpportunityDataTag(
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Tag ID") id: Long
+  ): String =
+    listCustomFieldDefinitionsForTag("opportunities", id, pagination)
+
+  @Tool(
+    Some("list_custom_fields_for_project_data_tag"),
+    Some("List Custom Fields defined for a Project DataTag (a type of Tag used to group Custom Fields together)")
+  ) def listCustomFieldsProjectDataTag(
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
+      @Param("Tag ID") id: Long
+  ): String =
+    listCustomFieldDefinitionsForTag("kases", id, pagination)
