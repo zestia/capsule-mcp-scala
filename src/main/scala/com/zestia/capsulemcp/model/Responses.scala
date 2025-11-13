@@ -36,6 +36,7 @@ case class ProjectListWrapper(kases: List[Project], meta: Meta) derives JsonDeco
 case class ProjectWrapper(kase: Project) derives JsonDecoder, JsonEncoder
 
 case class FieldDefinitionListWrapper(definitions: List[FieldDefinition], meta: Meta) derives JsonDecoder, JsonEncoder
+case class DataTagFieldDefinitionListWrapper(definitions: List[FieldDefinition]) derives JsonDecoder, JsonEncoder
 case class FieldDefinitionWrapper(definition: FieldDefinition) derives JsonDecoder, JsonEncoder
 
 case class TagDefinitionListWrapper(tags: List[Tag], meta: Meta) derives JsonDecoder, JsonEncoder

@@ -35,7 +35,7 @@ object CustomFieldTools:
     ).toJson
 
   private def listCustomFieldDefinitionsForTag(entityPath: String, id: Long, pagination: Option[Pagination]): String =
-    getRequest[FieldDefinitionListWrapper](
+    getRequest[DataTagFieldDefinitionListWrapper](
       s"$entityPath/tags/$id/definitions",
       pagination
     ).toJson
@@ -70,7 +70,10 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
-  @Tool(Some("list_contact_custom_fields"), Some("List Custom Fields defined for Contacts"))
+  @Tool(
+    Some("list_contact_custom_fields"),
+    Some("List Custom Fields defined for Contacts (does not include DataTag fields)")
+  )
   def listContactCustomFields(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
@@ -79,7 +82,10 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
-  @Tool(Some("list_opportunity_custom_fields"), Some("List Custom Fields defined for Opportunities"))
+  @Tool(
+    Some("list_opportunity_custom_fields"),
+    Some("List Custom Fields defined for Opportunities (does not include DataTag fields)")
+  )
   def listOpportunityCustomFields(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
@@ -88,7 +94,10 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#listFields"</a>
    */
-  @Tool(Some("list_project_custom_fields"), Some("List Custom Fields defined for Projects"))
+  @Tool(
+    Some("list_project_custom_fields"),
+    Some("List Custom Fields defined for Projects (does not include DataTag fields)")
+  )
   def listProjectCustomFields(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
