@@ -192,6 +192,3 @@ You can optionally override `CAPSULE_BASE_URL=baseUrl` to test against a specifi
 The default is `https://api.capsulecrm.com`.
 
 Note that if you make changes to files, you will need to restart the server to pick these up.
-
-### Debugging
-Server logs are written to `/capsule-mcp-scala/capsule-mcp.log`.
