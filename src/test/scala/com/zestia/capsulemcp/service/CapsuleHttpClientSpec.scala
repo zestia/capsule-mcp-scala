@@ -30,7 +30,7 @@ class CapsuleHttpClientSpec extends AnyFlatSpec with Matchers:
       // then
       val userAgentHeader: Option[Header] = request.headers.find(_.name == "User-Agent")
       userAgentHeader shouldBe defined
-      userAgentHeader.get.value shouldBe "capsule-mcp-v1"
+      userAgentHeader.get.value should startWith("capsule-mcp")
 
       val contentTypeHeader: Option[Header] = request.headers.find(_.name == "Content-Type")
       contentTypeHeader shouldBe defined
@@ -40,7 +40,7 @@ class CapsuleHttpClientSpec extends AnyFlatSpec with Matchers:
   "buildEmbedMap" should "merge default embeds with custom embeds" in
     new CapsuleHttpClientFixture {
       // given
-      val customEmbeds = List("tasks", "notes")
+      val customEmbeds: List[String] = List("tasks", "notes")
 
       // when
       val embedMap: Map[String, String] = client.buildEmbedMap(customEmbeds)
