@@ -30,7 +30,7 @@ import com.zestia.capsulemcp.server.tools.ProjectTools.*
 import com.zestia.capsulemcp.server.tools.TaskTools.listTasks
 import com.zestia.capsulemcp.server.tools.OpportunityTools.*
 import com.zestia.capsulemcp.service.CapsuleHttpClient.*
-import com.zestia.capsulemcp.util.{FileLogger, FileLogging}
+import com.zestia.capsulemcp.util.{FileLogger, FileLogging, Version}
 import sttp.tapir.generic.auto.*
 import zio.*
 import zio.json.*
@@ -41,7 +41,7 @@ object McpServer extends ZIOAppDefault with FileLogging:
     for
       _ <- ZIO.attempt {
         FileLogger.init()
-        logger.info("MCP Server starting...")
+        logger.info(s"MCP Server starting... version ${Version.current}")
       }
       // Create server instance
       server <- ZIO.succeed(FastMcpServer("McpServer"))
