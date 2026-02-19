@@ -30,6 +30,14 @@ jobs:
       - name: Run tests
         run: sbt test scalafmtCheckAll
 
+      - name: Install scala-cli
+        run: |
+          curl -sSLf https://scala-cli.virtuslab.org/x/scala-setup.sh | sh
+          echo "$HOME/.local/share/coursier/bin" >> $GITHUB_PATH
+
+      - name: Build assembly JAR
+        run: scala-cli --power package . --assembly -o capsule-mcp.jar
+
       - uses: docker/setup-qemu-action@v2
       - uses: docker/setup-buildx-action@v2
 
