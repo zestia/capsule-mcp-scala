@@ -14,18 +14,7 @@
  * limitations under the License.
  */
 
-package com.zestia.capsulemcp.server.schemas
+package com.zestia.capsulemcp.util
 
-import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
-
-/**
- * JSON Schemas for Activity-related Tools
- */
-object ActivitySchemas extends HasFilterSchema:
-
-  override protected val filterFields: List[FilterField] = List(
-    ExactMatchFilterField("user", "User ID", ValueType.Number),
-    ExactMatchFilterField("taskCategory", "Task Category ID", ValueType.Number),
-    ExactMatchFilterField("activityType", "Activity Type ID", ValueType.Number),
-    DateFilterField("addedOn", "Date the activity was added (format: YYYY-MM-DD)")
-  )
+object Version:
+  val current = "1.0.1"

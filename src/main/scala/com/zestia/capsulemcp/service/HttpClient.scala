@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Zestia Ltd
+ * Copyright 2026 Zestia Ltd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.zestia.capsulemcp.service
 import sttp.client3.*
 import sttp.model.{HeaderNames, Uri}
 import zio.json.*
-import com.zestia.capsulemcp.util.FileLogging
+import com.zestia.capsulemcp.util.{FileLogging, Version}
 import com.zestia.capsulemcp.model.Pagination
 import com.zestia.capsulemcp.model.ResponseWrapper
 import scala.reflect.ClassTag
@@ -30,7 +30,7 @@ abstract class HttpClient extends FileLogging:
 
   protected def baseRequest: RequestT[Empty, Either[String, String], Any] =
     basicRequest
-      .header(HeaderNames.UserAgent, "capsule-mcp-v1")
+      .header(HeaderNames.UserAgent, s"capsule-mcp-${Version.current}")
       .header(HeaderNames.ContentType, "application/json")
 
   protected[service] def constructUri(

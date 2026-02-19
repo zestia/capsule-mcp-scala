@@ -4,7 +4,7 @@ ThisBuild / scalaVersion := "3.7.2"
 ThisBuild / javacOptions ++= Seq("--release", "17")
 ThisBuild / organization := "com.zestia"
 ThisBuild / organizationName := "Zestia Ltd"
-ThisBuild / startYear := Some(2025)
+ThisBuild / startYear := Some(2026)
 ThisBuild / licenses += (
   "Apache-2.0",
   url("https://www.apache.org/licenses/LICENSE-2.0.txt")
