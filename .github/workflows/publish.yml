@@ -1,0 +1,45 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish Container
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: 17
+
+      - uses: sbt/setup-sbt@v1
+
+      - uses: coursier/cache-action@v6
+
+      - name: Build Project
+        run: 'sbt "release with-defaults"'
+
+      - uses: zestia/populate-credentials-action@v1
+        with:
+          npm: false
+          sbt: true
+          token: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Publish Container
+        uses: zestia/docker-publish-action@v1
+        with:
+          container-title: Capsule MCP Server
+          container-description: MCP server that connects to your Capsule CRM data
+          version: 1.0.0
+          dockerfile: Dockerfile
+          publish-aws: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
