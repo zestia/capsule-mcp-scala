@@ -3,17 +3,32 @@
 
 Scala3-based MCP server implementation PoC that connects to your Capsule CRM data.
 
-## Quick Start
-You can get started with the server and use it with your favourite AI assistant.
+## Quickstart
+For non-developers, refer to the quickstart setup guide on the GitHub pages site: https://zestia.github.io/capsule-mcp-scala
 
-### 1. Get Your Capsule API Token
-1. Log into your Capsule CRM account
-2. Go to **My Preferences → API Authentication**
-3. Create a new API token and copy it
+## Setup - Developers
+The quickstart instructions use the published Docker image of the MCP server and require minimal technical setup.
+If contributing, you will need to follow the steps below to setup your development environment and all dependencies
+needed to run `scala-cli` natively.
 
-### 2. Install & Configure
+### Prerequisites
 
-#### macOS Setup
+You will need an AI assistant that supports **local** MCP servers. Some popular options:
+
+- **[Claude Desktop](https://claude.com/download)** - Anthropic's desktop app
+- **[Cursor](https://www.cursor.com/)** - AI code editor
+
+#### 1. Generate an API key
+Generate an API key in your Capsule CRM account.
+
+In your Capsule account, navigate to: `My Preferences → API Authentication Tokens → Generate New API Token`
+
+- **Description:** Capsule MCP Server
+- **Scope of this token:** Select `Read information from your Capsule account` only
+
+Copy the generated token and temporarily save it somewhere safe.
+
+#### 2. Install Dependencies (macOS)
 
 ```bash
 # Clone this repo:
@@ -47,21 +62,15 @@ jenv --version
 scala-cli --version
 ```
 
-#### Linux/Windows Setup
-Coming soon
+#### 3. Locate your AI assistant config file
+Locate the config file for your chosen AI assistant:
 
-### 3. Connect to Your AI Assistant
+- **Claude Desktop**
+    - MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+    - Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+- **Cursor** - [configuration locations](https://cursor.com/docs/context/mcp#configuration-locations)
 
-#### Claude Desktop
-
-Add the following to your Claude Desktop config file and replace:
-1. `your-api-token` with your Capsule API token.
-2. `/path/to/your/` with the path to your `capsule-mcp-scala` directory that you cloned via git.
-
-**Config Location:**
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%/Claude/claude_desktop_config.json`
-
+Add the following to the config file, replacing `YOUR-API-TOKEN` with your Capsule API token and save.
 ```json
 {
   "mcpServers": {
@@ -77,7 +86,6 @@ Add the following to your Claude Desktop config file and replace:
   }
 }
 ```
-
 
 You can also optionally override the `CAPSULE_BASE_URL` environment variable to point to a different Capsule CRM instance.
 
@@ -99,10 +107,7 @@ You can also optionally override the `CAPSULE_BASE_URL` environment variable to 
 }
 ```
 
-#### Other MCP Clients
-This server is compatible with any MCP client. Refer to your client's documentation for MCP server configuration.
-
-## Start Using
+### Start Using
 1. Restart your AI assistant
 2. Start asking questions
 
@@ -168,7 +173,7 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 There are a few options for running / testing the server locally during development.
 
 #### AI Assistant / MCP Client
-Refer to [Quick Start](#quick-start).
+Refer to [Setup - Developers](#setup---developers).
 
 #### MCP Inspector (recommended)
 The [MCP Inspector](https://modelcontextprotocol.io/legacy/tools/inspector) is an interactive developer tool for testing and debugging MCP servers.

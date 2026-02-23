@@ -5,6 +5,13 @@ MCP server that connects to your Capsule CRM data.
 ## Setup
 You can get started with the server and use it with your favourite AI assistant.
 
+### Prerequisites
+
+You will need an AI assistant that supports **local** MCP servers. Some popular options:
+
+- **[Claude Desktop](https://claude.com/download)** - Anthropic's desktop app
+- **[Cursor](https://www.cursor.com/)** - AI code editor
+
 ### Install Docker
 The Capsule MCP Server runs inside [Docker](https://www.docker.com/). Follow the instructions below for your operating system.
 
@@ -35,29 +42,27 @@ docker --version
 The above should print a version number.
 
 ### Configuration
-Configure your favourite AI assistant to use the Capsule MCP Server.
+Configure your favourite AI assistant to connect to the Capsule MCP Server.
 
-#### Generate an API key
+#### 1. Generate an API key
 Generate an API key in your Capsule CRM account.
 
-In your Capsule account, navigate to: `My Preferences > API Authentication Tokens > Generate New API Token`
+In your Capsule account, navigate to: `My Preferences → API Authentication Tokens → Generate New API Token`
 
    - **Description:** Capsule MCP Server
    - **Scope of this token:** Select `Read information from your Capsule account` only
 
 Copy the generated token and temporarily save it somewhere safe.
 
-#### Connect to your AI Assistant
+#### 2. Locate your AI assistant config file
+Locate the config file for your chosen AI assistant:
 
-##### Claude Desktop
-[Download Claude Desktop](https://claude.com/download)
+- **Claude Desktop**
+    - MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+    - Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+- **Cursor** - [configuration locations](https://cursor.com/docs/context/mcp#configuration-locations)
 
-Locate your Claude Desktop config file:
-
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%/Claude/claude_desktop_config.json`
-
-Add the following to your Claude Desktop config file and replace `YOUR-API-TOKEN` with your Capsule API token.
+Add the following to the config file, replacing `YOUR-API-TOKEN` with your Capsule API token and save.
 
 ```json
 {
@@ -78,6 +83,15 @@ Add the following to your Claude Desktop config file and replace `YOUR-API-TOKEN
   }
 }
 ```
+
+#### 3. Test the connection
+Restart your AI assistant. Depending on your AI assistant, you should now see a new `capsule-mcp` server running in the
+list of available MCP servers in settings.
+
+For example, in Claude Desktop:
+![claude-example.png](claude-example.png)
+
+Try asking a basic question about your Capsule account to test the connection, for example: `How many contacts do I have in Capsule?`
 
 @@@ index
 * [Troubleshooting](troubleshooting.md)
