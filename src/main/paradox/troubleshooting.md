@@ -1,0 +1,2 @@
+# Troubleshooting
+- ensure docker running
