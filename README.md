@@ -147,7 +147,7 @@ Note that if you make changes to files, you will need to restart the server to p
 
 ### Publishing
 To publish a new version of the server Docker container:
-1. Bump the version in `project/Version.scala` and `.github/workflows/publish.yml`
+1. Bump the version in `Version.scala` and `.github/workflows/publish.yml`
 2. Run the GitHub action `Publish`
 
 To publish doc changes to GitHub Pages site:

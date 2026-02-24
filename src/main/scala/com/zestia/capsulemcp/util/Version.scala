@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
-object Version {
+package com.zestia.capsulemcp.util
+
+object Version:
   val current = "1.0.1"
-}

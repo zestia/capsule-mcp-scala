@@ -1,5 +1,3 @@
-import Version.*
-
 name := "capsule-mcp-scala"
 
 ThisBuild / scalaVersion := "3.7.2"
@@ -11,7 +9,6 @@ ThisBuild / licenses += (
   "Apache-2.0",
   url("https://www.apache.org/licenses/LICENSE-2.0.txt")
 )
-ThisBuild / version := current
 
 lazy val root = (project in file("."))
   .enablePlugins(ParadoxSitePlugin, GhpagesPlugin)
