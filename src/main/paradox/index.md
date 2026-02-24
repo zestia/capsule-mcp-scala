@@ -94,5 +94,6 @@ For example, in Claude Desktop:
 Try asking a basic question about your Capsule account to test the connection, for example: `How many contacts do I have in Capsule?`
 
 @@@ index
+* [Available Tools](available-tools.md)
 * [Troubleshooting](troubleshooting.md)
 @@@
