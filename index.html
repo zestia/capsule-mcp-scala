@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Capsule MCP Server</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='capsule-mcp-scala'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<script type="text/javascript" src="js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" class="active">
+<span class="home-icon">⌂</span>Capsule MCP Server
+</a>
+<div class="version-number">
+1.0.1
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="troubleshooting.html" class="page">Troubleshooting</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="index.html" class="active">Capsule MCP Server</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" class="active">
+<span class="home-icon">⌂</span>Capsule MCP Server
+</a>
+<div class="version-number">
+1.0.1
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="troubleshooting.html" class="page">Troubleshooting</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#capsule-mcp-server" name="capsule-mcp-server" class="anchor"><span class="anchor-link"></span></a>Capsule MCP Server</h1>
+<p>MCP server that connects to your Capsule CRM data.</p>
+<h2><a href="#setup" name="setup" class="anchor"><span class="anchor-link"></span></a>Setup</h2>
+<p>You can get started with the server and use it with your favourite AI assistant.</p>
+<h3><a href="#prerequisites" name="prerequisites" class="anchor"><span class="anchor-link"></span></a>Prerequisites</h3>
+<p>You will need an AI assistant that supports <strong>local</strong> MCP servers. Some popular options:</p>
+<ul>
+  <li><strong><a href="https://claude.com/download">Claude Desktop</a></strong> - Anthropic&rsquo;s desktop app</li>
+  <li><strong><a href="https://www.cursor.com/">Cursor</a></strong> - AI code editor</li>
+</ul>
+<h3><a href="#install-docker" name="install-docker" class="anchor"><span class="anchor-link"></span></a>Install Docker</h3>
+<p>The Capsule MCP Server runs inside <a href="https://www.docker.com/">Docker</a>. Follow the instructions below for your operating system.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Already have Docker installed? Skip ahead to <a href="#configuration">Configuration</a>.</p></div>
+<p><strong>Option 1: Docker Desktop (recommended for most users)</strong></p>
+<ol>
+  <li>Go to <a href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop</a></li>
+  <li>Click <strong>Download Docker Desktop</strong>, selecting your OS</li>
+  <li>Run the installer and follow the prompts</li>
+  <li>Restart your computer when prompted</li>
+  <li>Launch Docker Desktop</li>
+</ol>
+<p><strong>Option 2: CLI only (for developers)</strong></p>
+<p>Follow the <a href="https://docs.docker.com/engine/install/">official installation guide</a> for your specific distribution.</p>
+<h3><a href="#verify-your-installation" name="verify-your-installation" class="anchor"><span class="anchor-link"></span></a>Verify your installation</h3>
+<p>Once Docker is installed (via any method above) <strong>and running</strong>, confirm it is working:</p>
+<pre><code>docker --version
+</code></pre>
+<p>The above should print a version number.</p>
+<h3><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h3>
+<p>Configure your favourite AI assistant to connect to the Capsule MCP Server.</p>
+<h4><a href="#1-generate-an-api-key" name="1-generate-an-api-key" class="anchor"><span class="anchor-link"></span></a>1. Generate an API key</h4>
+<p>Generate an API key in your Capsule CRM account.</p>
+<p>In your Capsule account, navigate to: <code>My Preferences → API Authentication Tokens → Generate New API Token</code></p>
+<ul>
+  <li><strong>Description:</strong> Capsule MCP Server</li>
+  <li><strong>Scope of this token:</strong> Select <code>Read information from your Capsule account</code> only</li>
+</ul>
+<p>Copy the generated token and temporarily save it somewhere safe.</p>
+<h4><a href="#2-locate-your-ai-assistant-config-file" name="2-locate-your-ai-assistant-config-file" class="anchor"><span class="anchor-link"></span></a>2. Locate your AI assistant config file</h4>
+<p>Locate the config file for your chosen AI assistant:</p>
+<ul>
+  <li><strong>Claude Desktop</strong>
+    <ul>
+      <li>MacOS: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+      <li>Windows: <code>%APPDATA%/Claude/claude_desktop_config.json</code></li>
+    </ul>
+  </li>
+  <li><strong>Cursor</strong> - <a href="https://cursor.com/docs/context/mcp#configuration-locations">configuration locations</a></li>
+</ul>
+<p>Add the following to the config file, replacing <code>YOUR-API-TOKEN</code> with your Capsule API token and save.</p>
+<pre class="prettyprint"><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;capsule-mcp&quot;: {
+      &quot;command&quot;: &quot;docker&quot;,
+      &quot;args&quot;: [
+        &quot;run&quot;,
+        &quot;-i&quot;,
+        &quot;--rm&quot;,
+        &quot;--name&quot;,
+        &quot;capsule-mcp&quot;,
+        &quot;-e&quot;,
+        &quot;CAPSULE_API_TOKEN=YOUR-API-TOKEN&quot;,
+        &quot;ghcr.io/zestia/capsule-mcp-scala:latest&quot;
+      ]
+    }
+  }
+}
+</code></pre>
+<h4><a href="#3-test-the-connection" name="3-test-the-connection" class="anchor"><span class="anchor-link"></span></a>3. Test the connection</h4>
+<p>Restart your AI assistant. Depending on your AI assistant, you should now see a new <code>capsule-mcp</code> server running in the list of available MCP servers in settings.</p>
+<p>For example, in Claude Desktop: <img src="claude-example.png" alt="claude-example.png" /></p>
+<p>Try asking a basic question about your Capsule account to test the connection, for example: <code>How many contacts do I have in Capsule?</code></p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/zestia/capsule-mcp-scala/tree/v1.0.1/src/main/paradox/index.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="troubleshooting.html">Troubleshooting</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="index.html#capsule-mcp-server" class="header">Capsule MCP Server</a>
+  <ul>
+    <li><a href="index.html#setup" class="header">Setup</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2026</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.1', '')});</script>
+
+
+</html>
