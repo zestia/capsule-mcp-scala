@@ -11,6 +11,7 @@ ThisBuild / licenses += (
 )
 
 lazy val root = (project in file("."))
+  .enablePlugins(ParadoxSitePlugin, GhpagesPlugin)
   .settings(
     name := "capsule-mcp-scala",
     scalacOptions ++= Seq("-experimental", "-Xmax-inlines:128"),
@@ -32,5 +33,6 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-parser" % "0.14.15" % Test,
       "dev.zio" %% "zio-test" % "2.1.22" % Test,
       "dev.zio" %% "zio-test-sbt" % "2.1.22" % Test
-    )
+    ),
+    git.remoteRepo := "git@github.com:zestia/capsule-mcp-scala.git"
   )

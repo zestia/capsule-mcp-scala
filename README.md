@@ -3,17 +3,32 @@
 
 Scala3-based MCP server implementation PoC that connects to your Capsule CRM data.
 
-## Quick Start
-You can get started with the server and use it with your favourite AI assistant.
+## Quickstart
+For non-developers, refer to the quickstart setup guide on the GitHub pages site: https://zestia.github.io/capsule-mcp-scala
 
-### 1. Get Your Capsule API Token
-1. Log into your Capsule CRM account
-2. Go to **My Preferences → API Authentication**
-3. Create a new API token and copy it
+## Setup - Developers
+The quickstart instructions use the published Docker image of the MCP server and require minimal technical setup.
+If contributing, you will need to follow the steps below to setup your development environment and all dependencies
+needed to run `scala-cli` natively.
 
-### 2. Install & Configure
+### Prerequisites
 
-#### macOS Setup
+You will need an AI assistant that supports **local** MCP servers. Some popular options:
+
+- **[Claude Desktop](https://claude.com/download)** - Anthropic's desktop app
+- **[Cursor](https://www.cursor.com/)** - AI code editor
+
+#### 1. Generate an API key
+Generate an API key in your Capsule CRM account.
+
+In your Capsule account, navigate to: `My Preferences → API Authentication Tokens → Generate New API Token`
+
+- **Description:** Capsule MCP Server
+- **Scope of this token:** Select `Read information from your Capsule account` only
+
+Copy the generated token and temporarily save it somewhere safe.
+
+#### 2. Install Dependencies (macOS)
 
 ```bash
 # Clone this repo:
@@ -47,21 +62,15 @@ jenv --version
 scala-cli --version
 ```
 
-#### Linux/Windows Setup
-Coming soon
+#### 3. Locate your AI assistant config file
+Locate the config file for your chosen AI assistant:
 
-### 3. Connect to Your AI Assistant
+- **Claude Desktop**
+    - MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+    - Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+- **Cursor** - [configuration locations](https://cursor.com/docs/context/mcp#configuration-locations)
 
-#### Claude Desktop
-
-Add the following to your Claude Desktop config file and replace:
-1. `your-api-token` with your Capsule API token.
-2. `/path/to/your/` with the path to your `capsule-mcp-scala` directory that you cloned via git.
-
-**Config Location:**
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%/Claude/claude_desktop_config.json`
-
+Add the following to the config file, replacing `YOUR-API-TOKEN` with your Capsule API token and save.
 ```json
 {
   "mcpServers": {
@@ -77,7 +86,6 @@ Add the following to your Claude Desktop config file and replace:
   }
 }
 ```
-
 
 You can also optionally override the `CAPSULE_BASE_URL` environment variable to point to a different Capsule CRM instance.
 
@@ -99,68 +107,12 @@ You can also optionally override the `CAPSULE_BASE_URL` environment variable to 
 }
 ```
 
-#### Other MCP Clients
-This server is compatible with any MCP client. Refer to your client's documentation for MCP server configuration.
-
-## Start Using
+### Start Using
 1. Restart your AI assistant
 2. Start asking questions
 
-## What You Can Access
-
-This MCP server provides **complete read-only access** to your Capsule CRM:
-
-| **Data Type**       | **Tool Name**                                 | **Description**                                                                           | **Paginated Response?** | 
-|---------------------|-----------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------|
-| **Contacts**        | `list_contacts`                               | Retrieve Contacts with comprehensive filtering ability                                    | ✅                       |
-|                     | `get_contact`                                 | Get Contact by ID                                                                         | ❌                       |
-| **Opportunities**   | `list_opportunities`                          | Retrieve Opportunities with comprehensive filtering ability                               | ✅                       |
-|                     | `get_opportunity`                             | Get Opportunity by ID                                                                     | ❌                       |
-|                     | `calculate_value_of_opportunities`            | Retrieves Total & Projected Values for Opportunities with comprehensive filtering ability | ❌                       |
-| **Projects**        | `list_projects`                               | Retrieve Projects with comprehensive filtering ability                                    | ✅                       |
-| **Custom Fields**   | `list_contact_custom_fields`                  | Retrieves Custom Fields defined for Contacts                                              | ✅                       |
-|                     | `list_opportunity_custom_fields`              | Retrieves Custom Fields defined for Opportunities                                         | ✅                       |
-|                     | `list_project_custom_fields`                  | Retrieves Custom Fields defined for Projects                                              | ✅                       |
-|                     | `get_contact_custom_field`                    | Get Contact Custom Field Definition by ID                                                 | ❌                       |
-|                     | `get_opportunity_custom_field`                | Get Opportunity Custom Field Definition by ID                                             | ❌                       |
-|                     | `get_project_custom_field`                    | Get Project Custom Field Definition by ID                                                 | ❌                       |
-|                     | `list_custom_fields_for_contact_data_tag`     | List Custom Fields defined for a Contact DataTag                                          | ✅                       |
-|                     | `list_custom_fields_for_opportunity_data_tag` | List Custom Fields defined for an Opportunity DataTag                                     | ✅                       |
-|                     | `list_custom_fields_for_project_data_tag`     | List Custom Fields defined for a Project DataTag                                          | ✅                       |
-| **Sales Pipelines** | `list_pipelines`                              | Retrieves Sales Pipelines defined for Opportunities with optional searching by name       | ✅                       |
-|                     | `get_pipeline`                                | Get Pipeline by ID                                                                        | ❌                       |
-| **Milestones**      | `list_milestones`                             | Retrieves Milestones defined across all Sales Pipelines                                   | ✅                       |
-|                     | `list_milestones_by_pipeline`                 | Retrieves Milestones for a given Sales Pipeline                                           | ✅                       |
-|                     | `get_milestone`                               | Get Milestone by ID                                                                       | ❌                       |
-| **Lost Reasons**    | `list_lost_reasons`                           | Retrieves Lost Reasons with optional searching by name                                    | ✅                       |
-|                     | `get_lost_reason`                             | Get Lost Reason by ID                                                                     | ❌                       |
-| **Project Boards**  | `list_boards`                                 | Retrieves Project Boards with optional searching by name                                  | ✅                       |
-|                     | `get_board`                                   | Get Project Board by ID                                                                   | ❌                       |
-| **Stages**          | `list_stages`                                 | Retrieves Stages defined across all Project Boards                                        | ✅                       |
-|                     | `get_stage`                                   | Get Project Stage                                                                         | ❌                       |
-|                     | `list_stages_by_board`                        | Retrieves Stages for a given Project Board                                                | ✅                       |
-| **Tags**            | `list_contact_tags`                           | Retrieves Tags defined for Contacts                                                       | ✅                       |
-|                     | `list_opportunity_tags`                       | Retrieves Tags defined for Opportunities                                                  | ✅                       |
-|                     | `list_project_tags`                           | Retrieves Tags defined for Projects                                                       | ✅                       |
-|                     | `get_contact_tag`                             | Get Contact Tag Definition by ID                                                          | ❌                       |
-|                     | `get_opportunity_tag`                         | Get Opportunity Tag Definition by ID                                                      | ❌                       |
-|                     | `get_project_tag`                             | Get Project Tag Definition by ID                                                          | ❌                       |
-| **Users**           | `list_users`                                  | Retrieves all Users                                                                       | ❌                       |
-|                     | `get_user`                                    | Get User by ID                                                                            | ❌                       |
-|                     | `get_current_user`                            | Get current User                                                                          | ❌                       |
-| **Teams**           | `list_teams`                                  | Retrieves all Teams and Team members                                                      | ❌                       |
-|                     | `get_team`                                    | Get Team by ID                                                                            | ❌                       |
-| **Tasks**           | `list_tasks`                                  | Retrieve Tasks with basic filtering ability                                               | ✅                       |
-|                     | `get_task`                                    | Get Task by ID                                                                            | ❌                       |
-| **Tracks**          | `get_track`                                   | Get Track by ID                                                                           | ❌                       |
-|                     | `list_tracks_for_contact`                     | List Tracks for specified Contact                                                         | ✅                       |
-|                     | `list_tracks_for_opportunity`                 | List Tracks for specified Opportunity                                                     | ✅                       |
-|                     | `list_tracks_for_project`                     | List Tracks for specified Project                                                         | ✅                       |
-| **Activity**        | `list_activity`                               | Retrieve Activity with basic filtering ability                                            | ✅                       |
-|                     | `list_entries_for_contact`                    | Retrieve Entries for specified Contact                                                    | ✅                       |
-|                     | `list_entries_for_project`                    | Retrieve Entries for specified Project                                                    | ✅                       |
-|                     | `list_entries_for_opportunity`                | Retrieve Entries for specified Opportunity                                                | ✅                       |
-|                     | `get_entry`                                   | Get Entry by ID                                                                           | ❌                       |
+## Available Tools
+See the [full list of available tools](https://zestia.github.io/capsule-mcp-scala/available-tools.html) in the documentation.
 
 ## Development
 
@@ -168,7 +120,7 @@ This MCP server provides **complete read-only access** to your Capsule CRM:
 There are a few options for running / testing the server locally during development.
 
 #### AI Assistant / MCP Client
-Refer to [Quick Start](#quick-start).
+Refer to [Setup - Developers](#setup---developers).
 
 #### MCP Inspector (recommended)
 The [MCP Inspector](https://modelcontextprotocol.io/legacy/tools/inspector) is an interactive developer tool for testing and debugging MCP servers.
@@ -192,3 +144,19 @@ You can optionally override `CAPSULE_BASE_URL=baseUrl` to test against a specifi
 The default is `https://api.capsulecrm.com`.
 
 Note that if you make changes to files, you will need to restart the server to pick these up.
+
+### Publishing
+To publish a new version of the server Docker container:
+1. Bump the version in `Version.scala` and `.github/workflows/publish.yml`
+2. Run the GitHub action `Publish`
+
+To publish doc changes to GitHub Pages site:
+```bash
+# sbt>
+
+# preview site
+makeSite
+
+# publish site
+ghpagesPushSite 
+```
