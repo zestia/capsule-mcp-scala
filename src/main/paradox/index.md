@@ -33,7 +33,7 @@ Follow the [official installation guide](https://docs.docker.com/engine/install/
 
 ### Verify your installation
 
-Once Docker is installed (via any method above) **and running**, confirm it is working:
+Once Docker is installed (via any method above) **and running**, confirm it is working by opening a terminal/console and running:
 
 ```
 docker --version
