@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Available Tools · Capsule MCP Server</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='capsule-mcp-scala'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<script type="text/javascript" src="js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Capsule MCP Server
+</a>
+<div class="version-number">
+1.0.1
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="available-tools.html" class="active page">Available Tools</a></li>
+  <li><a href="troubleshooting.html" class="page">Troubleshooting</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="index.html">Capsule MCP Server</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Capsule MCP Server
+</a>
+<div class="version-number">
+1.0.1
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="available-tools.html" class="active page">Available Tools</a></li>
+  <li><a href="troubleshooting.html" class="page">Troubleshooting</a></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Capsule MCP Server</a></li>
+  <li>Available Tools</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#available-tools" name="available-tools" class="anchor"><span class="anchor-link"></span></a>Available Tools</h1>
+<p>This MCP server provides <strong>complete read-only access</strong> to your Capsule CRM:</p>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Data Type</strong> </th>
+      <th><strong>Tool Name</strong> </th>
+      <th><strong>Description</strong> </th>
+      <th><strong>Paginated Response?</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Contacts</strong> </td>
+      <td><code>list_contacts</code> </td>
+      <td>Retrieve Contacts with comprehensive filtering ability </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_contact</code> </td>
+      <td>Get Contact by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Opportunities</strong> </td>
+      <td><code>list_opportunities</code> </td>
+      <td>Retrieve Opportunities with comprehensive filtering ability </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_opportunity</code> </td>
+      <td>Get Opportunity by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>calculate_value_of_opportunities</code> </td>
+      <td>Retrieves Total &amp; Projected Values for Opportunities with comprehensive filtering ability </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Projects</strong> </td>
+      <td><code>list_projects</code> </td>
+      <td>Retrieve Projects with comprehensive filtering ability </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td><strong>Custom Fields</strong> </td>
+      <td><code>list_contact_custom_fields</code> </td>
+      <td>Retrieves Custom Fields defined for Contacts </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_opportunity_custom_fields</code> </td>
+      <td>Retrieves Custom Fields defined for Opportunities </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_project_custom_fields</code> </td>
+      <td>Retrieves Custom Fields defined for Projects </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_contact_custom_field</code> </td>
+      <td>Get Contact Custom Field Definition by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_opportunity_custom_field</code> </td>
+      <td>Get Opportunity Custom Field Definition by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_project_custom_field</code> </td>
+      <td>Get Project Custom Field Definition by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_custom_fields_for_contact_data_tag</code> </td>
+      <td>List Custom Fields defined for a Contact DataTag </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_custom_fields_for_opportunity_data_tag</code> </td>
+      <td>List Custom Fields defined for an Opportunity DataTag </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_custom_fields_for_project_data_tag</code> </td>
+      <td>List Custom Fields defined for a Project DataTag </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td><strong>Sales Pipelines</strong> </td>
+      <td><code>list_pipelines</code> </td>
+      <td>Retrieves Sales Pipelines defined for Opportunities with optional searching by name </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_pipeline</code> </td>
+      <td>Get Pipeline by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Milestones</strong> </td>
+      <td><code>list_milestones</code> </td>
+      <td>Retrieves Milestones defined across all Sales Pipelines </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_milestones_by_pipeline</code> </td>
+      <td>Retrieves Milestones for a given Sales Pipeline </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_milestone</code> </td>
+      <td>Get Milestone by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Lost Reasons</strong> </td>
+      <td><code>list_lost_reasons</code> </td>
+      <td>Retrieves Lost Reasons with optional searching by name </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_lost_reason</code> </td>
+      <td>Get Lost Reason by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Project Boards</strong> </td>
+      <td><code>list_boards</code> </td>
+      <td>Retrieves Project Boards with optional searching by name </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_board</code> </td>
+      <td>Get Project Board by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Stages</strong> </td>
+      <td><code>list_stages</code> </td>
+      <td>Retrieves Stages defined across all Project Boards </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_stage</code> </td>
+      <td>Get Project Stage </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_stages_by_board</code> </td>
+      <td>Retrieves Stages for a given Project Board </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td><strong>Tags</strong> </td>
+      <td><code>list_contact_tags</code> </td>
+      <td>Retrieves Tags defined for Contacts </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_opportunity_tags</code> </td>
+      <td>Retrieves Tags defined for Opportunities </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_project_tags</code> </td>
+      <td>Retrieves Tags defined for Projects </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_contact_tag</code> </td>
+      <td>Get Contact Tag Definition by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_opportunity_tag</code> </td>
+      <td>Get Opportunity Tag Definition by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_project_tag</code> </td>
+      <td>Get Project Tag Definition by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Users</strong> </td>
+      <td><code>list_users</code> </td>
+      <td>Retrieves all Users </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_user</code> </td>
+      <td>Get User by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_current_user</code> </td>
+      <td>Get current User </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Teams</strong> </td>
+      <td><code>list_teams</code> </td>
+      <td>Retrieves all Teams and Team members </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_team</code> </td>
+      <td>Get Team by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Tasks</strong> </td>
+      <td><code>list_tasks</code> </td>
+      <td>Retrieve Tasks with basic filtering ability </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_task</code> </td>
+      <td>Get Task by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td><strong>Tracks</strong> </td>
+      <td><code>get_track</code> </td>
+      <td>Get Track by ID </td>
+      <td>❌ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_tracks_for_contact</code> </td>
+      <td>List Tracks for specified Contact </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_tracks_for_opportunity</code> </td>
+      <td>List Tracks for specified Opportunity </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_tracks_for_project</code> </td>
+      <td>List Tracks for specified Project </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td><strong>Activity</strong> </td>
+      <td><code>list_activity</code> </td>
+      <td>Retrieve Activity with basic filtering ability </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_entries_for_contact</code> </td>
+      <td>Retrieve Entries for specified Contact </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_entries_for_project</code> </td>
+      <td>Retrieve Entries for specified Project </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>list_entries_for_opportunity</code> </td>
+      <td>Retrieve Entries for specified Opportunity </td>
+      <td>✅ </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><code>get_entry</code> </td>
+      <td>Get Entry by ID </td>
+      <td>❌ </td>
+    </tr>
+  </tbody>
+</table>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/zestia/capsule-mcp-scala/tree/v1.0.1/src/main/paradox/available-tools.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="troubleshooting.html">Troubleshooting</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2026</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.1', '')});</script>
+
+
+</html>
