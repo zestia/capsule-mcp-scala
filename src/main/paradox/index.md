@@ -69,7 +69,7 @@ See [configuration locations](https://cursor.com/docs/context/mcp#configuration-
 ---
 
 ## 4. Copy MCP server config
-1. **Exit Claude Desktop** - this is to prevent any issues while editing and saving the file
+1. **Exit your AI Assistant app (Claude, Cursor, etc.)** - this is to prevent any issues while editing and saving the file
 2. Copy and paste the following into the file (do not save at this point):
 
 ```json
