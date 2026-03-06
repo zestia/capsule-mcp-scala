@@ -95,77 +95,103 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
 <h1><a href="#capsule-mcp-server" name="capsule-mcp-server" class="anchor"><span class="anchor-link"></span></a>Capsule MCP Server</h1>
-<p>MCP server that connects to your Capsule CRM data.</p>
-<h2><a href="#setup" name="setup" class="anchor"><span class="anchor-link"></span></a>Setup</h2>
-<p>You can get started with the server and use it with your favourite AI assistant.</p>
-<h3><a href="#prerequisites" name="prerequisites" class="anchor"><span class="anchor-link"></span></a>Prerequisites</h3>
-<p>You will need an AI assistant that supports <strong>local</strong> MCP servers. Some popular options:</p>
+<p>MCP server that connects to your Capsule CRM data. You can get started with the server and use it with your favourite AI assistant. </p>
+<p>Follow the instructions below to get started.</p>
+<h2><a href="#prerequisites" name="prerequisites" class="anchor"><span class="anchor-link"></span></a>Prerequisites</h2>
+<p>You will need an AI assistant installed that supports <strong>local</strong> MCP servers. Some popular options:</p>
 <ul>
   <li><strong><a href="https://claude.com/download">Claude Desktop</a></strong> - Anthropic&rsquo;s desktop app</li>
   <li><strong><a href="https://www.cursor.com/">Cursor</a></strong> - AI code editor</li>
 </ul>
-<h3><a href="#install-docker" name="install-docker" class="anchor"><span class="anchor-link"></span></a>Install Docker</h3>
-<p>The Capsule MCP Server runs inside <a href="https://www.docker.com/">Docker</a>. Follow the instructions below for your operating system.</p><div class="callout note "><div class="callout-title">Note</div>
-<p>Already have Docker installed? Skip ahead to <a href="#configuration">Configuration</a>.</p></div>
-<p><strong>Option 1: Docker Desktop (recommended for most users)</strong></p>
+<hr/>
+<h2><a href="#1-install-docker" name="1-install-docker" class="anchor"><span class="anchor-link"></span></a>1. Install Docker</h2>
+<p>The Capsule MCP Server runs inside <a href="https://www.docker.com/">Docker</a>. Docker is a free tool that packages software code along with all its necessary settings and dependencies into a single, portable &ldquo;container&rdquo;. It is not owned or associated with Capsule but is necessary to run the Capsule MCP server on your computer.</p>
+<h3><a href="#option-1-docker-desktop-recommended-for-most-users-" name="option-1-docker-desktop-recommended-for-most-users-" class="anchor"><span class="anchor-link"></span></a>Option 1: Docker Desktop (recommended for most users)</h3>
 <ol>
   <li>Go to <a href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop</a></li>
-  <li>Click <strong>Download Docker Desktop</strong>, selecting your OS</li>
+  <li>Click <strong>Download Docker Desktop</strong>, selecting your Operating System</li>
   <li>Run the installer and follow the prompts</li>
-  <li>Restart your computer when prompted</li>
+  <li>If prompted for configuration settings, select <strong>Use recommended settings</strong>: <img src="docker-settings.png" alt="docker-settings.png" /></li>
+  <li>Restart your computer if prompted</li>
   <li>Launch Docker Desktop</li>
 </ol>
-<p><strong>Option 2: CLI only (for developers)</strong></p>
+<h3><a href="#option-2-cli-only-for-developers-" name="option-2-cli-only-for-developers-" class="anchor"><span class="anchor-link"></span></a>Option 2: CLI only (for developers)</h3>
 <p>Follow the <a href="https://docs.docker.com/engine/install/">official installation guide</a> for your specific distribution.</p>
-<h3><a href="#verify-your-installation" name="verify-your-installation" class="anchor"><span class="anchor-link"></span></a>Verify your installation</h3>
-<p>Once Docker is installed (via any method above) <strong>and running</strong>, confirm it is working by opening a terminal/console and running:</p>
+<hr/>
+<h2><a href="#2-verify-your-docker-installation" name="2-verify-your-docker-installation" class="anchor"><span class="anchor-link"></span></a>2. Verify your Docker installation</h2>
+<p>Once Docker is installed <strong>and the Docker app is open</strong>, confirm the installation by opening the <strong>Terminal</strong> app (macOS) or <strong>Command Prompt</strong> (Windows) and entering:</p>
 <pre><code>docker --version
 </code></pre>
-<p>The above should print a version number.</p>
-<h3><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h3>
-<p>Configure your favourite AI assistant to connect to the Capsule MCP Server.</p>
-<h4><a href="#1-generate-an-api-key" name="1-generate-an-api-key" class="anchor"><span class="anchor-link"></span></a>1. Generate an API key</h4>
-<p>Generate an API key in your Capsule CRM account.</p>
-<p>In your Capsule account, navigate to: <code>My Preferences → API Authentication Tokens → Generate New API Token</code></p>
-<ul>
-  <li><strong>Description:</strong> Capsule MCP Server</li>
-  <li><strong>Scope of this token:</strong> Select <code>Read information from your Capsule account</code> only</li>
-</ul>
-<p>Copy the generated token and temporarily save it somewhere safe.</p>
-<h4><a href="#2-locate-your-ai-assistant-config-file" name="2-locate-your-ai-assistant-config-file" class="anchor"><span class="anchor-link"></span></a>2. Locate your AI assistant config file</h4>
-<p>Locate the config file for your chosen AI assistant:</p>
-<ul>
-  <li><strong>Claude Desktop</strong>
+<p>It should print a version number, similar to below:</p>
+<p><img src="docker-version.png" alt="docker-version.png" /></p>
+<hr/>
+<h2><a href="#3-locate-your-ai-assistant-config-file" name="3-locate-your-ai-assistant-config-file" class="anchor"><span class="anchor-link"></span></a>3. Locate your AI assistant config file</h2>
+<p>Locate the configuration file for your chosen AI assistant:</p>
+<h3><a href="#claude-desktop" name="claude-desktop" class="anchor"><span class="anchor-link"></span></a>Claude Desktop</h3>
+<ol>
+  <li>Open Claude Desktop</li>
+  <li>Open the <code>Settings</code> menu:
     <ul>
-      <li>MacOS: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
-      <li>Windows: <code>%APPDATA%/Claude/claude_desktop_config.json</code></li>
+      <li>macOS - <code>Claude</code> → <code>Settings</code></li>
+      <li>Windows - <code>File</code> → <code>Settings</code></li>
     </ul>
   </li>
-  <li><strong>Cursor</strong> - <a href="https://cursor.com/docs/context/mcp#configuration-locations">configuration locations</a></li>
-</ul>
-<p>Add the following to the config file, replacing <code>YOUR-API-TOKEN</code> with your Capsule API token and save.</p>
+  <li>Select <code>Developer</code>, and under <code>Local MCP Servers</code> select <code>Edit Config</code>  <img src="claude-new-mcp-mac.png" alt="claude-new-mcp-mac.png" /></li>
+  <li>This will open a Finder/File Explorer window with the <code>claude_desktop_config.json</code> file selected</li>
+  <li>Open the file:
+    <ul>
+      <li>macOS - Right-click and <code>Open with</code> → <code>TextEdit</code></li>
+      <li>Windows - Right-click and <code>Open with</code> → <code>Notepad</code></li>
+    </ul>
+  </li>
+</ol>
+<h3><a href="#cursor" name="cursor" class="anchor"><span class="anchor-link"></span></a>Cursor</h3>
+<p>See <a href="https://cursor.com/docs/context/mcp#configuration-locations">configuration locations</a> to locate the config file.</p>
+<hr/>
+<h2><a href="#4-copy-mcp-server-config" name="4-copy-mcp-server-config" class="anchor"><span class="anchor-link"></span></a>4. Copy MCP server config</h2>
+<ol>
+  <li><strong>Exit Claude Desktop</strong> - this is to prevent any issues while editing and saving the file</li>
+  <li>Copy and paste the following into the file (do not save at this point):</li>
+</ol>
 <pre class="prettyprint"><code class="language-json">{
-  &quot;mcpServers&quot;: {
-    &quot;capsule-mcp&quot;: {
-      &quot;command&quot;: &quot;docker&quot;,
-      &quot;args&quot;: [
-        &quot;run&quot;,
-        &quot;-i&quot;,
-        &quot;--rm&quot;,
-        &quot;--name&quot;,
-        &quot;capsule-mcp&quot;,
-        &quot;-e&quot;,
-        &quot;CAPSULE_API_TOKEN=YOUR-API-TOKEN&quot;,
-        &quot;ghcr.io/zestia/capsule-mcp-scala:latest&quot;
-      ]
-    }
-  }
+ &quot;mcpServers&quot;: {
+   &quot;capsule-mcp&quot;: {
+     &quot;command&quot;: &quot;docker&quot;,
+     &quot;args&quot;: [
+       &quot;run&quot;,
+       &quot;-i&quot;,
+       &quot;--rm&quot;,
+       &quot;-e&quot;,
+       &quot;CAPSULE_API_TOKEN=your-api-token&quot;,
+       &quot;ghcr.io/zestia/capsule-mcp-scala:latest&quot;
+     ]
+   }
+ }
 }
 </code></pre>
-<h4><a href="#3-test-the-connection" name="3-test-the-connection" class="anchor"><span class="anchor-link"></span></a>3. Test the connection</h4>
-<p>Restart your AI assistant. Depending on your AI assistant, you should now see a new <code>capsule-mcp</code> server running in the list of available MCP servers in settings.</p>
-<p>For example, in Claude Desktop: <img src="claude-example.png" alt="claude-example.png" /></p>
-<p>Try asking a basic question about your Capsule account to test the connection, for example: <code>How many contacts do I have in Capsule?</code></p>
+<hr/>
+<h2><a href="#5-generate-an-api-key" name="5-generate-an-api-key" class="anchor"><span class="anchor-link"></span></a>5. Generate an API key</h2>
+<ol>
+  <li>In your Capsule account, navigate to: <code>My Preferences</code> → <code>API Authentication Tokens</code> → <code>Generate New API Token</code>
+    <ul>
+      <li><strong>Description:</strong> Capsule MCP Server</li>
+      <li><strong>Scope of this token:</strong> Select <code>Read information from your Capsule account</code> only</li>
+    </ul>
+  </li>
+  <li>Copy the generated token</li>
+  <li>In your open <code>claude_desktop_config.json</code> file, replace <code>your-api-token</code> with the copied token. Do not delete the <code>CAPSULE_API_TOKEN=</code> prefix.</li>
+  <li><strong>Save</strong> the file</li>
+</ol>
+<hr/>
+<h2><a href="#6-test-the-connection" name="6-test-the-connection" class="anchor"><span class="anchor-link"></span></a>6. Test the connection</h2><div class="callout note "><div class="callout-title">Note</div>
+<p>Each time you wish to use your MCP server, you should launch Docker and ensure it is running <strong>before opening your AI Assistant (Claude, Cursor, etc.)</strong>. The Docker app must be running for the MCP server to start and run.</p></div>
+<ol>
+  <li>Launch your AI assistant</li>
+  <li>You should now see a new <code>capsule-mcp</code> server running in the list of available MCP servers in Settings. For example, in Claude Desktop:  <img src="running-server-claude.png" alt="running-server-claude.png" /></li>
+  <li>You should also see a &ldquo;container&rdquo; running in the Docker app:  <img src="running-server-docker.png" alt="running-server-docker.png" /></li>
+  <li>Try asking a basic question about your Capsule account to test the connection, for example: <code>How many contacts do I have in Capsule?</code></li>
+  <li>If you are having any issues or seeing errors, please refer to the <a href="troubleshooting.html">troubleshooting guide</a>.</li>
+</ol>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/zestia/capsule-mcp-scala/tree/master/src/main/paradox/index.md">here</a>.
 </div>
@@ -182,7 +208,13 @@ The source code for this page can be found <a href="https://github.com/zestia/ca
 <ul>
   <li><a href="index.html#capsule-mcp-server" class="header">Capsule MCP Server</a>
   <ul>
-    <li><a href="index.html#setup" class="header">Setup</a></li>
+    <li><a href="index.html#prerequisites" class="header">Prerequisites</a></li>
+    <li><a href="index.html#1-install-docker" class="header">1. Install Docker</a></li>
+    <li><a href="index.html#2-verify-your-docker-installation" class="header">2. Verify your Docker installation</a></li>
+    <li><a href="index.html#3-locate-your-ai-assistant-config-file" class="header">3. Locate your AI assistant config file</a></li>
+    <li><a href="index.html#4-copy-mcp-server-config" class="header">4. Copy MCP server config</a></li>
+    <li><a href="index.html#5-generate-an-api-key" class="header">5. Generate an API key</a></li>
+    <li><a href="index.html#6-test-the-connection" class="header">6. Test the connection</a></li>
   </ul></li>
 </ul>
 </div>
