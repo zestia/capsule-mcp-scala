@@ -12,6 +12,26 @@ You will need an AI assistant that supports **local** MCP servers. Some popular 
 - **[Claude Desktop](https://claude.com/download)** - Anthropic's desktop app
 - **[Cursor](https://www.cursor.com/)** - AI code editor
 
+#### Minimum System Requirements
+@@@ warning
+Capsule MCP runs locally on your machine inside Docker.
+Running this in combination with your chosen AI assistant (Claude, Cursor etc.), means machines with less than 16 GB RAM may struggle.
+@@@
+
+**Windows**
+
+* **OS:** Windows 11 (64-bit)
+* **CPU:** Modern 4-core+ Intel/AMD
+* **RAM:** 16 GB
+* **Disk:** SSD with 10 GB free
+
+**Mac**
+
+* **OS:** macOS 12+
+* **CPU:** Apple Silicon (M1/M2/M3) or Intel Core i5+
+* **RAM:** 16 GB
+* **Disk:** SSD with 10 GB free
+
 ### Install Docker
 The Capsule MCP Server runs inside [Docker](https://www.docker.com/). Follow the instructions below for your operating system.
 
