@@ -31,9 +31,6 @@ Running this in combination with your chosen AI assistant (Claude, Cursor etc.),
 * **RAM:** 16 GB
 * **Disk:** SSD with 10 GB free
 
-### Install Docker
-The Capsule MCP Server runs inside [Docker](https://www.docker.com/). Follow the instructions below for your operating system.
-
 ## 1. Install Docker
 The Capsule MCP Server runs inside [Docker](https://www.docker.com/).
 Docker is a free tool that packages software code along with all its necessary settings and dependencies into a single, portable "container".
