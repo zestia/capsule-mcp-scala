@@ -103,33 +103,23 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <h1><a href="#troubleshooting" name="troubleshooting" class="anchor"><span class="anchor-link"></span></a>Troubleshooting</h1>
 <p>If your AI assistant is having trouble connecting to the MCP server, ensure the following:</p>
 <ul>
-  <li>The Docker app is already running <strong>before</strong> starting your AI assistant. Docker must be running for the MCP server to start and during the whole time you wish to use the Capsule MCP server</li>
-  <li>Your Capsule API token is valid</li>
-  <li>Your config file is formatted correctly - see example <a href="index.html#4-copy-mcp-server-config">config file</a></li>
+  <li>Docker is already running <strong>before</strong> starting your AI assistant</li>
+  <li>In a terminal, run <code>docker ps</code> and ensure you see <code>ghcr.io/zestia/capsule-mcp-scala</code> running</li>
+  <li>Your API token is valid and correctly set in your config file</li>
 </ul>
 <p>If you&rsquo;re still having issues, please let us know with the following information:</p>
-<ol>
+<ul>
   <li>Your Operating System &amp; what AI assistant you are using</li>
   <li>Screenshots / the exact error message you are seeing</li>
   <li>If some questions about your Capsule account succeed and others do not - i.e. your AI assistant is connecting to the MCP server, but you&rsquo;re having an issue with a specific question/prompt</li>
-  <li>Locate and send us the logs for the MCP server:
+  <li>Locate the logs for the MCP server:
     <ul>
-      <li><strong>Claude Desktop</strong>
-        <ul>
-          <li>In <code>Settings</code> → <code>Developer</code> → <code>Local MCP Servers</code>, you should see <code>capsule-mcp</code></li>
-          <li>Select <code>View Logs</code> to view the file  <img src="view-logs-claude.png" alt="view-logs-claude.png" /></li>
-        </ul>
-      </li>
-      <li><strong>Cursor</strong>
-        <ul>
-          <li>In <code>Settings</code> → <code>Cursor Settings</code> → <code>Tools &amp; MCP</code>, under <code>Installed MCP Servers</code> find <code>capsule-mcp</code></li>
-          <li>Select <code>Show output</code></li>
-        </ul>
-      </li>
+      <li><strong>Claude Desktop</strong> - in <code>Settings → Developer → Local MCP Servers</code>, you should see <code>capsule-mcp</code>. Select <code>View Logs</code> to view the file</li>
+      <li><strong>Cursor</strong> - in <code>Settings → Cursor Settings → Tools &amp; MCP</code>, under <code>Installed MCP Servers</code> find <code>capsule-mcp</code>, and select <code>Show output</code></li>
     </ul>
   </li>
   <li>Anything else you think might be helpful</li>
-</ol>
+</ul>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/zestia/capsule-mcp-scala/tree/master/src/main/paradox/troubleshooting.md">here</a>.
 </div>
