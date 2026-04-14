@@ -1,6 +1,7 @@
 # Capsule MCP Server
 
 MCP server that connects to your Capsule CRM data.
+This server currently only supports **read-only access** and cannot be used to modify your Capsule data.
 
 ## Setup
 You can get started with the server and use it with your favourite AI assistant.
