@@ -1,19 +1,18 @@
 # Capsule MCP Server
 
-MCP server that connects to your Capsule CRM data.
+MCP server that connects to your Capsule CRM data. You can get started with the server and use it with your favourite AI assistant.
 This server currently only supports **read-only access** and cannot be used to modify your Capsule data.
 
-## Setup
-You can get started with the server and use it with your favourite AI assistant.
+Follow the instructions below to get started.
 
-### Prerequisites
+## Prerequisites
 
-You will need an AI assistant that supports **local** MCP servers. Some popular options:
+You will need an AI assistant installed that supports **local** MCP servers. Some popular options:
 
 - **[Claude Desktop](https://claude.com/download)** - Anthropic's desktop app
 - **[Cursor](https://www.cursor.com/)** - AI code editor
 
-#### Minimum System Requirements
+### Minimum System Requirements
 @@@ warning
 Capsule MCP runs locally on your machine inside Docker.
 Running this in combination with your chosen AI assistant (Claude, Cursor etc.), means machines with less than 16 GB RAM may struggle.
@@ -33,86 +32,109 @@ Running this in combination with your chosen AI assistant (Claude, Cursor etc.),
 * **RAM:** 16 GB
 * **Disk:** SSD with 10 GB free
 
-### Install Docker
-The Capsule MCP Server runs inside [Docker](https://www.docker.com/). Follow the instructions below for your operating system.
+## 1. Install Docker
+The Capsule MCP Server runs inside [Docker](https://www.docker.com/).
+Docker is a free tool that packages software code along with all its necessary settings and dependencies into a single, portable "container".
+It is not owned or associated with Capsule but is necessary to run the Capsule MCP server on your computer.
 
-@@@ note
-Already have Docker installed? Skip ahead to [Configuration](#configuration).
-@@@
-
-**Option 1: Docker Desktop (recommended for most users)**
+### Option 1: Docker Desktop (recommended for most users)
 
 1. Go to [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
-2. Click **Download Docker Desktop**, selecting your OS
+2. Click **Download Docker Desktop**, selecting your Operating System
 3. Run the installer and follow the prompts
-4. Restart your computer when prompted
-5. Launch Docker Desktop
+4. If prompted for configuration settings, select **Use recommended settings**:
+![docker-settings.png](docker-settings.png)
+5. Restart your computer if prompted
+6. Launch Docker Desktop
 
-**Option 2: CLI only (for developers)**
+### Option 2: CLI only (for developers)
 
 Follow the [official installation guide](https://docs.docker.com/engine/install/) for your specific distribution.
 
-### Verify your installation
+---
 
-Once Docker is installed (via any method above) **and running**, confirm it is working by opening a terminal/console and running:
+## 2. Verify your Docker installation
+
+Once Docker is installed **and the Docker app is open**, confirm the installation by opening the **Terminal** app (macOS) or **Command Prompt** (Windows) and entering:
 
 ```
 docker --version
 ```
 
-The above should print a version number.
+It should print a version number, similar to below:
 
-### Configuration
-Configure your favourite AI assistant to connect to the Capsule MCP Server.
+![docker-version.png](docker-version.png)
 
-#### 1. Generate an API key
-Generate an API key in your Capsule CRM account.
+---
 
-In your Capsule account, navigate to: `My Preferences → API Authentication Tokens → Generate New API Token`
+## 3. Locate your AI assistant config file
+Locate the configuration file for your chosen AI assistant:
 
-   - **Description:** Capsule MCP Server
-   - **Scope of this token:** Select `Read information from your Capsule account` only
+### Claude Desktop
+1. Open Claude Desktop
+2. Open the `Settings` menu:
+    - macOS - `Claude` → `Settings`
+    - Windows - `File` → `Settings`
+3. Select `Developer`, and under `Local MCP Servers` select `Edit Config`
+  ![claude-new-mcp-mac.png](claude-new-mcp-mac.png)
+4. This will open a Finder/File Explorer window with the `claude_desktop_config.json` file selected
+5. Open the file:
+    - macOS - Right-click and `Open with` → `TextEdit`
+    - Windows - Right-click and `Open with` → `Notepad`
 
-Copy the generated token and temporarily save it somewhere safe.
+### Cursor
+See [configuration locations](https://cursor.com/docs/context/mcp#configuration-locations) to locate the config file.
 
-#### 2. Locate your AI assistant config file
-Locate the config file for your chosen AI assistant:
+---
 
-- **Claude Desktop**
-    - MacOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-    - Windows: `%APPDATA%/Claude/claude_desktop_config.json`
-- **Cursor** - [configuration locations](https://cursor.com/docs/context/mcp#configuration-locations)
-
-Add the following to the config file, replacing `YOUR-API-TOKEN` with your Capsule API token and save.
+## 4. Copy MCP server config
+1. **Exit your AI Assistant app (Claude, Cursor, etc.)** - this is to prevent any issues while editing and saving the file
+2. Copy and paste the following into the file (do not save at this point):
 
 ```json
 {
-  "mcpServers": {
-    "capsule-mcp": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "--name",
-        "capsule-mcp",
-        "-e",
-        "CAPSULE_API_TOKEN=YOUR-API-TOKEN",
-        "ghcr.io/zestia/capsule-mcp-scala:latest"
-      ]
-    }
-  }
+ "mcpServers": {
+   "capsule-mcp": {
+     "command": "docker",
+     "args": [
+       "run",
+       "-i",
+       "--rm",
+       "-e",
+       "CAPSULE_API_TOKEN=your-api-token",
+       "ghcr.io/zestia/capsule-mcp-scala:latest"
+     ]
+   }
+ }
 }
 ```
 
-#### 3. Test the connection
-Restart your AI assistant. Depending on your AI assistant, you should now see a new `capsule-mcp` server running in the
-list of available MCP servers in settings.
+---
 
-For example, in Claude Desktop:
-![claude-example.png](claude-example.png)
+## 5. Generate an API key
+1. In your Capsule account, navigate to: `My Preferences` → `API Authentication Tokens` → `Generate New API Token`
+     - **Description:** Capsule MCP Server
+     - **Scope of this token:** Select `Read information from your Capsule account` only
+2. Copy the generated token
+3. In your open `claude_desktop_config.json` file, replace `your-api-token` with the copied token. Do not delete the `CAPSULE_API_TOKEN=` prefix.
+4. **Save** the file
 
-Try asking a basic question about your Capsule account to test the connection, for example: `How many contacts do I have in Capsule?`
+---
+
+## 6. Test the connection
+
+@@@ note
+Each time you wish to use your MCP server, you should launch Docker and ensure it is running **before opening your AI Assistant (Claude, Cursor, etc.)**.
+The Docker app must be running for the MCP server to start and run.
+@@@
+
+1. Launch your AI assistant
+2. You should now see a new `capsule-mcp` server running in the list of available MCP servers in Settings. For example, in Claude Desktop:
+  ![running-server-claude.png](running-server-claude.png)
+3. You should also see a "container" running in the Docker app:
+  ![running-server-docker.png](running-server-docker.png)
+4. Try asking a basic question about your Capsule account to test the connection, for example: `How many contacts do I have in Capsule?`
+5. If you are having any issues or seeing errors, please refer to the [troubleshooting guide](troubleshooting.html).
 
 @@@ index
 * [Available Tools](available-tools.md)
