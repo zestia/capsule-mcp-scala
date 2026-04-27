@@ -17,7 +17,6 @@
 package com.zestia.capsulemcp.server.schemas
 
 import com.zestia.capsulemcp.server.schemas.SchemaTypes.*
-import io.circe.*
 
 trait HasFilterSchema:
   /**

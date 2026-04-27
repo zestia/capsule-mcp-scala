@@ -14,7 +14,7 @@ object McpServerSpec extends ZIOSpecDefault {
     test("registerAnnotatedTools should register all annotated Tools") {
       for {
         server <- ZIO.succeed(FastMcpServer("TestServer"))
-        _ <- ZIO.succeed(McpServer.registerAnnotatedTools(server))
+        _ <- ZIO.succeed(new TestMcpServer(writeToolsEnabled = false).registerAnnotatedTools(server))
         toolsResult <- server.listTools()
         tools = toolsResult.tools().asScala.toList
       } yield assertTrue(tools.size == 43)
@@ -22,10 +22,20 @@ object McpServerSpec extends ZIOSpecDefault {
     test("registerManualTools should register all manual Tools") {
       for {
         server <- ZIO.succeed(FastMcpServer("TestServer"))
-        _ <- McpServer.registerManualTools(server)
+        _ <- new TestMcpServer(writeToolsEnabled = false).registerManualTools(server)
         toolsResult <- server.listTools()
         tools = toolsResult.tools().asScala.toList
       } yield assertTrue(tools.size == 6)
+    },
+    test("registerManualTools should register update_contact when write tools are enabled") {
+      for {
+        server <- ZIO.succeed(FastMcpServer("TestServer"))
+        _ <- new TestMcpServer(writeToolsEnabled = true).registerManualTools(server)
+        toolsResult <- server.listTools()
+        tools = toolsResult.tools().asScala.toList
+      } yield assertTrue(tools.size == 7) && assertTrue(tools.exists(_.name() == "update_contact"))
     }
   )
+
+  private class TestMcpServer(override protected[server] val writeToolsEnabled: Boolean) extends BaseMcpServer
 }

@@ -16,6 +16,8 @@
 
 package com.zestia.capsulemcp.server
 
+import com.tjclp.fastmcp.ToolInputSchema
+import com.tjclp.fastmcp.core.ToolAnnotations
 import com.tjclp.fastmcp.macros.MapToFunctionMacro
 import com.tjclp.fastmcp.macros.RegistrationMacro.*
 import com.tjclp.fastmcp.server.FastMcpServer
@@ -29,44 +31,41 @@ import com.zestia.capsulemcp.server.tools.ContactTools.*
 import com.zestia.capsulemcp.server.tools.ProjectTools.*
 import com.zestia.capsulemcp.server.tools.TaskTools.listTasks
 import com.zestia.capsulemcp.server.tools.OpportunityTools.*
-import com.zestia.capsulemcp.service.CapsuleHttpClient.*
 import com.zestia.capsulemcp.util.{FileLogger, FileLogging, Version}
 import sttp.tapir.generic.auto.*
 import zio.*
-import zio.json.*
 
-object McpServer extends ZIOAppDefault with FileLogging:
+trait BaseMcpServer:
+  protected[server] def writeToolsEnabled: Boolean
 
-  override def run =
-    for
-      _ <- ZIO.attempt {
-        FileLogger.init()
-        logger.info(s"MCP Server starting... version ${Version.current}")
-      }
-      // Create server instance
-      server <- ZIO.succeed(FastMcpServer("McpServer"))
-      // Process tools using the scanAnnotations macro extension method
-      _ <- ZIO.attempt {
-        registerAnnotatedTools(server)
-      }
-      // Manually register tools with custom schemas
-      _ <- registerManualTools(server)
-      // Run the server
-      _ <- server.runStdio()
-    yield ()
+  private[server] def registerAnnotatedTools(server: FastMcpServer): Unit =
+    server.scanAnnotations[OpportunityTools.type]
+    server.scanAnnotations[ContactTools.type]
+    server.scanAnnotations[ProjectTools.type]
+    server.scanAnnotations[CustomFieldTools.type]
+    server.scanAnnotations[TagTools.type]
+    server.scanAnnotations[UserTools.type]
+    server.scanAnnotations[TeamTools.type]
+    server.scanAnnotations[TrackTools.type]
+    server.scanAnnotations[ActivityTools.type]
 
-  private[server] def registerAnnotatedTools(server: FastMcpServer): FastMcpServer =
-    // This macro finds all methods with @Tool, @Prompt or @Resource annotations and registers them with the server
-    server
-      .scanAnnotations[OpportunityTools.type]
-      .scanAnnotations[ContactTools.type]
-      .scanAnnotations[ProjectTools.type]
-      .scanAnnotations[CustomFieldTools.type]
-      .scanAnnotations[TagTools.type]
-      .scanAnnotations[UserTools.type]
-      .scanAnnotations[TeamTools.type]
-      .scanAnnotations[TrackTools.type]
-      .scanAnnotations[ActivityTools.type]
+  private val readOnlyAnnotations = Some(
+    ToolAnnotations(
+      readOnlyHint = Some(true),
+      idempotentHint = Some(true),
+      destructiveHint = Some(false),
+      openWorldHint = Some(true)
+    )
+  )
+
+  private val writeAnnotations = Some(
+    ToolAnnotations(
+      readOnlyHint = Some(false),
+      idempotentHint = Some(true),
+      destructiveHint = Some(true),
+      openWorldHint = Some(true)
+    )
+  )
 
   private[server] def registerManualTools(server: FastMcpServer): ZIO[Any, Throwable, Unit] =
     for
@@ -76,19 +75,22 @@ object McpServer extends ZIOAppDefault with FileLogging:
           "List Tasks with basic filtering ability. By default only Tasks with a status of 'OPEN' are returned."
         ),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listTasks)(args)),
-        inputSchema = Right(TaskSchemas.listTasksSchema)
+        inputSchema = ToolInputSchema.unsafeFromJsonString(TaskSchemas.listTasksSchema),
+        annotations = readOnlyAnnotations
       )
       _ <- server.tool(
         name = "list_activities",
         description = Some("List Activities with basic filtering ability"),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listActivities)(args)),
-        inputSchema = Right(ActivitySchemas.filterSchema)
+        inputSchema = ToolInputSchema.unsafeFromJsonString(ActivitySchemas.filterSchema),
+        annotations = readOnlyAnnotations
       )
       _ <- server.tool(
         name = "list_contacts",
         description = Some("List Contacts with comprehensive filtering ability"),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listContacts)(args)),
-        inputSchema = Right(ContactSchemas.filterSchema)
+        inputSchema = ToolInputSchema.unsafeFromJsonString(ContactSchemas.filterSchema),
+        annotations = readOnlyAnnotations
       )
       _ <- server.tool(
         name = "list_projects",
@@ -96,18 +98,55 @@ object McpServer extends ZIOAppDefault with FileLogging:
           "List Projects with comprehensive filtering ability. Any references to kase/case are internal/legacy names for Projects"
         ),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listProjects)(args)),
-        inputSchema = Right(ProjectSchemas.filterSchema)
+        inputSchema = ToolInputSchema.unsafeFromJsonString(ProjectSchemas.filterSchema),
+        annotations = readOnlyAnnotations
       )
       _ <- server.tool(
         name = "list_opportunities",
         description = Some("List Opportunities with comprehensive filtering ability"),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listOpportunities)(args)),
-        inputSchema = Right(OpportunitySchemas.filterSchema)
+        inputSchema = ToolInputSchema.unsafeFromJsonString(OpportunitySchemas.filterSchema),
+        annotations = readOnlyAnnotations
       )
       _ <- server.tool(
         name = "calculate_value_of_opportunities",
         description = Some("Get Total & Projected Values for Opportunities with comprehensive filtering ability"),
         handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(calculateValueOfOpportunities)(args)),
-        inputSchema = Right(OpportunitySchemas.filterSchema)
+        inputSchema = ToolInputSchema.unsafeFromJsonString(OpportunitySchemas.filterSchema),
+        annotations = readOnlyAnnotations
       )
+      _ <- ZIO.when(writeToolsEnabled) {
+        server.tool(
+          name = "update_contact",
+          description = Some(
+            "Update a Contact. Only adding/updating custom fields is currently supported. Deleting is NOT allowed but updates will overwrite existing values."
+          ),
+          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(updateContact)(args)),
+          inputSchema = ToolInputSchema.unsafeFromJsonString(ContactSchemas.updateContactSchema),
+          annotations = writeAnnotations
+        )
+      }
+    yield ()
+
+object McpServer extends ZIOAppDefault with FileLogging with BaseMcpServer:
+
+  override protected[server] def writeToolsEnabled: Boolean =
+    sys.env.get("ENABLE_WRITE_TOOLS").contains("true")
+
+  override def run: ZIO[Any, Throwable, Unit] =
+    for
+      _ <- ZIO.attempt {
+        FileLogger.init()
+        logger.info(s"MCP Server starting... version ${Version.current}")
+      }
+      // Create server instance
+      server <- ZIO.succeed(FastMcpServer("CapsuleMcpServer", Version.current))
+      // Process tools using the scanAnnotations macro extension method
+      _ <- ZIO.attempt {
+        registerAnnotatedTools(server)
+      }
+      // Manually register tools with custom schemas
+      _ <- registerManualTools(server)
+      // Run the server
+      _ <- server.runStdio()
     yield ()

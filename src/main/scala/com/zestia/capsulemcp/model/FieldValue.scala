@@ -16,6 +16,9 @@
 
 package com.zestia.capsulemcp.model
 
+import tools.jackson.core.JsonParser
+import tools.jackson.databind.{DeserializationContext, JsonNode, ValueDeserializer}
+import tools.jackson.databind.annotation.JsonDeserialize
 import zio.json.*
 import zio.json.ast.Json
 import scala.util.Try
@@ -87,3 +90,29 @@ final case class FieldValueNumber(id: Long, value: Long, definition: FieldDefini
 final case class FieldValueBoolean(id: Long, value: Boolean, definition: FieldDefinition) extends FieldValue
     derives JsonDecoder,
       JsonEncoder
+
+@JsonDeserialize(`using` = classOf[FieldValueUpdateDeserializer])
+class FieldValueUpdate(val definition: Long, val value: Json)
+
+object FieldValueUpdate:
+  given JsonEncoder[FieldValueUpdate] = JsonEncoder[Json].contramap { fvu =>
+    Json.Obj("definition" -> Json.Num(fvu.definition), "value" -> fvu.value)
+  }
+
+class FieldValueUpdateDeserializer extends ValueDeserializer[FieldValueUpdate]:
+
+  // Jackson-style deserialization needed by fast-mcp-scala to read Tool argument payloads
+  override def deserialize(p: JsonParser, ctx: DeserializationContext): FieldValueUpdate =
+    val node: JsonNode = ctx.readTree(p)
+
+    val definition = node.get("definition").asLong()
+    val valueNode = node.get("value")
+    val value = {
+      if valueNode.isNull then throw new IllegalArgumentException("field.value cannot be null")
+      else if valueNode.isString then Json.Str(valueNode.asString())
+      else if valueNode.isBoolean then Json.Bool(valueNode.asBoolean())
+      else if valueNode.isNumber then Json.Num(valueNode.decimalValue())
+      else throw new IllegalArgumentException(s"Unsupported value type: ${valueNode.getNodeType}")
+    }
+
+    FieldValueUpdate(definition, value)

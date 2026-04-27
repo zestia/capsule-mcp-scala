@@ -16,14 +16,12 @@
 
 package com.zestia.capsulemcp.model.filter
 
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer, JsonNode}
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import sttp.tapir.Schema.annotations.description
+import tools.jackson.core.JsonParser
+import tools.jackson.databind.{DeserializationContext, JsonNode, ValueDeserializer}
+import tools.jackson.databind.annotation.JsonDeserialize
 import zio.json.ast.Json
 import zio.json.{JsonDecoder, JsonEncoder}
 
-import scala.util.Try
 
 /**
  * See <a href="https://developer.capsulecrm.com/v2/reference/filters"</a>
@@ -91,26 +89,26 @@ object Condition:
       )
     }
 
-class ConditionDeserializer extends JsonDeserializer[Condition]:
+class ConditionDeserializer extends ValueDeserializer[Condition]:
 
   // Jackson-style deserialization needed by fast-mcp-scala to read Tool argument payloads
   override def deserialize(p: JsonParser, context: DeserializationContext): Condition =
-    val node: JsonNode = p.getCodec.readTree(p)
+    val node: JsonNode = context.readTree(p)
 
-    val field = node.get("field").asText()
-    val operator = node.get("operator").asText()
+    val field = node.get("field").asString()
+    val operator = node.get("operator").asString()
     val valueNode = node.get("value")
 
     if (valueNode.isNull) {
       StringCondition(field, operator, None)
-    } else if (valueNode.isTextual) {
-      StringCondition(field, operator, Some(valueNode.asText()))
+    } else if (valueNode.isString) {
+      StringCondition(field, operator, Some(valueNode.asString()))
     } else if (valueNode.isNumber) {
       NumberCondition(field, operator, valueNode.asLong())
     } else if (valueNode.isBoolean) {
       BooleanCondition(field, operator, valueNode.asBoolean())
     } else if (valueNode.isObject) {
-      val currency = valueNode.get("currency").asText()
+      val currency = valueNode.get("currency").asString()
       val amount = valueNode.get("amount").asDouble()
       MoneyCondition(field, operator, MoneyValue(currency, amount))
     } else {

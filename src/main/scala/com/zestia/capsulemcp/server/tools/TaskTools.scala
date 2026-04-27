@@ -16,10 +16,7 @@
 
 package com.zestia.capsulemcp.server.tools
 
-import com.tjclp.fastmcp.macros.MapToFunctionMacro
-import com.tjclp.fastmcp.server.FastMcpServer
 import com.zestia.capsulemcp.model.*
-import com.zestia.capsulemcp.server.schemas.TaskSchemas
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
 import zio.*
 import zio.json.*
@@ -60,7 +57,11 @@ object TaskTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Task#showTask"</a>
    */
-  @Tool(Some("get_task"), Some("Get a Task by ID"))
+  @Tool(Some("get_task"), Some("Get a Task by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true))
   def getTask(
       @Param("Task ID") id: Long
   ): String =

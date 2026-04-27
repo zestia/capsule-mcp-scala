@@ -16,16 +16,15 @@
 
 package com.zestia.capsulemcp.server.tools
 
-import com.zestia.capsulemcp.server.schemas.ContactSchemas
-import com.tjclp.fastmcp.macros.MapToFunctionMacro
-import com.tjclp.fastmcp.server.FastMcpServer
-import com.zestia.capsulemcp.model.*
 import com.tjclp.fastmcp.core.{Param, Tool}
+import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.model.filter.Filter
-import com.zestia.capsulemcp.server.schemas.ActivitySchemas
 import com.zestia.capsulemcp.service.CapsuleHttpClient.*
 import zio.*
 import zio.json.*
+
+private case class UpdateParty(fields: List[FieldValueUpdate]) derives JsonEncoder
+private case class UpdateContactWrapper(party: UpdateParty) derives JsonEncoder
 
 object ContactTools:
 
@@ -43,8 +42,23 @@ object ContactTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Party#showParty"</a>
    */
-  @Tool(Some("get_contact"), Some("Get a Contact"))
-  def getEntry(
+  @Tool(Some("get_contact"), Some("Get a Contact"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true))
+  def getContact(
       @Param("Contact ID") id: Long
   ): String =
     getRequest[ContactWrapper](s"parties/$id").toJson
+
+  /**
+   * Manually registered tool
+   *
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Party#updateParty"</a>
+   */
+  def updateContact(id: Long, fields: List[FieldValueUpdate]): String =
+    putRequest[ContactWrapper, UpdateContactWrapper](
+      s"parties/$id",
+      UpdateContactWrapper(UpdateParty(fields))
+    ).toJson

@@ -1,7 +1,9 @@
 name := "capsule-mcp-scala"
 
-ThisBuild / scalaVersion := "3.7.2"
+ThisBuild / scalaVersion := "3.8.3"
 ThisBuild / javacOptions ++= Seq("--release", "17")
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 ThisBuild / organization := "com.zestia"
 ThisBuild / organizationName := "Zestia Ltd"
 ThisBuild / startYear := Some(2026)
@@ -14,10 +16,11 @@ lazy val root = (project in file("."))
   .enablePlugins(ParadoxSitePlugin, GhpagesPlugin)
   .settings(
     name := "capsule-mcp-scala",
-    scalacOptions ++= Seq("-experimental", "-Xmax-inlines:128"),
+    scalacOptions ++= Seq("-experimental", "-Xmax-inlines:128", "-Wunused:imports"),
     libraryDependencies ++= Seq(
       // MCP Scala SDK
-      "com.tjclp" %% "fast-mcp-scala" % "0.2.1",
+      "com.tjclp" %% "fast-mcp-scala" % "0.3.1",
+      "tools.jackson.core" % "jackson-databind" % "3.0.3",
 
       // ZIO Core
       "dev.zio" %% "zio" % "2.1.22",

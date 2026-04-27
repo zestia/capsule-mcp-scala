@@ -43,7 +43,11 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
    */
-  @Tool(Some("get_contact_custom_field"), Some("Get Contact Custom Field Definition by ID"))
+  @Tool(Some("get_contact_custom_field"), Some("Get Contact Custom Field Definition by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true))
   def getContactCustomField(
       @Param("Custom Field Definition ID") id: Long
   ): String =
@@ -52,7 +56,11 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
    */
-  @Tool(Some("get_opportunity_custom_field"), Some("Get Opportunity Custom Field Definition by ID"))
+  @Tool(Some("get_opportunity_custom_field"), Some("Get Opportunity Custom Field Definition by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true))
   def getOpportunityCustomField(
       @Param("Custom Field Definition ID") id: Long
   ): String =
@@ -61,7 +69,11 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
    */
-  @Tool(Some("get_project_custom_field"), Some("Get Project Custom Field Definition by ID"))
+  @Tool(Some("get_project_custom_field"), Some("Get Project Custom Field Definition by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true))
   def getProjectCustomField(
       @Param("Custom Field Definition ID") id: Long
   ): String =
@@ -72,7 +84,11 @@ object CustomFieldTools:
    */
   @Tool(
     Some("list_contact_custom_fields"),
-    Some("List Custom Fields defined for Contacts (does not include DataTag fields)")
+    Some("List Custom Fields defined for Contacts (does not include DataTag fields)"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   )
   def listContactCustomFields(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
@@ -84,7 +100,11 @@ object CustomFieldTools:
    */
   @Tool(
     Some("list_opportunity_custom_fields"),
-    Some("List Custom Fields defined for Opportunities (does not include DataTag fields)")
+    Some("List Custom Fields defined for Opportunities (does not include DataTag fields)"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   )
   def listOpportunityCustomFields(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
@@ -96,7 +116,11 @@ object CustomFieldTools:
    */
   @Tool(
     Some("list_project_custom_fields"),
-    Some("List Custom Fields defined for Projects (does not include DataTag fields)")
+    Some("List Custom Fields defined for Projects (does not include DataTag fields)"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   )
   def listProjectCustomFields(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
@@ -105,7 +129,11 @@ object CustomFieldTools:
 
   @Tool(
     Some("list_custom_fields_for_contact_data_tag"),
-    Some("List Custom Fields defined for a Contact DataTag (a type of Tag used to group Custom Fields together)")
+    Some("List Custom Fields defined for a Contact DataTag (a type of Tag used to group Custom Fields together)"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   )
   def listCustomFieldsContactDataTag(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
@@ -115,7 +143,11 @@ object CustomFieldTools:
 
   @Tool(
     Some("list_custom_fields_for_opportunity_data_tag"),
-    Some("List Custom Fields defined for an Opportunity DataTag (a type of Tag used to group Custom Fields together)")
+    Some("List Custom Fields defined for an Opportunity DataTag (a type of Tag used to group Custom Fields together)"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   )
   def listCustomFieldsOpportunityDataTag(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
@@ -125,7 +157,11 @@ object CustomFieldTools:
 
   @Tool(
     Some("list_custom_fields_for_project_data_tag"),
-    Some("List Custom Fields defined for a Project DataTag (a type of Tag used to group Custom Fields together)")
+    Some("List Custom Fields defined for a Project DataTag (a type of Tag used to group Custom Fields together)"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   ) def listCustomFieldsProjectDataTag(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Tag ID") id: Long

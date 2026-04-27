@@ -39,7 +39,14 @@ object OpportunityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Opportunity#showOpportunity"</a>
    */
-  @Tool(Some("get_opportunity"), Some("Get an Opportunity by ID"))
+  @Tool(
+    Some("get_opportunity"),
+    Some("Get an Opportunity by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def getOpportunity(
       @Param("Opportunity ID") id: Long
   ): String =
@@ -57,7 +64,14 @@ object OpportunityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Pipeline#listPipelines"</a>
    */
-  @Tool(Some("list_pipelines"), Some("List Sales Pipelines for Opportunities, with optional searching by name"))
+  @Tool(
+    Some("list_pipelines"),
+    Some("List Sales Pipelines for Opportunities, with optional searching by name"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def listPipelines(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Search Pipelines by name", required = false) query: Option[String] = None
@@ -71,7 +85,14 @@ object OpportunityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Pipeline#showPipeline"</a>
    */
-  @Tool(Some("get_pipeline"), Some("Get a Pipeline by ID"))
+  @Tool(
+    Some("get_pipeline"),
+    Some("Get a Pipeline by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def getPipeline(
       @Param("Pipeline ID") id: Long
   ): String =
@@ -84,7 +105,11 @@ object OpportunityTools:
     Some("list_milestones"),
     Some(
       "List Milestones across all Sales Pipelines. To list Milestones on a specific Pipeline, use `list_milestones_by_pipeline`"
-    )
+    ),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   )
   def listMilestones(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
@@ -94,7 +119,14 @@ object OpportunityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#showMilestone"</a>
    */
-  @Tool(Some("get_milestone"), Some("Get a Milestone by ID"))
+  @Tool(
+    Some("get_milestone"),
+    Some("Get a Milestone by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def getMilestone(
       @Param("Milestone ID") id: Long
   ): String =
@@ -103,7 +135,14 @@ object OpportunityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Milestone#listMilestonesForPipeline"</a>
    */
-  @Tool(Some("list_milestones_by_pipeline"), Some("List Milestones associated with a Sales Pipeline"))
+  @Tool(
+    Some("list_milestones_by_pipeline"),
+    Some("List Milestones associated with a Sales Pipeline"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def listMilestonesByPipelineId(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Sales Pipeline ID") pipelineId: Long
@@ -117,7 +156,11 @@ object OpportunityTools:
     Some("list_lost_reasons"),
     Some(
       "List Lost Reasons, with optional searching by name. Lost Reasons allow users to record the reason an Opportunity is lost"
-    )
+    ),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
   )
   def listLostReasons(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
@@ -132,7 +175,14 @@ object OpportunityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Lost_Reason#showLostReason"</a>
    */
-  @Tool(Some("get_lost_reason"), Some("Get a Lost Reason by ID"))
+  @Tool(
+    Some("get_lost_reason"),
+    Some("Get a Lost Reason by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def getLostReason(
       @Param("Lost Reason ID") id: Long
   ): String =
