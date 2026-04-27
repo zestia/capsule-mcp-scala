@@ -46,11 +46,14 @@ object ActivityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#listEntriesForEntity"</a>
    */
-  @Tool(Some("list_entries_for_contact"), Some("List notes, emails and completed tasks for a Contact"),
+  @Tool(
+    Some("list_entries_for_contact"),
+    Some("List notes, emails and completed tasks for a Contact"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listEntriesForContact(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Contact ID") id: Long
@@ -60,11 +63,14 @@ object ActivityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#listEntriesForEntity"</a>
    */
-  @Tool(Some("list_entries_for_opportunity"), Some("List notes, emails and completed tasks for an Opportunity"),
+  @Tool(
+    Some("list_entries_for_opportunity"),
+    Some("List notes, emails and completed tasks for an Opportunity"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listEntriesForOpportunity(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Opportunity ID") id: Long
@@ -74,11 +80,14 @@ object ActivityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#listEntriesForEntity"</a>
    */
-  @Tool(Some("list_entries_for_project"), Some("List notes, emails and completed tasks for a Project"),
+  @Tool(
+    Some("list_entries_for_project"),
+    Some("List notes, emails and completed tasks for a Project"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listEntriesForProject(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Project ID") id: Long
@@ -88,11 +97,14 @@ object ActivityTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Entry#showEntry"</a>
    */
-  @Tool(Some("get_entry"), Some("Get an Entry (notes, emails and completed tasks) by ID"),
+  @Tool(
+    Some("get_entry"),
+    Some("Get an Entry (notes, emails and completed tasks) by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getEntry(
       @Param("Entry ID") id: Long
   ): String =

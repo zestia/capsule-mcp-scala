@@ -26,22 +26,28 @@ object TeamTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Team#listTeams"</a>
    */
-  @Tool(Some("list_teams"), Some("List Teams and team members"),
+  @Tool(
+    Some("list_teams"),
+    Some("List Teams and team members"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listTeams(): String =
     getRequest[TeamListWrapper]("teams", embed = List("memberships")).toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Team#showTeam"</a>
    */
-  @Tool(Some("get_team"), Some("Get a Team by ID"),
+  @Tool(
+    Some("get_team"),
+    Some("Get a Team by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getTeam(
       @Param("Team ID") id: Long
   ): String =

@@ -57,11 +57,14 @@ object TaskTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Task#showTask"</a>
    */
-  @Tool(Some("get_task"), Some("Get a Task by ID"),
+  @Tool(
+    Some("get_task"),
+    Some("Get a Task by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getTask(
       @Param("Task ID") id: Long
   ): String =

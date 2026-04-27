@@ -95,6 +95,7 @@ final case class FieldValueBoolean(id: Long, value: Boolean, definition: FieldDe
 class FieldValueUpdate(val definition: Long, val value: Json)
 
 object FieldValueUpdate:
+
   given JsonEncoder[FieldValueUpdate] = JsonEncoder[Json].contramap { fvu =>
     Json.Obj("definition" -> Json.Num(fvu.definition), "value" -> fvu.value)
   }

@@ -42,11 +42,14 @@ object ContactTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Party#showParty"</a>
    */
-  @Tool(Some("get_contact"), Some("Get a Contact"),
+  @Tool(
+    Some("get_contact"),
+    Some("Get a Contact"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getContact(
       @Param("Contact ID") id: Long
   ): String =

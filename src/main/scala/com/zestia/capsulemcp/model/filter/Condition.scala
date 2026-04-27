@@ -22,7 +22,6 @@ import tools.jackson.databind.annotation.JsonDeserialize
 import zio.json.ast.Json
 import zio.json.{JsonDecoder, JsonEncoder}
 
-
 /**
  * See <a href="https://developer.capsulecrm.com/v2/reference/filters"</a>
  */

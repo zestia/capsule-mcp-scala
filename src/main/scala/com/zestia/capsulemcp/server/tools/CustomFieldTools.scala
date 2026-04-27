@@ -43,11 +43,14 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
    */
-  @Tool(Some("get_contact_custom_field"), Some("Get Contact Custom Field Definition by ID"),
+  @Tool(
+    Some("get_contact_custom_field"),
+    Some("Get Contact Custom Field Definition by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getContactCustomField(
       @Param("Custom Field Definition ID") id: Long
   ): String =
@@ -56,11 +59,14 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
    */
-  @Tool(Some("get_opportunity_custom_field"), Some("Get Opportunity Custom Field Definition by ID"),
+  @Tool(
+    Some("get_opportunity_custom_field"),
+    Some("Get Opportunity Custom Field Definition by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getOpportunityCustomField(
       @Param("Custom Field Definition ID") id: Long
   ): String =
@@ -69,11 +75,14 @@ object CustomFieldTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Custom_Field#showField"</a>
    */
-  @Tool(Some("get_project_custom_field"), Some("Get Project Custom Field Definition by ID"),
+  @Tool(
+    Some("get_project_custom_field"),
+    Some("Get Project Custom Field Definition by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getProjectCustomField(
       @Param("Custom Field Definition ID") id: Long
   ): String =

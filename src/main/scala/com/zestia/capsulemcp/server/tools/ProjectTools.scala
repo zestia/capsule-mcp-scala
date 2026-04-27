@@ -39,11 +39,14 @@ object ProjectTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Project#showProject"</a>
    */
-  @Tool(Some("get_project"), Some("Get a Project by ID"),
+  @Tool(
+    Some("get_project"),
+    Some("Get a Project by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getProject(
       @Param("Project ID") id: Long
   ): String =
@@ -52,11 +55,14 @@ object ProjectTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Board#listBoards"</a>
    */
-  @Tool(Some("list_boards"), Some("List Boards for Projects, with optional searching by name"),
+  @Tool(
+    Some("list_boards"),
+    Some("List Boards for Projects, with optional searching by name"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listBoards(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Search Boards by name", required = false) query: Option[String] = None
@@ -70,11 +76,14 @@ object ProjectTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Board#showBoard"</a>
    */
-  @Tool(Some("get_board"), Some("Get a Project Board by ID"),
+  @Tool(
+    Some("get_board"),
+    Some("Get a Project Board by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getBoard(
       @Param("Board ID") id: Long
   ): String =
@@ -99,11 +108,14 @@ object ProjectTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#showStage"</a>
    */
-  @Tool(Some("get_stage"), Some("Get a Project Stage by ID"),
+  @Tool(
+    Some("get_stage"),
+    Some("Get a Project Stage by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getStage(
       @Param("Stage ID") id: Long
   ): String =
@@ -112,11 +124,14 @@ object ProjectTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Stage#listStagesForBoard"</a>
    */
-  @Tool(Some("list_stages_by_board"), Some("List Stages associated with a Project Board"),
+  @Tool(
+    Some("list_stages_by_board"),
+    Some("List Stages associated with a Project Board"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listStagesByBoardId(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Board ID") boardId: Long

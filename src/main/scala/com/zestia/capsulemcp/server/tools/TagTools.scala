@@ -33,11 +33,14 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#showTag"</a>
    */
-  @Tool(Some("get_contact_tag"), Some("Get Contact Tag Definition by ID"),
+  @Tool(
+    Some("get_contact_tag"),
+    Some("Get Contact Tag Definition by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getContactTag(
       @Param("Tag ID") id: Long
   ): String =
@@ -46,11 +49,14 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#showTag"</a>
    */
-  @Tool(Some("get_opportunity_tag"), Some("Get Opportunity Tag Definition by ID"),
+  @Tool(
+    Some("get_opportunity_tag"),
+    Some("Get Opportunity Tag Definition by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getOpportunityTag(
       @Param("Tag ID") id: Long
   ): String =
@@ -59,11 +65,14 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#showTag"</a>
    */
-  @Tool(Some("get_project_tag"), Some("Get Project Tag Definition by ID"),
+  @Tool(
+    Some("get_project_tag"),
+    Some("Get Project Tag Definition by ID"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def getProjectTag(
       @Param("Tag ID") id: Long
   ): String =
@@ -72,11 +81,14 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
-  @Tool(Some("list_contact_tags"), Some("List Tags defined for Contacts"),
+  @Tool(
+    Some("list_contact_tags"),
+    Some("List Tags defined for Contacts"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listContactTags(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
@@ -85,11 +97,14 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
-  @Tool(Some("list_opportunity_tags"), Some("List Tags defined for Opportunities"),
+  @Tool(
+    Some("list_opportunity_tags"),
+    Some("List Tags defined for Opportunities"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listOpportunityTags(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
@@ -98,11 +113,14 @@ object TagTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Tag#listTags"</a>
    */
-  @Tool(Some("list_project_tags"), Some("List Tags defined for Projects"),
+  @Tool(
+    Some("list_project_tags"),
+    Some("List Tags defined for Projects"),
     readOnlyHint = Some(true),
     destructiveHint = Some(false),
     idempotentHint = Some(true),
-    openWorldHint = Some(true))
+    openWorldHint = Some(true)
+  )
   def listProjectTags(
       @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination]
   ): String =
