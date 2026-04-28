@@ -30,7 +30,11 @@ import com.zestia.capsulemcp.server.tools.ActivityTools.listActivities
 import com.zestia.capsulemcp.server.tools.ContactTools.*
 import com.zestia.capsulemcp.server.tools.ProjectTools.{listProjects, updateProject}
 import com.zestia.capsulemcp.server.tools.TaskTools.listTasks
-import com.zestia.capsulemcp.server.tools.OpportunityTools.{calculateValueOfOpportunities, listOpportunities, updateOpportunity}
+import com.zestia.capsulemcp.server.tools.OpportunityTools.{
+  calculateValueOfOpportunities,
+  listOpportunities,
+  updateOpportunity
+}
 import com.zestia.capsulemcp.util.{FileLogger, FileLogging, Version}
 import sttp.tapir.generic.auto.*
 import zio.*
