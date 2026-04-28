@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  version: 1.1.0
+  version: 1.1.0-rc.1
 
 jobs:
   publish:
