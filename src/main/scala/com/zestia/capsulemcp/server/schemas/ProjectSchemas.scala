@@ -48,3 +48,5 @@ object ProjectSchemas extends HasFilterSchema with HasCustomFieldFilterFields:
     DateFilterField("expectedCloseOn", "Expected date close on"),
     DateFilterField("startOn", "Start on date")
   ) ++ customFieldFilterFields
+
+  val updateProjectSchema: String = SchemaBuilders.updateEntitySchema("Project ID")

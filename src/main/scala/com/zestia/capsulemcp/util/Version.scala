@@ -17,4 +17,4 @@
 package com.zestia.capsulemcp.util
 
 object Version:
-  val current = "1.0.1"
+  val current = "1.1.0-rc.1"

@@ -23,8 +23,8 @@ jobs:
 
       - uses: coursier/cache-action@v6
 
-      - name: Run tests
-        run: sbt test scalafmtCheckAll
+      - name: Run tests & linter
+        run: sbt test scalafmtCheckAll "scalafix --check"
 
       - name: Report test results
         if: success() || failure()

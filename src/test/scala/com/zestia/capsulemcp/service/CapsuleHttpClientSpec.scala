@@ -1,13 +1,13 @@
 package com.zestia.capsulemcp.service
 
-import com.zestia.capsulemcp.model.{ContactListWrapper, Pagination}
+import com.zestia.capsulemcp.model.{ActivityListWrapper, ContactListWrapper, ContactWrapper, Pagination}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import sttp.client3.testing.SttpBackendStub
-import sttp.client3.{Empty, HttpClientSyncBackend, Identity, RequestT, StringBody, SttpBackend}
-import sttp.model.{Header, Uri}
+import sttp.client3.{Empty, HttpClientSyncBackend, Identity, RequestT, Response, StringBody, SttpBackend}
+import sttp.model.{Header, StatusCode, Uri}
 import com.zestia.capsulemcp.model.filter.{Filter, NumberCondition}
-import com.zestia.capsulemcp.model.ActivityListWrapper
+import zio.json.JsonEncoder
 
 class CapsuleHttpClientSpec extends AnyFlatSpec with Matchers:
 
@@ -177,6 +177,44 @@ class CapsuleHttpClientSpec extends AnyFlatSpec with Matchers:
     // then
     wrapper.response.activities should have size 1
   }
+
+  "putRequest" should "successfully send a PUT request and deserialize the response" in {
+    // given
+    val mockResponse = """{"party": {"id": 14, "type": "person"}}"""
+
+    val backend = SttpBackendStub.synchronous
+      .whenRequestMatches { request =>
+        request.uri.toString.contains("https://api.example.com/api/v2/parties/14") &&
+        request.method.method == "PUT" &&
+        request.headers.find(_.name == "Authorization").get.value == "Bearer api-token"
+      }
+      .thenRespond(mockResponse)
+
+    val client = new TestCapsuleHttpClient(backend)
+
+    // when
+    val wrapper = client.putRequest[ContactWrapper, TestBody]("parties/14", TestBody("test"))
+
+    // then
+    wrapper.response.party.id shouldBe 14
+  }
+
+  it should "throw a write permission error on a 403 response" in {
+    // given
+    val backend = SttpBackendStub.synchronous.whenAnyRequest
+      .thenRespond(Response("""{"message": "Requires additional scope"}""", StatusCode.Forbidden))
+
+    val client = new TestCapsuleHttpClient(backend)
+
+    // when/then
+    val ex = intercept[RuntimeException] {
+      client.putRequest[ContactWrapper, TestBody]("parties/14", TestBody("test"))
+    }
+
+    ex.getMessage should include("write permission")
+  }
+
+  private case class TestBody(value: String) derives JsonEncoder
 
   private class TestCapsuleHttpClient(protected val backend: SttpBackend[Identity, Any]) extends BaseCapsuleHttpClient:
     override protected val apiToken = "api-token"
