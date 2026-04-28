@@ -20,8 +20,11 @@ import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
+import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest, putRequest}
 import zio.json.*
+
+private case class UpdateOpportunityFields(fields: List[FieldValueUpdate]) derives JsonEncoder
+private case class UpdateOpportunityWrapper(opportunity: UpdateOpportunityFields) derives JsonEncoder
 
 object OpportunityTools:
 
@@ -187,3 +190,14 @@ object OpportunityTools:
       @Param("Lost Reason ID") id: Long
   ): String =
     getRequest[LostReasonWrapper](s"lostreasons/$id").toJson
+
+  /**
+   * Manually registered tool
+   *
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Opportunity#updateOpportunity"</a>
+   */
+  def updateOpportunity(id: Long, fields: List[FieldValueUpdate]): String =
+    putRequest[OpportunityWrapper, UpdateOpportunityWrapper](
+      s"opportunities/$id",
+      UpdateOpportunityWrapper(UpdateOpportunityFields(fields))
+    ).toJson

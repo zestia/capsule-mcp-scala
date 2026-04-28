@@ -10,6 +10,7 @@ import scala.jdk.CollectionConverters.*
 
 object McpServerSpec extends ZIOSpecDefault {
 
+  // TODO: introduce proper integration tests
   def spec: Spec[Any, Throwable] = suite("McpServer")(
     test("registerAnnotatedTools should register all annotated Tools") {
       for {
@@ -27,13 +28,16 @@ object McpServerSpec extends ZIOSpecDefault {
         tools = toolsResult.tools().asScala.toList
       } yield assertTrue(tools.size == 6)
     },
-    test("registerManualTools should register update_contact when write tools are enabled") {
+    test("registerManualTools should register write tools when enabled") {
       for {
         server <- ZIO.succeed(FastMcpServer("TestServer"))
         _ <- new TestMcpServer(writeToolsEnabled = true).registerManualTools(server)
         toolsResult <- server.listTools()
         tools = toolsResult.tools().asScala.toList
-      } yield assertTrue(tools.size == 7) && assertTrue(tools.exists(_.name() == "update_contact"))
+      } yield assertTrue(tools.size == 9) &&
+        assertTrue(tools.exists(_.name() == "update_contact")) &&
+        assertTrue(tools.exists(_.name() == "update_opportunity")) &&
+        assertTrue(tools.exists(_.name() == "update_project"))
     }
   )
 

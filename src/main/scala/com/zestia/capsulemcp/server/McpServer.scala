@@ -28,9 +28,9 @@ import com.zestia.capsulemcp.server.schemas.*
 import com.zestia.capsulemcp.server.tools.*
 import com.zestia.capsulemcp.server.tools.ActivityTools.listActivities
 import com.zestia.capsulemcp.server.tools.ContactTools.*
-import com.zestia.capsulemcp.server.tools.ProjectTools.*
+import com.zestia.capsulemcp.server.tools.ProjectTools.{listProjects, updateProject}
 import com.zestia.capsulemcp.server.tools.TaskTools.listTasks
-import com.zestia.capsulemcp.server.tools.OpportunityTools.*
+import com.zestia.capsulemcp.server.tools.OpportunityTools.{calculateValueOfOpportunities, listOpportunities, updateOpportunity}
 import com.zestia.capsulemcp.util.{FileLogger, FileLogging, Version}
 import sttp.tapir.generic.auto.*
 import zio.*
@@ -67,64 +67,101 @@ trait BaseMcpServer:
     )
   )
 
+  private def registerManualTool(
+      server: FastMcpServer,
+      name: String,
+      description: String,
+      fn: Map[String, Any] => Any,
+      schema: String,
+      annotations: Option[ToolAnnotations]
+  ): ZIO[Any, Throwable, Unit] =
+    server
+      .tool(
+        name = name,
+        description = Some(description),
+        handler = (args, _) => ZIO.succeed(fn(args)),
+        inputSchema = ToolInputSchema.unsafeFromJsonString(schema),
+        annotations = annotations
+      )
+      .unit
+
   private[server] def registerManualTools(server: FastMcpServer): ZIO[Any, Throwable, Unit] =
     for
-      _ <- server.tool(
-        name = "list_tasks",
-        description = Some(
-          "List Tasks with basic filtering ability. By default only Tasks with a status of 'OPEN' are returned."
-        ),
-        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listTasks)(args)),
-        inputSchema = ToolInputSchema.unsafeFromJsonString(TaskSchemas.listTasksSchema),
-        annotations = readOnlyAnnotations
+      _ <- registerManualTool(
+        server,
+        "list_tasks",
+        "List Tasks with basic filtering ability. By default only Tasks with a status of 'OPEN' are returned.",
+        MapToFunctionMacro.callByMap(listTasks),
+        TaskSchemas.listTasksSchema,
+        readOnlyAnnotations
       )
-      _ <- server.tool(
-        name = "list_activities",
-        description = Some("List Activities with basic filtering ability"),
-        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listActivities)(args)),
-        inputSchema = ToolInputSchema.unsafeFromJsonString(ActivitySchemas.filterSchema),
-        annotations = readOnlyAnnotations
+      _ <- registerManualTool(
+        server,
+        "list_activities",
+        "List Activities with basic filtering ability",
+        MapToFunctionMacro.callByMap(listActivities),
+        ActivitySchemas.filterSchema,
+        readOnlyAnnotations
       )
-      _ <- server.tool(
-        name = "list_contacts",
-        description = Some("List Contacts with comprehensive filtering ability"),
-        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listContacts)(args)),
-        inputSchema = ToolInputSchema.unsafeFromJsonString(ContactSchemas.filterSchema),
-        annotations = readOnlyAnnotations
+      _ <- registerManualTool(
+        server,
+        "list_contacts",
+        "List Contacts with comprehensive filtering ability",
+        MapToFunctionMacro.callByMap(listContacts),
+        ContactSchemas.filterSchema,
+        readOnlyAnnotations
       )
-      _ <- server.tool(
-        name = "list_projects",
-        description = Some(
-          "List Projects with comprehensive filtering ability. Any references to kase/case are internal/legacy names for Projects"
-        ),
-        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listProjects)(args)),
-        inputSchema = ToolInputSchema.unsafeFromJsonString(ProjectSchemas.filterSchema),
-        annotations = readOnlyAnnotations
+      _ <- registerManualTool(
+        server,
+        "list_projects",
+        "List Projects with comprehensive filtering ability. Any references to kase/case are internal/legacy names for Projects",
+        MapToFunctionMacro.callByMap(listProjects),
+        ProjectSchemas.filterSchema,
+        readOnlyAnnotations
       )
-      _ <- server.tool(
-        name = "list_opportunities",
-        description = Some("List Opportunities with comprehensive filtering ability"),
-        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(listOpportunities)(args)),
-        inputSchema = ToolInputSchema.unsafeFromJsonString(OpportunitySchemas.filterSchema),
-        annotations = readOnlyAnnotations
+      _ <- registerManualTool(
+        server,
+        "list_opportunities",
+        "List Opportunities with comprehensive filtering ability",
+        MapToFunctionMacro.callByMap(listOpportunities),
+        OpportunitySchemas.filterSchema,
+        readOnlyAnnotations
       )
-      _ <- server.tool(
-        name = "calculate_value_of_opportunities",
-        description = Some("Get Total & Projected Values for Opportunities with comprehensive filtering ability"),
-        handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(calculateValueOfOpportunities)(args)),
-        inputSchema = ToolInputSchema.unsafeFromJsonString(OpportunitySchemas.filterSchema),
-        annotations = readOnlyAnnotations
+      _ <- registerManualTool(
+        server,
+        "calculate_value_of_opportunities",
+        "Get Total & Projected Values for Opportunities with comprehensive filtering ability",
+        MapToFunctionMacro.callByMap(calculateValueOfOpportunities),
+        OpportunitySchemas.filterSchema,
+        readOnlyAnnotations
       )
       _ <- ZIO.when(writeToolsEnabled) {
-        server.tool(
-          name = "update_contact",
-          description = Some(
-            "Update a Contact. Only adding/updating custom fields is currently supported. Deleting is NOT allowed but updates will overwrite existing values."
-          ),
-          handler = (args, _) => ZIO.succeed(MapToFunctionMacro.callByMap(updateContact)(args)),
-          inputSchema = ToolInputSchema.unsafeFromJsonString(ContactSchemas.updateContactSchema),
-          annotations = writeAnnotations
-        )
+        for
+          _ <- registerManualTool(
+            server,
+            "update_contact",
+            "Update a Contact. Only adding/updating custom fields is currently supported. Deleting is NOT allowed but updates will overwrite existing values.",
+            MapToFunctionMacro.callByMap(updateContact),
+            ContactSchemas.updateContactSchema,
+            writeAnnotations
+          )
+          _ <- registerManualTool(
+            server,
+            "update_opportunity",
+            "Update an Opportunity. Only adding/updating custom fields is currently supported. Deleting is NOT allowed but updates will overwrite existing values.",
+            MapToFunctionMacro.callByMap(updateOpportunity),
+            OpportunitySchemas.updateOpportunitySchema,
+            writeAnnotations
+          )
+          _ <- registerManualTool(
+            server,
+            "update_project",
+            "Update a Project. Only adding/updating custom fields is currently supported. Deleting is NOT allowed but updates will overwrite existing values.",
+            MapToFunctionMacro.callByMap(updateProject),
+            ProjectSchemas.updateProjectSchema,
+            writeAnnotations
+          )
+        yield ()
       }
     yield ()
 

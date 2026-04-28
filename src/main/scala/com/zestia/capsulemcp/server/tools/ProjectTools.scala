@@ -20,8 +20,11 @@ import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.filter.Filter
 import com.zestia.capsulemcp.model.*
 import com.zestia.capsulemcp.server.tools.common.ToolParams
-import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest}
+import com.zestia.capsulemcp.service.CapsuleHttpClient.{filterRequest, getRequest, putRequest}
 import zio.json.*
+
+private case class UpdateProjectFields(fields: List[FieldValueUpdate]) derives JsonEncoder
+private case class UpdateProjectWrapper(kase: UpdateProjectFields) derives JsonEncoder
 
 object ProjectTools:
 
@@ -137,3 +140,14 @@ object ProjectTools:
       @Param("Board ID") boardId: Long
   ): String =
     getRequest[StageListWrapper](s"boards/$boardId/stages", pagination).toJson
+
+  /**
+   * Manually registered tool
+   *
+   * See <a href="https://developer.capsulecrm.com/v2/operations/Kase#updateKase"</a>
+   */
+  def updateProject(id: Long, fields: List[FieldValueUpdate]): String =
+    putRequest[ProjectWrapper, UpdateProjectWrapper](
+      s"kases/$id",
+      UpdateProjectWrapper(UpdateProjectFields(fields))
+    ).toJson
