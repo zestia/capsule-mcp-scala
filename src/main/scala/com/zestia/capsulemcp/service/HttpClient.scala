@@ -59,6 +59,11 @@ abstract class HttpClient extends FileLogging:
       }
     } else {
       response.code.code match {
+        case 403 =>
+          logger.warn(s"Forbidden: ${response.body}")
+          throw new RuntimeException(
+            "API error: 403 Forbidden — your Capsule API token does not have write permission."
+          )
         case 404 =>
           logger.warn("Not found")
           throw new RuntimeException("API error: 404 Not Found")

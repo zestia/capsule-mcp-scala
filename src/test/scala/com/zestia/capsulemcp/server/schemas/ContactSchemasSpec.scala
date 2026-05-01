@@ -94,6 +94,64 @@ class ContactSchemasSpec extends AnyFlatSpec with Matchers:
     errors shouldBe Nil
   }
 
+  "ContactSchemas.updateContactSchema" should "produce valid JSON schema" in new ContactSchemasFixture {
+    val errors: List[ValidationError] =
+      updateContactSchema.validate("""{"id": 14, "fields": []}""", InputFormat.JSON).asScala.toList
+
+    errors shouldBe Nil
+  }
+
+  it should "accept a field with a string value" in new ContactSchemasFixture {
+    val body = """{"id": 14, "fields": [{"definition": 135, "value": "some text"}]}"""
+
+    updateContactSchema.validate(body, InputFormat.JSON).asScala.toList shouldBe Nil
+  }
+
+  it should "accept a field with a boolean value" in new ContactSchemasFixture {
+    val body = """{"id": 14, "fields": [{"definition": 135, "value": true}]}"""
+
+    updateContactSchema.validate(body, InputFormat.JSON).asScala.toList shouldBe Nil
+  }
+
+  it should "accept a field with a number value" in new ContactSchemasFixture {
+    val body = """{"id": 14, "fields": [{"definition": 135, "value": 42}]}"""
+
+    updateContactSchema.validate(body, InputFormat.JSON).asScala.toList shouldBe Nil
+  }
+
+  it should "reject a body missing id" in new ContactSchemasFixture {
+    val body = """{"fields": [{"definition": 135, "value": "test"}]}"""
+
+    val errors: List[ValidationError] = updateContactSchema.validate(body, InputFormat.JSON).asScala.toList
+
+    errors should not be Nil
+  }
+
+  it should "reject a body missing fields" in new ContactSchemasFixture {
+    val body = """{"id": 14}"""
+
+    val errors: List[ValidationError] = updateContactSchema.validate(body, InputFormat.JSON).asScala.toList
+
+    errors should not be Nil
+  }
+
+  it should "reject a field item missing definition" in new ContactSchemasFixture {
+    val body = """{"id": 14, "fields": [{"value": "test"}]}"""
+
+    val errors: List[ValidationError] = updateContactSchema.validate(body, InputFormat.JSON).asScala.toList
+
+    errors should not be Nil
+  }
+
+  it should "reject a field item missing value" in new ContactSchemasFixture {
+    val body = """{"id": 14, "fields": [{"definition": 135}]}"""
+
+    val errors: List[ValidationError] = updateContactSchema.validate(body, InputFormat.JSON).asScala.toList
+
+    errors should not be Nil
+  }
+
 private trait ContactSchemasFixture:
   private val schemaRegistry = SchemaRegistry.withDefaultDialect(SpecificationVersion.DRAFT_7)
   protected val filterSchema: Schema = schemaRegistry.getSchema(ContactSchemas.filterSchema)
+  protected val updateContactSchema: Schema = schemaRegistry.getSchema(ContactSchemas.updateContactSchema)

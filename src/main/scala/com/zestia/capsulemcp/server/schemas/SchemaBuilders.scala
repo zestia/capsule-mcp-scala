@@ -98,6 +98,40 @@ object SchemaBuilders:
     )
 
   /**
+   * Build the standard schema for an update tool that only supports updating custom fields
+   */
+  def updateEntitySchema(idDescription: String): String =
+    objectSchema(
+      Map(
+        "id" -> integer(idDescription),
+        "fields" -> Json.obj(
+          "type" -> Json.fromString("array"),
+          "description" -> Json.fromString(
+            "Custom field values to update or add. Deleting is NOT allowed but updates will overwrite existing values."
+          ),
+          "items" -> Json.obj(
+            "type" -> Json.fromString("object"),
+            "properties" -> Json.obj(
+              "definition" -> integer("Field definition ID"),
+              "value" -> Json.obj(
+                "description" -> Json.fromString(
+                  "Value type depends on the custom field definition: text/list/link → string; date → string YYYY-MM-DD; multiselectlist → semicolon-delimited string; boolean → boolean; number → string or number. List values must match predefined options. Link values may include placeholders: {id}, {name}, {email}, {phone}, {phone[Mobile]}, {custom[field name]}"
+                ),
+                "oneOf" -> Json.arr(
+                  Json.obj("type" -> Json.fromString("string")),
+                  Json.obj("type" -> Json.fromString("boolean")),
+                  Json.obj("type" -> Json.fromString("number"))
+                )
+              )
+            ),
+            "required" -> Json.arr(Json.fromString("definition"), Json.fromString("value"))
+          )
+        )
+      ),
+      required = List("id", "fields")
+    )
+
+  /**
    * Build a complete object schema from a map of property names to their schemas
    */
   def objectSchema(properties: Map[String, Json], required: List[String] = List.empty): String =

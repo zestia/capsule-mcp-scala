@@ -20,7 +20,6 @@ import com.tjclp.fastmcp.core.{Param, Tool}
 import com.zestia.capsulemcp.model.{Pagination, TrackListWrapper, TrackWrapper}
 import com.zestia.capsulemcp.server.tools.common.ToolParams
 import com.zestia.capsulemcp.service.CapsuleHttpClient.getRequest
-import sttp.tapir.Schema.annotations.default
 import zio.json.*
 
 object TrackTools:
@@ -28,7 +27,14 @@ object TrackTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Track#showTrack"</a>
    */
-  @Tool(Some("get_track"), Some("Get Track by ID"))
+  @Tool(
+    Some("get_track"),
+    Some("Get Track by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def getTrack(
       @Param("Track ID", required = true) id: Long
   ): String =
@@ -40,29 +46,50 @@ object TrackTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Track#listTrack"</a>
    */
-  @Tool(Some("list_tracks_for_contact"), Some("List Tracks for specified Contact"))
+  @Tool(
+    Some("list_tracks_for_contact"),
+    Some("List Tracks for specified Contact"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def listTracksForContact(
-      @Param(ToolParams.paginationDescription, required = false) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Contact ID") contactId: Long
   ): String =
-    listTracksForEntity("parties", contactId, Option(pagination))
+    listTracksForEntity("parties", contactId, pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Track#listTrack"</a>
    */
-  @Tool(Some("list_tracks_for_opportunity"), Some("List Tracks for specified Opportunity"))
+  @Tool(
+    Some("list_tracks_for_opportunity"),
+    Some("List Tracks for specified Opportunity"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def listTracksForOpportunity(
-      @Param(ToolParams.paginationDescription, required = false) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Opportunity ID") opportunityId: Long
   ): String =
-    listTracksForEntity("opportunities", opportunityId, Option(pagination))
+    listTracksForEntity("opportunities", opportunityId, pagination)
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/Track#listTrack"</a>
    */
-  @Tool(Some("list_tracks_for_project"), Some("List Tracks for specified Project"))
+  @Tool(
+    Some("list_tracks_for_project"),
+    Some("List Tracks for specified Project"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def listTracksForProject(
-      @Param(ToolParams.paginationDescription, required = false) pagination: Pagination,
+      @Param(ToolParams.paginationDescription, required = false) pagination: Option[Pagination],
       @Param("Project ID") projectId: Long
   ): String =
-    listTracksForEntity("kases", projectId, Option(pagination))
+    listTracksForEntity("kases", projectId, pagination)

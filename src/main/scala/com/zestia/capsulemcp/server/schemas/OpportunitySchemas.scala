@@ -57,3 +57,5 @@ object OpportunitySchemas extends HasFilterSchema with HasCustomFieldFilterField
     DateFilterField("expectedCloseOn", "Expected date close on"),
     DateFilterField("lastContactedOn", "Last contacted date")
   ) ++ customFieldFilterFields
+
+  val updateOpportunitySchema: String = SchemaBuilders.updateEntitySchema("Opportunity ID")

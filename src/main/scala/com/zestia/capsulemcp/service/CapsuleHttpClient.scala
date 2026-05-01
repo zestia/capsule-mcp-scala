@@ -108,6 +108,13 @@ trait BaseCapsuleHttpClient extends HttpClient:
       FilterRequestWrapper(filter)
     )
 
+  def putRequest[T: {JsonDecoder, ClassTag}, B: JsonEncoder](
+      path: String,
+      body: B,
+      embed: List[String] = List.empty
+  ): ResponseWrapper[T] =
+    executeRequestWithBody[T, B](Method.PUT, path, None, Map.empty, embed, body)
+
 object CapsuleHttpClient extends BaseCapsuleHttpClient:
 
   private val DEFAULT_CAPSULE_HOST = "https://api.capsulecrm.com"

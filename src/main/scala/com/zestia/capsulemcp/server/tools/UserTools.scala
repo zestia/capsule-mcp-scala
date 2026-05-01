@@ -26,14 +26,28 @@ object UserTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/User#listUsers"</a>
    */
-  @Tool(Some("list_users"), Some("List Users"))
+  @Tool(
+    Some("list_users"),
+    Some("List Users"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def listUsers(): String =
     getRequest[UserListWrapper]("users").toJson
 
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/User#showUser"</a>
    */
-  @Tool(Some("get_user"), Some("Get User by ID"))
+  @Tool(
+    Some("get_user"),
+    Some("Get User by ID"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def getUser(
       @Param("User ID") id: Long
   ): String =
@@ -42,6 +56,13 @@ object UserTools:
   /**
    * See <a href="https://developer.capsulecrm.com/v2/operations/User#showCurrentUser"</a>
    */
-  @Tool(Some("get_current_user"), Some("Get the current User"))
+  @Tool(
+    Some("get_current_user"),
+    Some("Get the current User"),
+    readOnlyHint = Some(true),
+    destructiveHint = Some(false),
+    idempotentHint = Some(true),
+    openWorldHint = Some(true)
+  )
   def getCurrentUser(): String =
     getRequest[UserWrapper]("users/current", embed = List("party")).toJson

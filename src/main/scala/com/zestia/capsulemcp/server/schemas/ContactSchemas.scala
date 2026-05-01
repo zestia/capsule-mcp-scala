@@ -88,3 +88,5 @@ object ContactSchemas extends HasFilterSchema with HasCustomFieldFilterFields:
       isPattern = true
     )
   ) ++ customFieldFilterFields
+
+  val updateContactSchema: String = SchemaBuilders.updateEntitySchema("Contact ID")
